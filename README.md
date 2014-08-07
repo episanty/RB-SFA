@@ -16,4 +16,7 @@ The program consists of this Mathematica notebook, a PDF printout, the data used
 > E. Pisanty. Rotating Bicircular High Harmonic Generation in the Strong Field Approximation. https://github.com/episanty/RB-SFA (2014).
 
 The notebook contains documentation next to each relevant function and explains the exact integral that is implemented. The data used in the paper is provided in gzipped format as `data dump of detuning scan.txt.gz` (29.6 MB). To use it simply unzip it (74.7 MB) and place it in the same directory as the notebook. The notebook contains the appropriate importing instructions.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8509b3c7e23840a8dc2e81a132a1d103a6e39d4c
