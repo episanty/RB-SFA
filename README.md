@@ -2,6 +2,7 @@ RB-SFA
 ======
 
 Rotating Bicircular High Harmonic Generation in the Strong Field Approximation
+
 © Emilio Pisanty, 2014
 
 This software calculates the polarization properties of the harmonic spectra produced by multi-colour circularly polarized fields, by explicitly performing the temporal integrations of the Lewenstein model for high harmonic generation. It was used to support the calculations in the paper
