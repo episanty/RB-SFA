@@ -17,3 +17,4 @@ The program consists of the Mathematica notebook RB-SFA.nb (main code file), a P
 
 The notebook contains documentation next to each relevant function and explains the exact integral that is implemented. The data used in the paper is provided in gzipped format as `data dump of detuning scan.txt.gz` (29.6 MB). To use it simply unzip it (74.7 MB) and place it in the same directory as the notebook. The notebook contains the appropriate importing instructions.
 
+The author thanks Luke Chipperfield for crucial assistance in writing this program.
