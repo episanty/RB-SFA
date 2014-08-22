@@ -7,7 +7,7 @@ Rotating Bicircular High Harmonic Generation in the Strong Field Approximation
 
 This software calculates the polarization properties of the harmonic spectra produced by multi-colour circularly polarized fields, by explicitly performing the temporal integrations of the Lewenstein model for high harmonic generation. It was used to support the calculations in the paper
 
-> Spin conservation in high harmonic generation. E. Pisanty, M. Ivanov and S. Sukiasyan. [arXiv:1404.6242](http://arxiv.org/abs/1404.6242).
+> Spin conservation in bicircular high harmonic generation. E. Pisanty, M. Ivanov and S. Sukiasyan. [arXiv:1404.6242](http://arxiv.org/abs/1404.6242).
 
 It was built primarily for this setting but the code is general and it should be applicable to a wide range of SFA calculations. Thus, this notebook can be used with minor modifications to calculate high harmonic spectra under the SFA for fairly arbitrary fields, polarizations and envelopes. It runs on Wolfram Mathematica, which means it is flexible and easy to use, at the expense of slightly slower code than might be achieved in other languages.
 
