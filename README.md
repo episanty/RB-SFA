@@ -1,19 +1,20 @@
 RB-SFA
 ======
 
-Rotating Bicircular High Harmonic Generation in the Strong Field Approximation
+High Harmonic Generation in the Strong Field Approximation via Mathematica
 
-© Emilio Pisanty, 2014
+© Emilio Pisanty, 2014-2015
 
-This software calculates the polarization properties of the harmonic spectra produced by multi-colour circularly polarized fields, by explicitly performing the temporal integrations of the Lewenstein model for high harmonic generation. It was used to support the calculations in the paper
+RB-SFA is a compact and flexible Mathematica package for calculating High Harmonic Generation emission within the Strong Field Approximation. It combines Mathematica's analytical integration capabilities with its numerical calculation capacities to offer a fast and user-friendly plug-and-play solver for calculating harmonic spectra and other properties. In addition, it can calculate first-order nondipole corrections to the SFA results to evaluate the effect of the driving laser's magnetic field on harmonic spectra.
 
-> Spin conservation in high harmonic generation. E. Pisanty and M. Ivanov. [arXiv:1404.6242](http://arxiv.org/abs/1404.6242).
+The name RB-SFA comes from its first application (as Rotating Bicircular High Harmonic Generation in the Strong field Approximation) but the code is general so RB-SFA just stands for itself now. This first application was used to calculate the polarization properties of the harmonics produced by multi-colour circularly polarized fields, as reported in the paper
 
-It was built primarily for this setting but the code is general and it should be applicable to a wide range of SFA calculations. Thus, this notebook can be used with minor modifications to calculate high harmonic spectra under the SFA for fairly arbitrary fields, polarizations and envelopes. It runs on Wolfram Mathematica, which means it is flexible and easy to use, at the expense of slightly slower code than might be achieved in other languages.
+>    Spin conservation in high-order-harmonic generation using bicircular fields. E. Pisanty, S. Sukiasyan and M. Ivanov. [*Phys. Rev. A* **90**, 043829 (2014)](http://dx.doi.org/10.1103/PhysRevA.90.043829), [arXiv:1404.6242](http://arxiv.org/abs/1404.6242).
 
-The program consists of the Mathematica notebook RB-SFA.nb (main code file), a PDF printout of the notebook, the data used for the paper, and PDFs of the graph output. It is available under the [CC-BY-SA 4.0 license](https://creativecommons.org/licenses/by-sa/4.0/). If you use this code or its results in a publication, please cite both the arXiv preprint above (or the journal publication which will superseded it) and the GitHub repository where the latest version will be available. An example citation is 
+This code is dual-licensed under the GPL and CC-BY-SA licenses. If you use this code or its results in an academic publication, please cite the paper above or the GitHub repository where the latest version will always be available. An example citation is 
 
-> E. Pisanty. RB-SFA: Rotating Bicircular High Harmonic Generation in the Strong Field Approximation. https://github.com/episanty/RB-SFA (2014).
+>    E. Pisanty. RB-SFA: High Harmonic Generation in the Strong Field Approximation via Mathematica. https://github.com/episanty/RB-SFA (2014).
 
-The notebook contains documentation next to each relevant function and explains the exact integral that is implemented. The data used in the paper is provided in gzipped format as `data dump of detuning scan.txt.gz` (29.6 MB). To use it simply unzip it (74.7 MB) and place it in the same directory as the notebook. The notebook contains the appropriate importing instructions.
+This software consists of the Mathematica notebook `RB-SFA.nb`, which contains the code and its documentation, a corresponding auto-generated package file `RB-SFA.m`, which provides the package functions to other notebooks, and a PDF printout of the notebook. The notebook also contains a Usage and Examples section which explains how to install and use the code, and documents the calculations used in the original publication.
 
+The author thanks Luke Chipperfield for crucial assistance in writing this program.
