@@ -7,7 +7,11 @@ High Harmonic Generation in the Strong Field Approximation via Mathematica
 
 RB-SFA is a compact and flexible Mathematica package for calculating High Harmonic Generation emission within the Strong Field Approximation. It combines Mathematica's analytical integration capabilities with its numerical calculation capacities to offer a fast and user-friendly plug-and-play solver for calculating harmonic spectra and other properties. In addition, it can calculate first-order nondipole corrections to the SFA results to evaluate the effect of the driving laser's magnetic field on harmonic spectra.
 
+<<<<<<< HEAD
 The name RB-SFA comes from its first application (as Rotating Bicircular High Harmonic Generation in the Strong field Approximation) but the code is general so RB-SFA just stands for itself now. This first application was used to calculate the polarization properties of the harmonics produced by multi-colour circularly polarized fields, as reported in the paper
+=======
+> Spin conservation in bicircular high harmonic generation. E. Pisanty, M. Ivanov and S. Sukiasyan. [arXiv:1404.6242](http://arxiv.org/abs/1404.6242).
+>>>>>>> ad18d59c23a71f1e93fee2620d91ef0a283a66e9
 
 >    Spin conservation in high-order-harmonic generation using bicircular fields. E. Pisanty, S. Sukiasyan and M. Ivanov. [*Phys. Rev. A* **90**, 043829 (2014)](http://dx.doi.org/10.1103/PhysRevA.90.043829), [arXiv:1404.6242](http://arxiv.org/abs/1404.6242).
 
@@ -17,4 +21,8 @@ This code is dual-licensed under the GPL and CC-BY-SA licenses. If you use this 
 
 This software consists of the Mathematica notebook `RB-SFA.nb`, which contains the code and its documentation, a corresponding auto-generated package file `RB-SFA.m`, which provides the package functions to other notebooks, and a PDF printout of the notebook. The notebook also contains a Usage and Examples section which explains how to install and use the code, and documents the calculations used in the original publication.
 
+<<<<<<< HEAD
 The author thanks Luke Chipperfield for crucial assistance in writing this program.
+=======
+The author thanks Luke Chipperfield for crucial assistance in writing this program.
+>>>>>>> ad18d59c23a71f1e93fee2620d91ef0a283a66e9
