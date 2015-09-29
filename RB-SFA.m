@@ -22,9 +22,9 @@
 BeginPackage["RBSFA`"];
 
 
-dipole::usage="dipole[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
+hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
 Begin["`Private`"];
-dipole[p_,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Norm[p]^2+\[Kappa]^2)^3
+hydrogenicDTME[p_,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Norm[p]^2+\[Kappa]^2)^3
 End[];
 
 
@@ -210,7 +210,9 @@ Preintegrals::usage="Preintegrals is an option for makeDipole list which specifi
 ReportingFunction::usage="ReportingFunction is an option for makeDipole list which specifies a function used to report the results, either internally (by the default, Identity) or to an external file.";
 Gate::usage="Gate is an option for makeDipole list which specifies the integration gate to use. Usage as Gate\[Rule]g, nGate\[Rule]n will gate the integral at time \[Omega]t/\[Omega] by g[\[Omega]t,n]. The default is Gate\[Rule]SineSquaredGate[1/2].";
 nGate::usage="nGate is an option for makeDipole list which specifies the total number of cycles in the integration gate.";
-IonizationPotential::usage="IonizationPotential is an option for makeDipole list which specifies the ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\) of the target.";
+IonizationPotential::usage="IonizationPotential is an option for makeDipoleList which specifies the ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\) of the target.";
+DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which specifies a function f, of the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[
+StyleBox[\"I\",\nFontSlant->\"Italic\"], \"p\"]\)]\)], to use as the dipole transition matrix element.";
 \[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipole list which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipole list which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 
@@ -223,7 +225,7 @@ Options[makeDipoleList]=standardOptions~Join~{
 VectorPotential->Automatic,FieldParameters->{},VectorPotentialGradient->None,
 Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,
-\[Epsilon]Correction->0.1,IonizationPotential->0.5,
+\[Epsilon]Correction->0.1,IonizationPotential->0.5,DipoleTransitionMatrixElement->hydrogenicDTME,
 PointNumberCorrection->0,Verbose->0
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
@@ -235,7 +237,8 @@ makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analy
 
 makeDipoleList[OptionsPattern[]]:=Block[
 {
-num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValue[CarrierFrequency],\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],
+num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValue[CarrierFrequency],
+\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],dipole=OptionValue[DipoleTransitionMatrixElement],
 A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tol,gridPointQ,tInit,tFinal,\[Delta]t,\[Epsilon]=OptionValue[\[Epsilon]Correction],

@@ -99,7 +99,7 @@ code and its documentation, a corresponding auto-generated package file. This \
 notebook also contains a Usage and Examples section which explains how to use \
 the code and documents the calculations used in the original publication."
 }], "Text"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -787,21 +787,21 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["The dipole transition matrix element", "Subsection"],
+Cell["Default dipole transition matrix element", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"dipole", "::", "usage"}], "=", 
-   "\"\<dipole[p,\[Kappa]] returns the dipole transition matrix element for a \
-1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \
-\(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \
-\(2\)]\).\>\""}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"hydrogenicDTME", "::", "usage"}], "=", 
+   "\"\<hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix \
+element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\
+\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\
+\[Kappa]\), \(2\)]\).\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"dipole", "[", 
+  RowBox[{"hydrogenicDTME", "[", 
    RowBox[{"p_", ",", "\[Kappa]_"}], "]"}], ":=", 
   RowBox[{
    FractionBox[
@@ -2031,9 +2031,18 @@ number of cycles in the integration gate.\>\""}],
  RowBox[{
   RowBox[{
    RowBox[{"IonizationPotential", "::", "usage"}], "=", 
-   "\"\<IonizationPotential is an option for makeDipole list which specifies \
+   "\"\<IonizationPotential is an option for makeDipoleList which specifies \
 the ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\) of the \
 target.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DipoleTransitionMatrixElement", "::", "usage"}], "=", 
+   "\"\<DipoleTransitionMatrixElement is an option for makeDipoleList which \
+specifies a function f, of the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[
+RowBox[{\"2\", SubscriptBox[
+StyleBox[\"I\",
+FontSlant->\"Italic\"], \"p\"]}]]\)], to use as the dipole transition matrix \
+element.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"\[Epsilon]Correction", "::", "usage"}], "=", 
@@ -2083,7 +2092,8 @@ differentiated at the boundaries.\>\""}], ";"}], "\[IndentingNewLine]",
        RowBox[{"3", "/", "2"}]}], ",", "\[IndentingNewLine]", 
       RowBox[{"\[Epsilon]Correction", "\[Rule]", "0.1"}], ",", 
       RowBox[{"IonizationPotential", "\[Rule]", "0.5"}], ",", 
-      "\[IndentingNewLine]", 
+      RowBox[{"DipoleTransitionMatrixElement", "\[Rule]", "hydrogenicDTME"}], 
+      ",", "\[IndentingNewLine]", 
       RowBox[{"PointNumberCorrection", "\[Rule]", "0"}], ",", 
       RowBox[{"Verbose", "\[Rule]", "0"}]}], "\[IndentingNewLine]", "}"}]}]}],
    ";"}], "\[IndentingNewLine]", 
@@ -2126,12 +2136,15 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
        RowBox[{"OptionValue", "[", "PointsPerCycle", "]"}]}], ",", 
       RowBox[{"\[Omega]", "=", 
        RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}]}], ",", 
+      "\[IndentingNewLine]", 
       RowBox[{"\[Kappa]", "=", 
        SqrtBox[
         RowBox[{"2", 
          RowBox[{"OptionValue", "[", "IonizationPotential", "]"}]}]]}], ",", 
-      "\[IndentingNewLine]", "A", ",", "F", ",", "GA", ",", "pi", ",", "ps", 
-      ",", "S", ",", "\[IndentingNewLine]", "gate", ",", "tGate", ",", 
+      RowBox[{"dipole", "=", 
+       RowBox[{"OptionValue", "[", "DipoleTransitionMatrixElement", "]"}]}], 
+      ",", "\[IndentingNewLine]", "A", ",", "F", ",", "GA", ",", "pi", ",", 
+      "ps", ",", "S", ",", "\[IndentingNewLine]", "gate", ",", "tGate", ",", 
       "setPreintegral", ",", "\[IndentingNewLine]", "tol", ",", "gridPointQ", 
       ",", "tInit", ",", "tFinal", ",", "\[Delta]t", ",", 
       RowBox[{"\[Epsilon]", "=", 
@@ -2996,7 +3009,7 @@ Cell[BoxData[
 
 Cell[BoxData[
  RowBox[{"{", 
-  RowBox[{"1.998206`", ",", "Null"}], "}"}]], "Output"]
+  RowBox[{"2.069555`", ",", "Null"}], "}"}]], "Output"]
 }, Open  ]],
 
 Cell["\<\
@@ -5361,21 +5374,19 @@ Cell[BoxData[
                 RowBox[{"Length", "[", 
                  RowBox[{"RBSFA`Private`A", "[", "RBSFA`Private`tInit", "]"}],
                   "]"}], "]"}], "-", 
-               RowBox[{
-                RowBox[{"(", 
-                 RowBox[{
+               FractionBox[
+                RowBox[{
+                 RowBox[{"RBSFA`Private`GAIntInt", "[", 
+                  RowBox[{"RBSFA`Private`t", ",", "RBSFA`Private`tt"}], "]"}],
+                  "+", 
+                 RowBox[{"Transpose", "[", 
                   RowBox[{"RBSFA`Private`GAIntInt", "[", 
                    RowBox[{"RBSFA`Private`t", ",", "RBSFA`Private`tt"}], 
-                   "]"}], "+", 
-                  RowBox[{"Transpose", "[", 
-                   RowBox[{"RBSFA`Private`GAIntInt", "[", 
-                    RowBox[{"RBSFA`Private`t", ",", "RBSFA`Private`tt"}], 
-                    "]"}], "]"}]}], ")"}], "/", 
-                RowBox[{"(", 
-                 RowBox[{"RBSFA`Private`t", "-", "RBSFA`Private`tt", "-", 
-                  RowBox[{
-                  "\[ImaginaryI]", " ", "RBSFA`Private`\[Epsilon]"}]}], 
-                 ")"}]}]}], "]"}], ".", 
+                   "]"}], "]"}]}], 
+                RowBox[{"RBSFA`Private`t", "-", "RBSFA`Private`tt", "-", 
+                 RowBox[{
+                 "\[ImaginaryI]", " ", "RBSFA`Private`\[Epsilon]"}]}]]}], 
+              "]"}], ".", 
              RowBox[{"(", 
               RowBox[{
                RowBox[{"RBSFA`Private`AInt", "[", 
@@ -27642,7 +27653,6 @@ Cell[BoxData[{
               Frame->True,
               FrameStyle->RGBColor[0., 0., 0.],
               FrameTicks->None,
-              
               ImageSize->
                Dynamic[{
                 Automatic, 
