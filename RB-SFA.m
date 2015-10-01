@@ -28,6 +28,12 @@ hydrogenicDTME[p_,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Norm[p]^2+\[Kappa
 End[];
 
 
+gaussianDTME::usage="gaussianDTME[p,\[Kappa]] returns the dipole transition matrix element for a gaussian state of characteristic size 1/\[Kappa]."
+Begin["`Private`"];
+gaussianDTME[p_,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(Norm[p]^2/(2\[Kappa]^2))]
+End[]
+
+
 flatTopEnvelope::usage="flatTopEnvelope[\[Omega],num,nRamp] returns a Function object representing a flat-top envelope at carrier frequency \[Omega] lasting a total of num cycles and with linear ramps nRamp cycles long.";
 Begin["`Private`"];
 flatTopEnvelope[\[Omega]_,num_,nRamp_]:=Function[t,Piecewise[{{0,t<0},{Sin[(\[Omega] t)/(4nRamp)]^2,0<=t<(2 \[Pi])/\[Omega] nRamp},{1,(2 \[Pi])/\[Omega] nRamp<=t<(2 \[Pi])/\[Omega] (num-nRamp)},{Sin[(\[Omega] ((2 \[Pi])/\[Omega] num-t))/(4nRamp)]^2,(2 \[Pi])/\[Omega] (num-nRamp)<=t<(2 \[Pi])/\[Omega] num},{0,(2 \[Pi])/\[Omega] num<=t}}]]
@@ -211,21 +217,22 @@ ReportingFunction::usage="ReportingFunction is an option for makeDipole list whi
 Gate::usage="Gate is an option for makeDipole list which specifies the integration gate to use. Usage as Gate\[Rule]g, nGate\[Rule]n will gate the integral at time \[Omega]t/\[Omega] by g[\[Omega]t,n]. The default is Gate\[Rule]SineSquaredGate[1/2].";
 nGate::usage="nGate is an option for makeDipole list which specifies the total number of cycles in the integration gate.";
 IonizationPotential::usage="IonizationPotential is an option for makeDipoleList which specifies the ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\) of the target.";
+Target::usage="Target is an option for makeDipoleList which specifies chemical species producing the HHG emission, pulling the ionization potential from the Wolfram ElementData curated data set.";
 DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which specifies a function f, of the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[
 StyleBox[\"I\",\nFontSlant->\"Italic\"], \"p\"]\)]\)], to use as the dipole transition matrix element.";
 \[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipole list which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipole list which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 
 
-Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,nGate,nGateRamp,\[Epsilon]Correction];
+Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,nGateRamp,\[Epsilon]Correction];
 
 
 Begin["`Private`"];
 Options[makeDipoleList]=standardOptions~Join~{
 VectorPotential->Automatic,FieldParameters->{},VectorPotentialGradient->None,
 Preintegrals->"Analytic",ReportingFunction->Identity,
-Gate->SineSquaredGate[1/2],nGate->3/2,
-\[Epsilon]Correction->0.1,IonizationPotential->0.5,DipoleTransitionMatrixElement->hydrogenicDTME,
+Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
+IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
 PointNumberCorrection->0,Verbose->0
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
@@ -238,7 +245,7 @@ makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analy
 makeDipoleList[OptionsPattern[]]:=Block[
 {
 num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValue[CarrierFrequency],
-\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],dipole=OptionValue[DipoleTransitionMatrixElement],
+dipole=OptionValue[DipoleTransitionMatrixElement],\[Kappa],
 A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tol,gridPointQ,tInit,tFinal,\[Delta]t,\[Epsilon]=OptionValue[\[Epsilon]Correction],
@@ -253,6 +260,12 @@ GA[t_]=If[
 TrueQ[OptionValue[VectorPotentialGradient]==None],        Table[0,{Length[A[tInit]]},{Length[A[tInit]]}],
 OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
 ];
+
+Which[
+OptionValue[Target]===Automatic,\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],
+True,\[Kappa]=Sqrt[2UnitConvert[First[ElementData[OptionValue[Target],"IonizationEnergies"]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]]
+];
+
 
 tInit=0;
 tFinal=(2\[Pi])/\[Omega] num;
@@ -366,6 +379,3 @@ End[];
 
 
 EndPackage[]
-
-
-
