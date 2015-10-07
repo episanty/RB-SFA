@@ -359,9 +359,9 @@ ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops.*)
 Which[
-OptionValue[Verbose]==1,Information/@{ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt},
+OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt},
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
-{ps[t,tt],pi[p,t],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]]}]]
+{A[t],GA[t],ps[t,tt],pi[p,t],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]]}]]
 ];
 
 (*Numerical integration loop*)
