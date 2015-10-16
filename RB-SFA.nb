@@ -811,7 +811,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Fri 16 Oct 2015 16:26:43\>\""}], 
+   "\"\<RB-SFA v2.0.1, Fri 16 Oct 2015 16:51:52\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2607,11 +2607,31 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
                RowBox[{"Table", "[", 
                 RowBox[{
                  RowBox[{"preintegrand", "[", 
-                  RowBox[{"t", ",", "tt"}], "]"}], ",", 
+                  RowBox[{"t", ",", "tInit"}], "]"}], ",", 
                  RowBox[{"{", 
                   RowBox[{
                   "t", ",", "tInit", ",", "tFinal", ",", "\[Delta]t"}], 
                   "}"}]}], "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+            RowBox[{"(*", 
+             RowBox[{
+              RowBox[{
+              "The", " ", "tInit", " ", "dependence", " ", "should", " ", 
+               "be", " ", "changed", " ", "to", " ", 
+               RowBox[{"tt", ".", " ", "This"}], " ", "can", " ", "wait", " ",
+                "until", " ", "an", " ", "overhaul", " ", "of", " ", "the", 
+               " ", "numerical", " ", "preintegration", " ", 
+               RowBox[{"(", 
+                RowBox[{
+                "in", " ", "favour", " ", "of", " ", "NDSolve", " ", "and", 
+                 " ", "InterpolatingFunction", " ", "objects", " ", "as", " ",
+                  "output"}], ")"}]}], ",", " ", 
+              RowBox[{
+               RowBox[{"though", ".", " ", "Until"}], " ", "this", " ", "is", 
+               " ", "done"}], ",", " ", 
+              RowBox[{"the", " ", "numerical", " ", "preintegration", " ", 
+               RowBox[{"can", "'"}], "t", " ", "really", " ", "be", " ", 
+               "trusted", " ", "in", " ", "a", " ", "nondipole", " ", 
+               RowBox[{"setting", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
             RowBox[{
              RowBox[{"integralVariable", "[", 
               RowBox[{
@@ -2690,7 +2710,7 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
              RowBox[{"{", 
               RowBox[{"Length", "[", 
                RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}]}], "]"}]},
-          {"GAIntInt", "GAIntInt", 
+          {"GAIntInt", "GAIntIntList", 
            RowBox[{
             RowBox[{"GAInt", "[", 
              RowBox[{"#1", ",", "#2"}], "]"}], "&"}], 
@@ -3148,7 +3168,9 @@ RBSFAversion[]=\"",
                StringContainsQ[#, "RB-SFA v"]]& ], 1], {"\"", ","}]], ", ", 
           DateString[], "\";\[IndentingNewLine]End[];"]}]], "Input", 
       InitializationCell -> True, CellTags -> "version-definition"], None]; 
-   NotebookSave[]), PassEventsDown -> True},
+   SelectionMove[
+     EvaluationNotebook[], Previous, Character, 1]; NotebookSave[]), 
+  PassEventsDown -> True},
 WindowSize->{1855, 1056},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrintingCopies->1,

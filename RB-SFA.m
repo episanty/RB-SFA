@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Fri 16 Oct 2015 16:26:43";
+RBSFAversion[]="RB-SFA v2.0.1, Fri 16 Oct 2015 16:51:52";
 End[];
 
 
@@ -305,7 +305,8 @@ Which[
 OptionValue[Preintegrals]=="Analytic",
 integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
 ,OptionValue[Preintegrals]=="Numeric",
-listVariable=\[Delta]t*Accumulate[Table[preintegrand[t,tt],{t,tInit,tFinal,\[Delta]t}]];
+listVariable=\[Delta]t*Accumulate[Table[preintegrand[t,tInit],{t,tInit,tFinal,\[Delta]t}]];
+(*The tInit dependence should be changed to tt. This can wait until an overhaul of the numerical preintegration (in favour of NDSolve and InterpolatingFunction objects as output), though. Until this is done, the numerical preintegration can't really be trusted in a nondipole setting.*)
 integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable[[Round[t/\[Delta]t+1]]]-listVariable[[Round[tt/\[Delta]t+1]]];
 ];
 ,OptionValue[VectorPotentialGradient]===None,(*No vector potential has been specified, return appropriate zero matrix*)
@@ -318,7 +319,7 @@ Apply[setPreintegral,({
  {GAInt, GAIntList, GA[#1]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
  {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, Table[0,{Length[A[tInit]]}]},
  {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, Table[0,{Length[A[tInit]]}]},
- {GAIntInt, GAIntInt, GAInt[#1,#2]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
+ {GAIntInt, GAIntIntList, GAInt[#1,#2]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
  {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, 0},
  {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, Table[0,{Length[A[tInit]]}]}
 }),{1}];
