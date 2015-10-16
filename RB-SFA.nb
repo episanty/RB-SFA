@@ -179,7 +179,8 @@ generation by low-frequency laser fields.",
               FontWeight->"Bold"], "(", 
              RowBox[{
               StyleBox["p",
-               FontWeight->"Bold"], ",", "t"}], ")"}], ")"}]}], "\[Times]", 
+               FontWeight->"Bold"], ",", 
+              RowBox[{"t", "'"}]}], ")"}], ")"}]}], "\[Times]", 
           RowBox[{"exp", "[", 
            RowBox[{
             RowBox[{"-", "\[ImaginaryI]"}], " ", 
@@ -411,8 +412,8 @@ point method, the time-dependent dipole is given by\n\n          ",
               StyleBox["p",
                FontWeight->"Bold"], "s"], "(", 
              RowBox[{"t", ",", 
-              RowBox[{"t", "'"}]}], ")"}], ",", "t"}], ")"}], ")"}]}], 
-        "\[Times]", 
+              RowBox[{"t", "'"}]}], ")"}], ",", 
+            RowBox[{"t", "'"}]}], ")"}], ")"}]}], "\[Times]", 
         RowBox[{"exp", "[", 
          RowBox[{
           RowBox[{"-", "\[ImaginaryI]"}], " ", 
@@ -647,8 +648,8 @@ same form as the standard SFA,\n\n          ",
              FontWeight->"Bold"], "(", 
             RowBox[{
              StyleBox["p",
-              FontWeight->"Bold"], ",", "t"}], ")"}], ")"}], " ", "\[Times]", 
-          " ", 
+              FontWeight->"Bold"], ",", "t", ",", 
+             RowBox[{"t", "'"}]}], ")"}], ")"}], " ", "\[Times]", " ", 
           RowBox[{
            RowBox[{
             StyleBox["F",
@@ -662,7 +663,9 @@ same form as the standard SFA,\n\n          ",
               FontWeight->"Bold"], "(", 
              RowBox[{
               StyleBox["p",
-               FontWeight->"Bold"], ",", "t"}], ")"}], ")"}]}], "\[Times]", 
+               FontWeight->"Bold"], ",", 
+              RowBox[{"t", "'"}], ",", 
+              RowBox[{"t", "'"}]}], ")"}], ")"}]}], "\[Times]", 
           RowBox[{"exp", "[", 
            RowBox[{
             RowBox[{"-", "\[ImaginaryI]"}], " ", 
@@ -701,7 +704,8 @@ same form as the standard SFA,\n\n          ",
            RowBox[{
             StyleBox["p",
              FontWeight->"Bold"], ",", 
-            RowBox[{"t", "''"}]}], ")"}], "2"]}]}], ")"}]}]}]}], 
+            RowBox[{"t", "''"}], ",", 
+            RowBox[{"t", "'"}]}], ")"}], "2"]}]}], ")"}]}]}]}], 
    TraditionalForm]]],
  "  as before, but with a nondipole term in the displaced momentum, which now \
 reads\n\n          ",
@@ -709,12 +713,12 @@ reads\n\n          ",
   FormBox[
    RowBox[{
     RowBox[{
+     StyleBox["\[Pi]",
+      FontWeight->"Bold"], "(", 
      RowBox[{
-      StyleBox["\[Pi]",
-       FontWeight->"Bold"], "(", 
-      RowBox[{
-       StyleBox["p",
-        FontWeight->"Bold"], ",", "t"}], ")"}], ")"}], "=", 
+      StyleBox["p",
+       FontWeight->"Bold"], ",", "t", ",", 
+      RowBox[{"t", "'"}]}], ")"}], "=", 
     RowBox[{
      StyleBox["p",
       FontWeight->"Bold"], "+", 
@@ -722,7 +726,8 @@ reads\n\n          ",
       StyleBox["A",
        FontWeight->"Bold"], "(", "t", ")"}], "-", 
      RowBox[{
-      SuperscriptBox["\[Integral]", "t"], 
+      SubsuperscriptBox["\[Integral]", 
+       RowBox[{"t", "'"}], "t"], 
       RowBox[{
        RowBox[{
         RowBox[{
@@ -744,17 +749,18 @@ reads\n\n          ",
   FormBox[
    RowBox[{
     RowBox[{
+     SubscriptBox["\[Pi]", "j"], "(", 
      RowBox[{
-      SubscriptBox["\[Pi]", "j"], "(", 
-      RowBox[{
-       StyleBox["p",
-        FontWeight->"Bold"], ",", "t"}], ")"}], ")"}], "=", 
+      StyleBox["p",
+       FontWeight->"Bold"], ",", "t", ",", 
+      RowBox[{"t", "'"}]}], ")"}], "=", 
     RowBox[{
      SubscriptBox["p", "j"], "+", 
      RowBox[{
       SubscriptBox["A", "j"], "(", "t", ")"}], "-", 
      RowBox[{
-      SuperscriptBox["\[Integral]", "t"], 
+      SubsuperscriptBox["\[Integral]", 
+       RowBox[{"t", "'"}], "t"], 
       RowBox[{
        RowBox[{
         SubscriptBox["\[PartialD]", "j"], 
@@ -768,7 +774,7 @@ reads\n\n          ",
        RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}], TraditionalForm]]],
  "."
 }], "Text"]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
