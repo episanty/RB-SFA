@@ -826,6 +826,8 @@ element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\
 
 Cell["Another possibility is for a gaussian orbital", "Text"],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{"gaussianDTME", "::", "usage"}], "=", 
@@ -855,7 +857,14 @@ for a gaussian state of characteristic size 1/\[Kappa].\>\""}], "\
       RowBox[{"2", 
        SuperscriptBox["\[Kappa]", "2"]}]]}], "]"}]}]}], "\[IndentingNewLine]", 
  RowBox[{"End", "[", "]"}]}], "Input",
- InitializationCell->True]
+ InitializationCell->True],
+
+Cell[BoxData["\<\"gaussianDTME[p,\[Kappa]] returns the dipole transition \
+matrix element for a gaussian state of characteristic size 1/\[Kappa].\"\>"], \
+"Output"],
+
+Cell[BoxData["\<\"RBSFA`Private`\"\>"], "Output"]
+}, Open  ]]
 }, Closed]],
 
 Cell[CellGroupData[{
