@@ -2575,17 +2575,6 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
            RowBox[{
             RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
             "\"\<Analytic\>\""}], ",", "\[IndentingNewLine]", 
-           RowBox[{"(*", 
-            RowBox[{
-             RowBox[{
-              RowBox[{"integralVariable", "[", "t_", "]"}], "=", 
-              RowBox[{"Integrate", "[", 
-               RowBox[{
-                RowBox[{"preintegrand", "[", "t", "]"}], ",", "t"}], "]"}]}], 
-             ";"}], "*)"}], "  ", 
-           RowBox[{"(*", 
-            RowBox[{"To", " ", "be", " ", "deleted"}], "*)"}], 
-           "\[IndentingNewLine]", 
            RowBox[{
             RowBox[{
              RowBox[{"integralVariable", "[", 
@@ -2617,13 +2606,12 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
               RowBox[{"Accumulate", "[", 
                RowBox[{"Table", "[", 
                 RowBox[{
-                 RowBox[{"preintegrand", "[", "t", "]"}], ",", 
+                 RowBox[{"preintegrand", "[", 
+                  RowBox[{"t", ",", "tt"}], "]"}], ",", 
                  RowBox[{"{", 
                   RowBox[{
                   "t", ",", "tInit", ",", "tFinal", ",", "\[Delta]t"}], 
-                  "}"}]}], "]"}], "]"}]}]}], ";"}]}], "\[IndentingNewLine]", 
-          RowBox[{"(*", 
-           RowBox[{
+                  "}"}]}], "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
             RowBox[{
              RowBox[{"integralVariable", "[", 
               RowBox[{
@@ -2639,20 +2627,8 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
                RowBox[{"Round", "[", 
                 RowBox[{
                  RowBox[{"tt", "/", "\[Delta]t"}], "+", "1"}], "]"}], 
-               "\[RightDoubleBracket]"}]}]}], ";"}], "*)"}], "  ", 
-          RowBox[{"(*", 
-           RowBox[{"To", " ", "be", " ", "modified"}], "*)"}], 
-          "\[IndentingNewLine]", 
-          RowBox[{"(*", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"integralVariable", "[", 
-              RowBox[{"t_", "?", "gridPointQ"}], "]"}], ":=", 
-             RowBox[{"integralVariable", "[", 
-              RowBox[{"t", ",", "tInit"}], "]"}]}], ";"}], "*)"}], "  ", 
-          RowBox[{"(*", 
-           RowBox[{"To", " ", "be", " ", "deleted"}], "*)"}], 
-          "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
+               "\[RightDoubleBracket]"}]}]}], ";"}]}], "\[IndentingNewLine]", 
+          "]"}], ";"}], "\[IndentingNewLine]", ",", 
         RowBox[{
          RowBox[{"OptionValue", "[", "VectorPotentialGradient", "]"}], "===", 
          "None"}], ",", 
@@ -3171,7 +3147,7 @@ RBSFAversion[]=\"",
                 Cell -> List, BoxData -> List, RowBox -> List}]], Quiet[
                StringContainsQ[#, "RB-SFA v"]]& ], 1], {"\"", ","}]], ", ", 
           DateString[], "\";\[IndentingNewLine]End[];"]}]], "Input", 
-      InitializationCell -> True, CellTags -> "version-definition"]]; 
+      InitializationCell -> True, CellTags -> "version-definition"], None]; 
    NotebookSave[]), PassEventsDown -> True},
 WindowSize->{1855, 1056},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},

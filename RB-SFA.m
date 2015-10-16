@@ -303,12 +303,10 @@ setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=
 OptionValue[VectorPotentialGradient]=!=None||nullValue===False,(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
 Which[
 OptionValue[Preintegrals]=="Analytic",
-(*integralVariable[t_]=Integrate[preintegrand[t],t];*)  (*To be deleted*)
 integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
 ,OptionValue[Preintegrals]=="Numeric",
-listVariable=\[Delta]t*Accumulate[Table[preintegrand[t],{t,tInit,tFinal,\[Delta]t}]];
-(*integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable\[LeftDoubleBracket]Round[t/\[Delta]t+1]\[RightDoubleBracket]-listVariable\[LeftDoubleBracket]Round[tt/\[Delta]t+1]\[RightDoubleBracket];*)  (*To be modified*)
-(*integralVariable[t_?gridPointQ]:=integralVariable[t,tInit];*)  (*To be deleted*)
+listVariable=\[Delta]t*Accumulate[Table[preintegrand[t,tt],{t,tInit,tFinal,\[Delta]t}]];
+integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable[[Round[t/\[Delta]t+1]]]-listVariable[[Round[tt/\[Delta]t+1]]];
 ];
 ,OptionValue[VectorPotentialGradient]===None,(*No vector potential has been specified, return appropriate zero matrix*)
 integralVariable[t_]=nullValue;
