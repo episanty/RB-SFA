@@ -811,7 +811,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Fri 16 Oct 2015 15:54:11\>\""}], 
+   "\"\<RB-SFA v2.0.1, Fri 16 Oct 2015 16:26:43\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -892,8 +892,8 @@ current version of the RB-SFA package in use and its timestamp.\\\";\
               "\"\<Input\>\"", ",", 
               RowBox[{"InitializationCell", "\[Rule]", "True"}], ",", 
               RowBox[{"CellTags", "\[Rule]", "\"\<version-definition\>\""}]}],
-              "]"}]}], "\[IndentingNewLine]", "]"}], ";", 
-          "\[IndentingNewLine]", 
+              "]"}], "\[IndentingNewLine]", ",", "None"}], 
+           "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
           RowBox[{"NotebookSave", "[", "]"}]}], "\[IndentingNewLine]", 
          ")"}]}], ",", 
        RowBox[{"PassEventsDown", "\[Rule]", "True"}]}], "}"}]}]}], 

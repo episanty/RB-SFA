@@ -643,7 +643,7 @@ numeric t and parameters indicated by FieldParameters\[Rule]pars.\"\>",
 
 Cell[CellGroupData[{
 
-Cell["Using numerical integration", "Subsection"],
+Cell["Using numerical integration for the preintegrals", "Subsection"],
 
 Cell[TextData[{
  "To simulate a pulse with an envelope, it can be convenient to perform the \
@@ -902,7 +902,7 @@ prevent Indeterminate errors when a Piecewise envelope is being \
 differentiated at the boundaries.\"\>", "MSG"]], "Print", "PrintUsage",
  CellTags->"Info3652186154-4124127"]
 }, Open  ]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
