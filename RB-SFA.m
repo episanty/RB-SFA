@@ -22,6 +22,12 @@
 BeginPackage["RBSFA`"];
 
 
+RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
+Begin["`Private`"];
+RBSFAversion[]="RB-SFA v2.0.1, Fri 16 Oct 2015 15:54:11";
+End[];
+
+
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
 Begin["`Private`"];
 hydrogenicDTME[p_,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Norm[p]^2+\[Kappa]^2)^3
@@ -297,26 +303,26 @@ setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=
 OptionValue[VectorPotentialGradient]=!=None||nullValue===False,(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
 Which[
 OptionValue[Preintegrals]=="Analytic",
-integralVariable[t_]=Integrate[preintegrand[t],t];
-integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau]],\[Tau]]];
+(*integralVariable[t_]=Integrate[preintegrand[t],t];*)  (*To be deleted*)
+integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
 ,OptionValue[Preintegrals]=="Numeric",
 listVariable=\[Delta]t*Accumulate[Table[preintegrand[t],{t,tInit,tFinal,\[Delta]t}]];
-integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable[[Round[t/\[Delta]t+1]]]-listVariable[[Round[tt/\[Delta]t+1]]];
-integralVariable[t_?gridPointQ]:=integralVariable[t,tInit];
+(*integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable\[LeftDoubleBracket]Round[t/\[Delta]t+1]\[RightDoubleBracket]-listVariable\[LeftDoubleBracket]Round[tt/\[Delta]t+1]\[RightDoubleBracket];*)  (*To be modified*)
+(*integralVariable[t_?gridPointQ]:=integralVariable[t,tInit];*)  (*To be deleted*)
 ];
 ,OptionValue[VectorPotentialGradient]===None,(*No vector potential has been specified, return appropriate zero matrix*)
 integralVariable[t_]=nullValue;
 integralVariable[t_,tt_]=nullValue;
 ];
 Apply[setPreintegral,({
- {AInt, AIntList, A[#]&, False},
- {A2Int, A2IntList, A[#].A[#]&, False},
- {GAInt, GAIntList, GA[#]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
- {GAdotAInt, GAdotAIntList, GA[#].A[#]&, Table[0,{Length[A[tInit]]}]},
- {AdotGAInt, AdotGAIntList, A[#].GA[#]&, Table[0,{Length[A[tInit]]}]},
- {GAIntInt, GAIntInt, GAInt[#]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
- {AdotGAdotAInt, AdotGAdotAIntList, A[#].GAdotAInt[#]&, 0},
- {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#]+A[#].GAInt[#]&, Table[0,{Length[A[tInit]]}]}
+ {AInt, AIntList, A[#1]&, False},
+ {A2Int, A2IntList, A[#1].A[#1]&, False},
+ {GAInt, GAIntList, GA[#1]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
+ {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, Table[0,{Length[A[tInit]]}]},
+ {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, Table[0,{Length[A[tInit]]}]},
+ {GAIntInt, GAIntInt, GAInt[#1,#2]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
+ {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, 0},
+ {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, Table[0,{Length[A[tInit]]}]}
 }),{1}];
 (*{\!\(
 \*SubsuperscriptBox[\(\[Integral]\), 
@@ -331,15 +337,15 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(\[Del]A\((\[Tau])\)\[CenterDot]A\((\[Tau])\)
 \*SubsuperscriptBox[\(\[Integral]\), 
 SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)\[DifferentialD]\[Tau]\)\),\!\(
 \*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
-\*SuperscriptBox[\(\[Integral]\), \(\[Tau]\)]\[Del]A\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\[Del]A\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\),\!\(
 \*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
 \*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)\[CenterDot]\(
-\*SuperscriptBox[\(\[Integral]\), \(\[Tau]\)]
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\),\!\(
 \*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
-\*SuperscriptBox[\(\[Integral]\), \(\[Tau]\)]\((
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\((
 \*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)
 \*SubscriptBox[\(\[PartialD]\), \(j\)]
 \*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\) + 
@@ -348,7 +354,7 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)};*)
 
 (*Displaced momentum*)
-pi[p_,t_]:=p+A[t]-GAInt[t].p-GAdotAInt[t];
+pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
 
 (*Stationary momentum and action*)
 ps[t_?gridPointQ,tt_?gridPointQ]:=ps[t,tt]=-(1/(t-tt-I \[Epsilon]))Inverse[IdentityMatrix[Length[A[tInit]]]-1/(t-tt-I \[Epsilon]) (GAIntInt[t,tt]+GAIntInt[t,tt]\[Transpose])].(AInt[t,tt]-bigPScorrectionInt[t,tt]);
@@ -361,14 +367,14 @@ ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt
 Which[
 OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt},
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
-{A[t],GA[t],ps[t,tt],pi[p,t],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]]}]]
+{A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]]}]]
 ];
 
 (*Numerical integration loop*)
 (dipoleList=Table[
 OptionValue[ReportingFunction][
 \[Delta]t Sum[(
-I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]] 
+I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]] 
 ),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]t}]
 ]
 ,{t,tInit,tFinal,\[Delta]t}]);
