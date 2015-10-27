@@ -811,7 +811,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Fri 16 Oct 2015 16:51:52\>\""}], 
+   "\"\<RB-SFA v2.0.1, Tue 27 Oct 2015 14:16:46\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1373,7 +1373,9 @@ period.\>\""}], ";"}], "\[IndentingNewLine]",
    RowBox[{"Options", "[", "timeAxis", "]"}], "=", 
    RowBox[{"standardOptions", "~", "Join", "~", 
     RowBox[{"{", 
-     RowBox[{"TimeScale", "\[Rule]", "AtomicUnits"}], "}"}]}]}], 
+     RowBox[{
+      RowBox[{"TimeScale", "\[Rule]", "AtomicUnits"}], ",", 
+      RowBox[{"PointNumberCorrection", "\[Rule]", "0"}]}], "}"}]}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -1405,13 +1407,13 @@ LaserPeriods\>\""}], ";"}], "\[IndentingNewLine]",
          RowBox[{"{", 
           RowBox[{"1", ",", 
            RowBox[{
-            RowBox[{"OptionValue", "[", "TimeScale", "]"}], "\[Equal]", 
+            RowBox[{"OptionValue", "[", "TimeScale", "]"}], "===", 
             "AtomicUnits"}]}], "}"}], ",", "\[IndentingNewLine]", 
          RowBox[{"{", 
           RowBox[{
            FractionBox["1", "T"], ",", 
            RowBox[{
-            RowBox[{"OptionValue", "[", "TimeScale", "]"}], "\[Equal]", 
+            RowBox[{"OptionValue", "[", "TimeScale", "]"}], "===", 
             "LaserPeriods"}]}], "}"}]}], "\[IndentingNewLine]", "}"}], ",", 
        "\[IndentingNewLine]", 
        RowBox[{
@@ -1431,15 +1433,38 @@ LaserPeriods\>\""}], ";"}], "\[IndentingNewLine]",
          RowBox[{
           FractionBox["num", 
            RowBox[{
-            RowBox[{"num", "\[Times]", "npp"}], "+", "1"}]], 
+            RowBox[{"num", "\[Times]", "npp"}], "+", 
+            RowBox[{"OptionValue", "[", "PointNumberCorrection", "]"}]}]], 
           FractionBox[
            RowBox[{"2", "\[Pi]"}], "\[Omega]"]}]}], "}"}]}], 
       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
    "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True]
-}, Closed]],
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"tInit", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"tFinal", "=", 
+     RowBox[{
+      FractionBox[
+       RowBox[{"2", "\[Pi]"}], "\[Omega]"], " ", "num"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[Delta]t", "=", 
+     FractionBox[
+      RowBox[{"tFinal", "-", "tInit"}], 
+      RowBox[{
+       RowBox[{"num", "\[Times]", "npp"}], "+", 
+       RowBox[{"OptionValue", "[", "PointNumberCorrection", "]"}]}]]}], ";", 
+    RowBox[{"(*", 
+     RowBox[{"integration", " ", "and", " ", "looping", " ", "timestep"}], 
+     "*)"}]}]}]}]], "Input"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2212,7 +2237,7 @@ element.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"\[Epsilon]Correction", "::", "usage"}], "=", 
-   "\"\<\[Epsilon]Correction is an option for makeDipole list which specifies \
+   "\"\<\[Epsilon]Correction is an option for makeDipoleList which specifies \
 the regularization correction \[Epsilon], i.e. as used in the factor \
 \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \
 \[Epsilon])\), \(3/2\)]]\).\>\""}], ";"}], "\[IndentingNewLine]", 
@@ -2220,9 +2245,9 @@ the regularization correction \[Epsilon], i.e. as used in the factor \
   RowBox[{
    RowBox[{
     RowBox[{"PointNumberCorrection", "::", "usage"}], "=", 
-    "\"\<PointNumberCorrection is an option for makeDipole list which \
-specifies an extra number of points to be integrated over, which is useful to \
-prevent Indeterminate errors when a Piecewise envelope is being \
+    "\"\<PointNumberCorrection is an option for makeDipoleList and timeAxis \
+which specifies an extra number of points to be integrated over, which is \
+useful to prevent Indeterminate errors when a Piecewise envelope is being \
 differentiated at the boundaries.\>\""}], ";"}], "\[IndentingNewLine]", 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{

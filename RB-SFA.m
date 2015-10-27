@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Fri 16 Oct 2015 16:51:52";
+RBSFAversion[]="RB-SFA v2.0.1, Tue 27 Oct 2015 14:16:46";
 End[];
 
 
@@ -92,16 +92,16 @@ AtomicUnits::usage="AtomicUnits is a value for the option TimeScale of timeAxis 
 LaserPeriods::usage="LaserPeriods is a value for the option TimeScale of timeAxis which specifies that the times should be in multiples of the carrier laser period.";
 Protect[TimeScale,AtomicUnits,LaserPeriods];
 Begin["`Private`"];
-Options[timeAxis]=standardOptions~Join~{TimeScale->AtomicUnits};
+Options[timeAxis]=standardOptions~Join~{TimeScale->AtomicUnits,PointNumberCorrection->0};
 timeAxis::scale="Invalid TimeScale option `1`. Available values are AtomicUnits and LaserPeriods";
 timeAxis[OptionsPattern[]]:=Block[{T=2\[Pi]/\[Omega],\[Omega]=OptionValue[CarrierFrequency],num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle]},
 Piecewise[{
-{1,OptionValue[TimeScale]==AtomicUnits},
-{1/T,OptionValue[TimeScale]==LaserPeriods}
+{1,OptionValue[TimeScale]===AtomicUnits},
+{1/T,OptionValue[TimeScale]===LaserPeriods}
 },
 Message[timeAxis::scale,OptionValue[TimeScale]];Abort[]
 ]*Table[t
-,{t,0,num (2\[Pi])/\[Omega],num/(num*npp+1) (2\[Pi])/\[Omega]}
+,{t,0,num (2\[Pi])/\[Omega],num/(num*npp+OptionValue[PointNumberCorrection]) (2\[Pi])/\[Omega]}
 ]
 ]
 End[];
@@ -226,8 +226,8 @@ IonizationPotential::usage="IonizationPotential is an option for makeDipoleList 
 Target::usage="Target is an option for makeDipoleList which specifies chemical species producing the HHG emission, pulling the ionization potential from the Wolfram ElementData curated data set.";
 DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which specifies a function f, of the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[
 StyleBox[\"I\",\nFontSlant->\"Italic\"], \"p\"]\)]\)], to use as the dipole transition matrix element.";
-\[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipole list which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
-PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipole list which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
+\[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
+PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 
 
 Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,nGateRamp,\[Epsilon]Correction];
