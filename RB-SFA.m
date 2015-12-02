@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Tue 27 Oct 2015 14:16:46";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 2 Dec 2015 17:28:53";
 End[];
 
 
@@ -213,6 +213,12 @@ LinearRampGate[nGateRamp_][\[Omega]\[Tau]_,nGate_]:=Piecewise[{{1,\[Omega]\[Tau]
 End[];
 
 
+getIonizationPotential::usage="getIonizationPotential[Target] returns the ionization potential of an atomic target, e.g. \"Hydrogen\", in atomic units.";
+Begin["`Private`"];
+getIonizationPotential[Target_]:=UnitConvert[First[ElementData[Target,"IonizationEnergies"]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]
+End[];
+
+
 makeDipoleList::usage="makeDipoleList[VectorPotential\[Rule]A] calculates the dipole response to the vector potential A.";
 
 VectorPotential::usage="VectorPotential is an option for makeDipole list which specifies the field's vector potential. Usage should be VectorPotential\[Rule]A, where A[t]//.pars must yield a list of numbers for numeric t and parameters indicated by FieldParameters\[Rule]pars.";
@@ -230,7 +236,7 @@ StyleBox[\"I\",\nFontSlant->\"Italic\"], \"p\"]\)]\)], to use as the dipole tran
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 
 
-Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,nGateRamp,\[Epsilon]Correction];
+Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,\[Epsilon]Correction];
 
 
 Begin["`Private`"];
@@ -269,7 +275,7 @@ OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
 
 Which[
 OptionValue[Target]===Automatic,\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],
-True,\[Kappa]=Sqrt[2UnitConvert[First[ElementData[OptionValue[Target],"IonizationEnergies"]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]]
+True,\[Kappa]=Sqrt[2(*UnitConvert[First[ElementData[OptionValue[Target],"IonizationEnergies"]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]*)]
 ];
 
 
