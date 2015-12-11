@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 2 Dec 2015 17:28:53";
+RBSFAversion[]="RB-SFA v2.0.1, Fri 11 Dec 2015 15:01:56";
 End[];
 
 
@@ -275,7 +275,7 @@ OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
 
 Which[
 OptionValue[Target]===Automatic,\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],
-True,\[Kappa]=Sqrt[2(*UnitConvert[First[ElementData[OptionValue[Target],"IonizationEnergies"]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]*)]
+True,\[Kappa]=Sqrt[2getIonizationPotential[OptionValue[Target]]]
 ];
 
 
