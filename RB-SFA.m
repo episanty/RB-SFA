@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 22:04:30";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 22:07:23";
 End[];
 
 
@@ -346,8 +346,8 @@ Array[innervariable[##]'[\[Tau]pre]==matrixpreintegrand[{##},\[Tau]pre,tt]&,dime
 Array[innervariable[##][tt]==0&,dimensions]
 }]
 ,Flatten[Array[innervariable[##]&,dimensions]]
-,{\[Tau]pre,tInit,tFinal}
-,EvaluationMonitor:>Sow[\[Tau]pre]
+,{\[Tau]pre,tt,tFinal}
+(*,EvaluationMonitor\[RuleDelayed]Sow[\[Tau]pre]*)
 ]
 ,Print[{integralVariable,t,tt}];result
 ]];
@@ -403,35 +403,8 @@ SubscriptBox[\(t\), \(0\)], \(t\)]A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)\[
 Print[AdotGAdotAInt[15,1]];
 Print[bigPScorrectionInt[15,1]];*)
 
-(*Print[bigPScorrectionInt[140.85113261708622`,137.1767552444666`]];
-Print[bigPScorrectionInt[140.85113261708622`,137.17675524446`]];*)
 
-aPrint[
-list=Reap[
-bigPScorrectionInt[140.85113261708622`,137.1767552444666`]
-][[2,1]]
-];
-
-Print[
-Block[{tt=137.17675524446`,j=1},
-ListPointPlot3D[
-{j++,#,(GAdotAInt[#,tt]+A[#].GAInt[#,tt])[[3]]}&/@list
-,ImageSize->900
-,AxesLabel->{"j","t","integrand"}
-]
-]
-];
-
-(*Print[
-Block[{tt=137.17675524446`},
-Plot[
-(GAdotAInt[t,tt]+A[t].GAInt[t,tt])\[LeftDoubleBracket]3\[RightDoubleBracket]
-,{t,0,150}
-]
-]
-];*)
-
-Return[];
+(*Return[];*)
 
 
 (*setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=Which[

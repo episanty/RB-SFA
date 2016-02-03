@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Wed 3 Feb 2016 22:04:30\>\""}], 
+   "\"\<RB-SFA v2.0.1, Wed 3 Feb 2016 22:07:23\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2873,10 +2873,12 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
                     "dimensions"}], "]"}], "]"}], "\[IndentingNewLine]", ",", 
                     
                     RowBox[{"{", 
-                    RowBox[{"\[Tau]pre", ",", "tInit", ",", "tFinal"}], "}"}],
-                     "\[IndentingNewLine]", ",", 
+                    RowBox[{"\[Tau]pre", ",", "tt", ",", "tFinal"}], "}"}]}], 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"(*", 
+                    RowBox[{",", 
                     RowBox[{"EvaluationMonitor", "\[RuleDelayed]", 
-                    RowBox[{"Sow", "[", "\[Tau]pre", "]"}]}]}], 
+                    RowBox[{"Sow", "[", "\[Tau]pre", "]"}]}]}], "*)"}], 
                     "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
                     ",", 
                     RowBox[{
@@ -3118,86 +3120,10 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
        RowBox[{"Print", "[", 
         RowBox[{"bigPScorrectionInt", "[", 
          RowBox[{"15", ",", "1"}], "]"}], "]"}], ";"}], "*)"}], 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{
-       RowBox[{"Print", "[", 
-        RowBox[{"bigPScorrectionInt", "[", 
-         RowBox[{"140.85113261708622`", ",", "137.1767552444666`"}], "]"}], 
-        "]"}], ";", "\[IndentingNewLine]", 
-       RowBox[{"Print", "[", 
-        RowBox[{"bigPScorrectionInt", "[", 
-         RowBox[{"140.85113261708622`", ",", "137.17675524446`"}], "]"}], 
-        "]"}], ";"}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{"aPrint", "[", "\[IndentingNewLine]", 
-      RowBox[{"list", "=", 
-       RowBox[{
-        RowBox[{"Reap", "[", "\[IndentingNewLine]", 
-         RowBox[{"bigPScorrectionInt", "[", 
-          RowBox[{"140.85113261708622`", ",", "137.1767552444666`"}], "]"}], 
-         "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]", 
-        RowBox[{"2", ",", "1"}], "\[RightDoubleBracket]"}]}], 
-      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"Print", "[", "\[IndentingNewLine]", 
-      RowBox[{"Block", "[", 
-       RowBox[{
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{"tt", "=", "137.17675524446`"}], ",", 
-          RowBox[{"j", "=", "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
-        RowBox[{"ListPointPlot3D", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{
-              RowBox[{"j", "++"}], ",", "#", ",", 
-              RowBox[{
-               RowBox[{"(", 
-                RowBox[{
-                 RowBox[{"GAdotAInt", "[", 
-                  RowBox[{"#", ",", "tt"}], "]"}], "+", 
-                 RowBox[{
-                  RowBox[{"A", "[", "#", "]"}], ".", 
-                  RowBox[{"GAInt", "[", 
-                   RowBox[{"#", ",", "tt"}], "]"}]}]}], ")"}], 
-               "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}]}], 
-             "}"}], "&"}], "/@", "list"}], "\[IndentingNewLine]", ",", 
-          RowBox[{"ImageSize", "\[Rule]", "900"}], "\[IndentingNewLine]", ",", 
-          RowBox[{"AxesLabel", "\[Rule]", 
-           RowBox[{"{", 
-            RowBox[{"\"\<j\>\"", ",", "\"\<t\>\"", ",", "\"\<integrand\>\""}],
-             "}"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]",
-        "]"}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{
-       RowBox[{"Print", "[", "\[IndentingNewLine]", 
-        RowBox[{"Block", "[", 
-         RowBox[{
-          RowBox[{"{", 
-           RowBox[{"tt", "=", "137.17675524446`"}], "}"}], ",", 
-          "\[IndentingNewLine]", 
-          RowBox[{"Plot", "[", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"(", 
-              RowBox[{
-               RowBox[{"GAdotAInt", "[", 
-                RowBox[{"t", ",", "tt"}], "]"}], "+", 
-               RowBox[{
-                RowBox[{"A", "[", "t", "]"}], ".", 
-                RowBox[{"GAInt", "[", 
-                 RowBox[{"t", ",", "tt"}], "]"}]}]}], ")"}], 
-             "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}], 
-            "\[IndentingNewLine]", ",", 
-            RowBox[{"{", 
-             RowBox[{"t", ",", "0", ",", "150"}], "}"}]}], 
-           "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], 
-        "\[IndentingNewLine]", "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"Return", "[", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Return", "[", "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
      "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{
