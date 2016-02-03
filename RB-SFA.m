@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 14:45:55";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 15:39:39";
 End[];
 
 
@@ -293,7 +293,7 @@ If[!And@@(NumberQ/@Flatten[GA[\[Omega]tRandom/\[Omega]]]),Message[makeDipoleList
 Which[
 OptionValue[Preintegrals]=="Analytic",
 gridPointQ[_]=True;
-,OptionValue[Preintegrals]=="Numeric",
+,OptionValue[Preintegrals]=="Numeric"||OptionValue[Preintegrals]=="NewNumeric",
 tol=10^-5;gridPointQ[t_]:=gridPointQ[t]=Abs[(t-tInit)/\[Delta]t-Round[(t-tInit)/\[Delta]t]]<tol&&tInit-tol<=t<=tFinal+tol;
 (*Checks whether the given time is part of the time grid in use, up to tolerance tol.*)
 ,True,Message[makeDipoleList::preint,OptionValue[Preintegrals]];Abort[];
@@ -306,8 +306,16 @@ Message[makeDipoleList::gate,OptionValue[Gate],\[Omega]tRandom,OptionValue[nGate
 ];
 
 
-setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=Which[
-OptionValue[VectorPotentialGradient]=!=None||nullValue===False,(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
+(*Return[
+Block[{preintegrand=(A[#1]\[LeftDoubleBracket]1\[RightDoubleBracket]&)},
+NDSolve[{innerVariable'[\[Tau]]\[Equal]preintegrand[\[Tau],tt],innerVariable[tInit]\[Equal]0},innerVariable,{\[Tau],tInit,tFinal}]
+]
+];*)
+
+
+
+setPreintegral[integralVariable_,listVariable_,preintegrand_,dimensions_,integrateWithoutGradient_]:=Which[
+OptionValue[VectorPotentialGradient]=!=None||TrueQ[integrateWithoutGradient],(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
 Which[
 OptionValue[Preintegrals]=="Analytic",
 integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
@@ -315,20 +323,23 @@ integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preinte
 listVariable=\[Delta]t*Accumulate[Table[preintegrand[t,tInit],{t,tInit,tFinal,\[Delta]t}]];
 (*The tInit dependence should be changed to tt. This can wait until an overhaul of the numerical preintegration (in favour of NDSolve and InterpolatingFunction objects as output), though. Until this is done, the numerical preintegration can't really be trusted in a nondipole setting.*)
 integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable[[Round[t/\[Delta]t+1]]]-listVariable[[Round[tt/\[Delta]t+1]]];
+,OptionValue[Preintegrals]=="NewNumeric",
+integralVariable[t_,tt_]=NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau],tt],innerVariable[tInit]==0},innerVariable,{\[Tau],tInit,tFinal}];
+Return[integralVariable[t,tt]];
 ];
-,OptionValue[VectorPotentialGradient]===None,(*No vector potential has been specified, return appropriate zero matrix*)
-integralVariable[t_]=nullValue;
-integralVariable[t_,tt_]=nullValue;
+,OptionValue[VectorPotentialGradient]===None,(*Vector potential gradient has not been specified, and integral variable depends on it, so return appropriate zero matrix*)
+integralVariable[t_]=ConstantArray[0,dimensions];
+integralVariable[t_,tt_]=ConstantArray[0,dimensions];
 ];
 Apply[setPreintegral,({
- {AInt, AIntList, A[#1]&, False},
- {A2Int, A2IntList, A[#1].A[#1]&, False},
- {GAInt, GAIntList, GA[#1]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
- {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, Table[0,{Length[A[tInit]]}]},
- {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, Table[0,{Length[A[tInit]]}]},
- {GAIntInt, GAIntIntList, GAInt[#1,#2]&, Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]},
- {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, 0},
- {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, Table[0,{Length[A[tInit]]}]}
+ {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True},
+ {A2Int, A2IntList, A[#1].A[#1]&, {}, True},
+ {GAInt, GAIntList, GA[#1]&, {Length[A[tInit]],Length[A[tInit]]}, False},
+ {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, {Length[A[tInit]]}, False},
+ {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, {Length[A[tInit]]}, False},
+ {GAIntInt, GAIntIntList, GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False},
+ {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, {}, False},
+ {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, {Length[A[tInit]]}, False}
 }),{1}];
 (*{\!\(
 \*SubsuperscriptBox[\(\[Integral]\), 
@@ -358,6 +369,39 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)
 \*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)};*)
+
+
+
+
+(*setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=Which[
+OptionValue[VectorPotentialGradient]=!=None||nullValue===False,(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
+Which[
+OptionValue[Preintegrals]\[Equal]"Analytic",
+integralVariable[t_,tt_]=((#/.{\[Tau]\[Rule]t})-(#/.{\[Tau]\[Rule]tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
+,OptionValue[Preintegrals]\[Equal]"Numeric",
+listVariable=\[Delta]t\[Times]Accumulate[Table[preintegrand[t,tInit],{t,tInit,tFinal,\[Delta]t}]];
+(*The tInit dependence should be changed to tt. This can wait until an overhaul of the numerical preintegration (in favour of NDSolve and InterpolatingFunction objects as output), though. Until this is done, the numerical preintegration can't really be trusted in a nondipole setting.*)
+integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable\[LeftDoubleBracket]Round[t/\[Delta]t+1]\[RightDoubleBracket]-listVariable\[LeftDoubleBracket]Round[tt/\[Delta]t+1]\[RightDoubleBracket];
+(*,OptionValue[Preintegrals]\[Equal]"NewNumeric",
+integralVariable[t_,tt_]=NDSolve[{innerVariable'[\[Tau]]\[Equal]preintegrand[\[Tau],tt],innerVariable[tInit]\[Equal]0},innerVariable,{\[Tau],tInit,tFinal}];
+Return[integralVariable[t,tt]];*)
+];
+,OptionValue[VectorPotentialGradient]===None,(*No vector potential has been specified, return appropriate zero matrix*)
+integralVariable[t_]=nullValue;
+integralVariable[t_,tt_]=nullValue;
+];*)
+(*Apply[setPreintegral,(AInt	AIntList	A[#1]&	False
+A2Int	A2IntList	A[#1].A[#1]&	False
+GAInt	GAIntList	GA[#1]&	Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]
+GAdotAInt	GAdotAIntList	GA[#1].A[#1]&	Table[0,{Length[A[tInit]]}]
+AdotGAInt	AdotGAIntList	A[#1].GA[#1]&	Table[0,{Length[A[tInit]]}]
+GAIntInt	GAIntIntList	GAInt[#1,#2]&	Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]
+AdotGAdotAInt	AdotGAdotAIntList	A[#1].GAdotAInt[#1,#2]&	0
+bigPScorrectionInt	bigPScorrectionIntList	GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&	Table[0,{Length[A[tInit]]}]
+
+),{1}];*)
+
+
 
 (*Displaced momentum*)
 pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
