@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Fri 11 Dec 2015 15:01:56";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 14:45:55";
 End[];
 
 
@@ -213,9 +213,10 @@ LinearRampGate[nGateRamp_][\[Omega]\[Tau]_,nGate_]:=Piecewise[{{1,\[Omega]\[Tau]
 End[];
 
 
-getIonizationPotential::usage="getIonizationPotential[Target] returns the ionization potential of an atomic target, e.g. \"Hydrogen\", in atomic units.";
+getIonizationPotential::usage="getIonizationPotential[Target] returns the ionization potential of an atomic target, e.g. \"Hydrogen\", in atomic units.\[IndentingNewLine]
+getIonizationPotential[Target,q] returns the ionization potential of the q-th ion of the specified Target, in atomic units.";
 Begin["`Private`"];
-getIonizationPotential[Target_]:=UnitConvert[First[ElementData[Target,"IonizationEnergies"]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]
+getIonizationPotential[Target_,Charge_:0]:=UnitConvert[ElementData[Target,"IonizationEnergies"][[Charge+1]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]
 End[];
 
 
