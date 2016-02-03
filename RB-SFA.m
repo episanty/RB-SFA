@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 21:34:45";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 21:50:43";
 End[];
 
 
@@ -333,19 +333,22 @@ NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau],tt],innerVariable[tInit]==C
 ]);
 ,True,
 
-integralVariable[t_,tt_]:=Block[{t1,matrixpreintegrand},
+integralVariable[t_,tt_]:=Block[{t1,matrixpreintegrand,result},
 
 (*Print[{integralVariable,t,tt}];*)
 
 matrixpreintegrand[indices_,t1_?NumericQ,tt]:=preintegrand[t1,tt][[##&@@indices]];
 integralVariable[t1_,tt]=Array[innervariable[##][t1]&,dimensions]/.First[
-NDSolve[
+Check[
+result=NDSolve[
 Flatten[{
 Array[innervariable[##]'[\[Tau]pre]==matrixpreintegrand[{##},\[Tau]pre,tt]&,dimensions],
 Array[innervariable[##][tt]==0&,dimensions]
 }]
 ,Flatten[Array[innervariable[##]&,dimensions]]
 ,{\[Tau]pre,tInit,tFinal}
+]
+,Print[{integralVariable,t,tt}];result
 ]];
 integralVariable[t,tt]
 ];
@@ -399,8 +402,10 @@ SubscriptBox[\(t\), \(0\)], \(t\)]A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)\[
 Print[AdotGAdotAInt[15,1]];
 Print[bigPScorrectionInt[15,1]];*)
 
+Print[bigPScorrectionInt[140.85113261708622`,137.1767552444666`]];
 
-(*Return[];*)
+Return[];
+
 
 (*setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=Which[
 OptionValue[VectorPotentialGradient]=!=None||nullValue===False,(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
