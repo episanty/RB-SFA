@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 18:26:27";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 21:20:24";
 End[];
 
 
@@ -333,21 +333,51 @@ NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau],tt],innerVariable[tInit]==C
 ]);
 ,True,
 
-integralVariable[t_,tt_]=(innerVariable[tt][t]-innerVariable[tt][tt])/.ParametricNDSolve[
-{innerVariable'[\[Tau]]==preintegrand[\[Tau],tt],innerVariable[tInit]==ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal},{tt}
-];
+(*integralVariable[t_,tt_]=(innerVariable[tt][t]-innerVariable[tt][tt])/.ParametricNDSolve[
+{innerVariable'[\[Tau]]\[Equal]preintegrand[\[Tau],tt],innerVariable[tInit]\[Equal]ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal},{tt}
+];*)
 (*integralVariable[t_,tt_]:=Block[{t1},(*Partial memoization as in mm.se/q/21782*)
 integralVariable[t1_,tt]=(innerVariable[tt][t1]-innerVariable[tt][tt])/.NDSolve[
 {innerVariable'[\[Tau]]\[Equal]preintegrand[\[Tau],tt],innerVariable[tInit]\[Equal]ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal}
 ];
 integralVariable[t,tt]
 ];*)
+
+integralVariable[t_,tt_]:=Block[{t1,matrixpreintegrand},
+matrixpreintegrand[indices_,t1_?NumericQ,tt]:=preintegrand[t1,tt][[##&@@indices]];
+integralVariable[t1_,tt]=Array[innervariable[##][t1]&,dimensions]/.First[NDSolve[
+Flatten[{
+Array[innervariable[##]'[\[Tau]]==matrixpreintegrand[{##},\[Tau],tt]&,dimensions],
+Array[innervariable[##][tt]==0&,dimensions]
+}]
+,Flatten[Array[innervariable[##]&,dimensions]]
+,{\[Tau],tInit,tFinal}
+]];
+integralVariable[t,tt]
+];
+(*integralVariable[t_,tt_]:=Block[{t1,matrixpreintegrand},
+matrixpreintegrand[i_,j_,t1_?NumericQ,tt]:=preintegrand[t1,tt]\[LeftDoubleBracket]i,j\[RightDoubleBracket];
+integralVariable[t1_,tt]=Array[innervariable[##][t1]&,dimensions]/.NDSolve[
+Flatten[{
+Array[innervariable[##]'[\[Tau]]\[Equal]matrixpreintegrand[{##},\[Tau],tt]&,dimensions],
+Array[innervariable[##][tt]\[Equal]0&,dimensions]
+}],
+Flatten[Array[innervariable[##]&,dimensions]]
+,{\[Tau],tInit,tFinal}
+];
+integralVariable[t,tt]
+]*)
 ];
 ];
 ,OptionValue[VectorPotentialGradient]===None,(*Vector potential gradient has not been specified, and integral variable depends on it, so return appropriate zero matrix*)
 integralVariable[t_]=ConstantArray[0,dimensions];
 integralVariable[t_,tt_]=ConstantArray[0,dimensions];
 ];
+
+(*setPreintegral[GAInt,GAIntList,GA[#1]&,{3,3},False,False];
+setPreintegral[GAIntInt,GAIntIntList,GAInt[#1,#2]&,{3,3},False,True];
+Print[GAIntInt[15,0.123]];*)
+
 Apply[setPreintegral,({
  {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True, False},
  {A2Int, A2IntList, A[#1].A[#1]&, {}, True, False},
@@ -386,14 +416,71 @@ SubscriptBox[\(t\), \(0\)], \(t\)]A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)\[
 \*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\)\)};*)
+Print[AdotGAdotAInt[t,15]];
+
+Print[GAIntInt[15,0.123]];
+Print[AdotGAdotAInt[50,15]];
+Print[bigPScorrectionInt[550,500]];
+
+
+(*Block[{matrixpreintegrand,dimensions={3,3}},
+(*matrixpreintegrand[i_,j_,t1_?NumericQ,tt]:=preintegrand[t1,tt]\[LeftDoubleBracket]i,j\[RightDoubleBracket];*)
+];*)
 
 (*Print[
-GAIntInt[1,2]
+Block[{preintegrand=GAInt[#1,#2]&,dimensions={3,3},tt=0.123,matrixpreintegrand},
+matrixpreintegrand[i_,j_,t_?NumericQ,tt]:=preintegrand[t,tt]\[LeftDoubleBracket]i,j\[RightDoubleBracket];
+GAIntInt[t_,tt]=Array[innervariable[##][t]&,dimensions]/.NDSolve[
+Flatten[{
+Array[innervariable[##]'[\[Tau]]\[Equal]matrixpreintegrand[##,\[Tau],tt]&,dimensions],
+Array[innervariable[##][tt]\[Equal]0&,dimensions]
+}],
+Flatten[Array[innervariable[##]&,dimensions]]
+,{\[Tau],tInit,tFinal}
+]
+]
+];*)
+
+(*Print[
+GAIntInt[t_,ttt_]:=Block[{preintegrand=GAInt[#1,#2]&,dimensions={3,3},tt=ttt,matrixpreintegrand},
+matrixpreintegrand[i_,j_,t1_?NumericQ,tt]:=preintegrand[t1,tt]\[LeftDoubleBracket]i,j\[RightDoubleBracket];
+GAIntInt[t1_,tt]=Array[innervariable[##][t1]&,dimensions]/.NDSolve[
+Flatten[{
+Array[innervariable[##]'[\[Tau]]\[Equal]matrixpreintegrand[##,\[Tau],tt]&,dimensions],
+Array[innervariable[##][tt]\[Equal]0&,dimensions]
+}],
+Flatten[Array[innervariable[##]&,dimensions]]
+,{\[Tau],tInit,tFinal}
 ];
+GAIntInt[t,tt]
+]
+];*)
+(*With[{integralvariable=GAIntInt,preintegrand=GAInt[#1,#2]&,dimensions={3,3}},
+integralvariable[t_,tt_]:=Block[{t1,matrixpreintegrand},
+matrixpreintegrand[i_,j_,t1_?NumericQ,tt]:=preintegrand[t1,tt]\[LeftDoubleBracket]i,j\[RightDoubleBracket];
+
+Print[dimensions];
+
+integralvariable[t1_,tt]=Array[innervariable[##][t1]&,dimensions]/.NDSolve[
+Flatten[{
+Array[innervariable[##]'[\[Tau]]\[Equal]matrixpreintegrand[##,\[Tau],tt]&,dimensions],
+Array[innervariable[##][tt]\[Equal]0&,dimensions]
+}],
+Flatten[Array[innervariable[##]&,dimensions]]
+,{\[Tau],tInit,tFinal}
+];
+
+integralvariable[t,tt]
+];
+];*)
+
+(*Print[
+GAIntInt[15,0.123]
+];*)
 
 
 Return[];
-*)
+
 
 
 (*setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=Which[
