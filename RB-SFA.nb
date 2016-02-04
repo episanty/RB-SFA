@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Thu 4 Feb 2016 22:26:57\>\""}], 
+   "\"\<RB-SFA v2.0.1, Thu 4 Feb 2016 22:31:54\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2358,8 +2358,16 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
    RowBox[{
     RowBox[{"makeDipoleList", "::", "preint"}], "=", 
     "\"\<Wrong Preintegrals option `1`. Valid options are \\\"Analytic\\\" \
-and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]", 
-  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+and \\\"Numeric\\\".\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"makeDipoleList", "::", "numnondip"}], "=", 
+    "\"\<The option Preintegrals\[Rule]\\\"Numeric\\\" is currently \
+unreliable when a vector potential is specified.\>\""}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"makeDipoleList", "[", 
    RowBox[{"OptionsPattern", "[", "]"}], "]"}], ":=", 
@@ -2610,48 +2618,7 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
             RowBox[{"gate", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
           RowBox[{"Abort", "[", "]"}]}]}], "]"}]}], "\[IndentingNewLine]", 
       "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{
-       RowBox[{"Return", "[", "\[IndentingNewLine]", 
-        RowBox[{"Block", "[", 
-         RowBox[{
-          RowBox[{"{", 
-           RowBox[{
-            RowBox[{"preintegrand", "=", 
-             RowBox[{"(", 
-              RowBox[{
-               RowBox[{"A", "[", "#1", "]"}], "&"}], ")"}]}], ",", 
-            RowBox[{"dimensions", "=", 
-             RowBox[{"{", 
-              RowBox[{"Length", "[", 
-               RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}]}]}], "}"}], ",",
-           "\[IndentingNewLine]", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"innerVariable", "[", "t", "]"}], "-", 
-            RowBox[{"innerVariable", "[", "tt", "]"}]}], "/.", 
-           RowBox[{"First", "[", 
-            RowBox[{"NDSolve", "[", 
-             RowBox[{
-              RowBox[{"{", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{
-                  RowBox[{"innerVariable", "'"}], "[", "\[Tau]", "]"}], 
-                 "\[Equal]", 
-                 RowBox[{"preintegrand", "[", 
-                  RowBox[{"\[Tau]", ",", "tt"}], "]"}]}], ",", 
-                RowBox[{
-                 RowBox[{"innerVariable", "[", "tInit", "]"}], "\[Equal]", 
-                 RowBox[{"ConstantArray", "[", 
-                  RowBox[{"0", ",", "dimensions"}], "]"}]}]}], "}"}], ",", 
-              "innerVariable", ",", 
-              RowBox[{"{", 
-               RowBox[{"\[Tau]", ",", "tInit", ",", "tFinal"}], "}"}]}], 
-             "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}], 
-        "\[IndentingNewLine]", "]"}], ";"}], "*)"}], "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"setPreintegral", "[", 
        RowBox[{
@@ -2680,7 +2647,6 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
            RowBox[{
             RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
             "\"\<Analytic\>\""}], ",", "\[IndentingNewLine]", 
-           "\[IndentingNewLine]", 
            RowBox[{
             RowBox[{
              RowBox[{"integralVariable", "[", 
@@ -2707,58 +2673,6 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
            RowBox[{
             RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
             "\"\<Numeric\>\""}], ",", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"listVariable", "=", 
-             RowBox[{"\[Delta]t", "\[Times]", 
-              RowBox[{"Accumulate", "[", 
-               RowBox[{"Table", "[", 
-                RowBox[{
-                 RowBox[{"preintegrand", "[", 
-                  RowBox[{"t", ",", "tInit"}], "]"}], ",", 
-                 RowBox[{"{", 
-                  RowBox[{
-                  "t", ",", "tInit", ",", "tFinal", ",", "\[Delta]t"}], 
-                  "}"}]}], "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
-            RowBox[{"(*", 
-             RowBox[{
-              RowBox[{
-              "The", " ", "tInit", " ", "dependence", " ", "should", " ", 
-               "be", " ", "changed", " ", "to", " ", 
-               RowBox[{"tt", ".", " ", "This"}], " ", "can", " ", "wait", " ",
-                "until", " ", "an", " ", "overhaul", " ", "of", " ", "the", 
-               " ", "numerical", " ", "preintegration", " ", 
-               RowBox[{"(", 
-                RowBox[{
-                "in", " ", "favour", " ", "of", " ", "NDSolve", " ", "and", 
-                 " ", "InterpolatingFunction", " ", "objects", " ", "as", " ",
-                  "output"}], ")"}]}], ",", " ", 
-              RowBox[{
-               RowBox[{"though", ".", " ", "Until"}], " ", "this", " ", "is", 
-               " ", "done"}], ",", " ", 
-              RowBox[{"the", " ", "numerical", " ", "preintegration", " ", 
-               RowBox[{"can", "'"}], "t", " ", "really", " ", "be", " ", 
-               "trusted", " ", "in", " ", "a", " ", "nondipole", " ", 
-               RowBox[{"setting", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
-            RowBox[{
-             RowBox[{"integralVariable", "[", 
-              RowBox[{
-               RowBox[{"t_", "?", "gridPointQ"}], ",", 
-               RowBox[{"tt_", "?", "gridPointQ"}]}], "]"}], ":=", 
-             RowBox[{
-              RowBox[{"listVariable", "\[LeftDoubleBracket]", 
-               RowBox[{"Round", "[", 
-                RowBox[{
-                 RowBox[{"t", "/", "\[Delta]t"}], "+", "1"}], "]"}], 
-               "\[RightDoubleBracket]"}], "-", 
-              RowBox[{"listVariable", "\[LeftDoubleBracket]", 
-               RowBox[{"Round", "[", 
-                RowBox[{
-                 RowBox[{"tt", "/", "\[Delta]t"}], "+", "1"}], "]"}], 
-               "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
-           ",", 
-           RowBox[{
-            RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
-            "\"\<NewNumeric\>\""}], ",", "\[IndentingNewLine]", 
            RowBox[{
             RowBox[{"Which", "[", "\[IndentingNewLine]", 
              RowBox[{
@@ -2821,28 +2735,32 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
                 "\[Tau]pre", " ", "before", " ", 
                 RowBox[{"you", "'"}], "re", " ", "done"}], "*)"}], 
               "\[IndentingNewLine]", 
-              RowBox[{"Block", "[", 
-               RowBox[{
-                RowBox[{"{", 
-                 RowBox[{"matrixpreintegrand", ",", "innerVariable"}], "}"}], 
-                ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Message", "[", 
+                RowBox[{"makeDipoleList", "::", "numnondip"}], "]"}], ";", 
+               "\[IndentingNewLine]", 
+               RowBox[{"Block", "[", 
                 RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"matrixpreintegrand", ",", "innerVariable"}], "}"}],
+                  ",", "\[IndentingNewLine]", 
                  RowBox[{
-                  RowBox[{"matrixpreintegrand", "[", 
-                   RowBox[{"indices_", ",", 
+                  RowBox[{
+                   RowBox[{"matrixpreintegrand", "[", 
+                    RowBox[{"indices_", ",", 
                     RowBox[{"t_", "?", "NumericQ"}], ",", 
                     RowBox[{"tt_", "?", "NumericQ"}]}], "]"}], ":=", 
-                  RowBox[{
-                   RowBox[{"preintegrand", "[", 
+                   RowBox[{
+                    RowBox[{"preintegrand", "[", 
                     RowBox[{"t", ",", "tt"}], "]"}], "\[LeftDoubleBracket]", 
-                   RowBox[{
+                    RowBox[{
                     RowBox[{"##", "&"}], "@@", "indices"}], 
-                   "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{"integralVariable", "[", 
-                   RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
-                  RowBox[{"Array", "[", 
-                   RowBox[{
+                    "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"integralVariable", "[", 
+                    RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
+                   RowBox[{"Array", "[", 
+                    RowBox[{
                     RowBox[{
                     RowBox[{"(", "\[IndentingNewLine]", 
                     RowBox[{
@@ -2916,8 +2834,8 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
                     " ", "is", " ", "resolved"}], "*)"}], 
                     "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
                     ")"}], "&"}], ",", "dimensions"}], "]"}]}], ";"}]}], 
-               "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}], 
-            ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+                "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
         "\[IndentingNewLine]", ",", 
         RowBox[{
          RowBox[{"OptionValue", "[", "VectorPotentialGradient", "]"}], "===", 
@@ -2945,196 +2863,6 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
           RowBox[{"ConstantArray", "[", 
            RowBox[{"0", ",", "dimensions"}], "]"}]}], ";"}]}], 
        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{
-       RowBox[{"Apply", "[", 
-        RowBox[{"setPreintegral", ",", 
-         RowBox[{"(", GridBox[{
-            {"AInt", "AIntList", 
-             RowBox[{
-              RowBox[{"A", "[", "#1", "]"}], "&"}], 
-             RowBox[{"{", 
-              RowBox[{"Length", "[", 
-               RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "True", 
-             "False"},
-            {"A2Int", "A2IntList", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"A", "[", "#1", "]"}], ".", 
-               RowBox[{"A", "[", "#1", "]"}]}], "&"}], 
-             RowBox[{"{", "}"}], "True", "False"},
-            {"GAInt", "GAIntList", 
-             RowBox[{
-              RowBox[{"GA", "[", "#1", "]"}], "&"}], 
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{"Length", "[", 
-                RowBox[{"A", "[", "tInit", "]"}], "]"}], ",", 
-               RowBox[{"Length", "[", 
-                RowBox[{"A", "[", "tInit", "]"}], "]"}]}], "}"}], "False", 
-             "False"},
-            {"GAdotAInt", "GAdotAIntList", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"GA", "[", "#1", "]"}], ".", 
-               RowBox[{"A", "[", "#1", "]"}]}], "&"}], 
-             RowBox[{"{", 
-              RowBox[{"Length", "[", 
-               RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", 
-             "False"},
-            {"AdotGAInt", "AdotGAIntList", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"A", "[", "#1", "]"}], ".", 
-               RowBox[{"GA", "[", "#1", "]"}]}], "&"}], 
-             RowBox[{"{", 
-              RowBox[{"Length", "[", 
-               RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", 
-             "False"},
-            {"GAIntInt", "GAIntIntList", 
-             RowBox[{
-              RowBox[{"GAInt", "[", 
-               RowBox[{"#1", ",", "#2"}], "]"}], "&"}], 
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{"Length", "[", 
-                RowBox[{"A", "[", "tInit", "]"}], "]"}], ",", 
-               RowBox[{"Length", "[", 
-                RowBox[{"A", "[", "tInit", "]"}], "]"}]}], "}"}], "False", 
-             "True"},
-            {"AdotGAdotAInt", "AdotGAdotAIntList", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"A", "[", "#1", "]"}], ".", 
-               RowBox[{"GAdotAInt", "[", 
-                RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], 
-             RowBox[{"{", "}"}], "False", "True"},
-            {"bigPScorrectionInt", "bigPScorrectionIntList", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"GAdotAInt", "[", 
-                RowBox[{"#1", ",", "#2"}], "]"}], "+", 
-               RowBox[{
-                RowBox[{"A", "[", "#1", "]"}], ".", 
-                RowBox[{"GAInt", "[", 
-                 RowBox[{"#1", ",", "#2"}], "]"}]}]}], "&"}], 
-             RowBox[{"{", 
-              RowBox[{"Length", "[", 
-               RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", "True"}
-           },
-           GridBoxAlignment->{"Columns" -> {{Left}}}], ")"}], ",", 
-         RowBox[{"{", "1", "}"}]}], "]"}], ";"}], "*)"}], 
-     "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"{", 
-         RowBox[{
-          RowBox[{
-           SubsuperscriptBox["\[Integral]", 
-            SubscriptBox["t", "0"], "t"], 
-           RowBox[{"A", 
-            RowBox[{"(", "\[Tau]", ")"}], 
-            RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
-          RowBox[{
-           SubsuperscriptBox["\[Integral]", 
-            SubscriptBox["t", "0"], "t"], 
-           RowBox[{"A", 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"\[Tau]", 
-               SuperscriptBox[")", "2"], 
-               RowBox[{"\[DifferentialD]", "\[Tau]"}]}], ",", 
-              RowBox[{
-               SubsuperscriptBox["\[Integral]", 
-                SubscriptBox["t", "0"], "t"], 
-               RowBox[{
-                RowBox[{"\[Del]", "A"}], 
-                RowBox[{"(", "\[Tau]", ")"}], 
-                RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
-              RowBox[{
-               SubsuperscriptBox["\[Integral]", 
-                SubscriptBox["t", "0"], "t"], 
-               RowBox[{
-                RowBox[{"\[Del]", "A"}], 
-                RowBox[{
-                 RowBox[{"(", "\[Tau]", ")"}], "\[CenterDot]", "A"}], 
-                RowBox[{"(", "\[Tau]", ")"}], 
-                RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
-              RowBox[{
-               SubsuperscriptBox["\[Integral]", 
-                SubscriptBox["t", "0"], "t"], 
-               RowBox[{"A", 
-                RowBox[{
-                 RowBox[{"(", "\[Tau]", ")"}], "\[CenterDot]", 
-                 RowBox[{"\[Del]", "A"}]}], 
-                RowBox[{"(", "\[Tau]", ")"}], 
-                RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
-              RowBox[{
-               SubsuperscriptBox["\[Integral]", 
-                RowBox[{"t", "'"}], "t"], 
-               RowBox[{
-                SubsuperscriptBox["\[Integral]", 
-                 RowBox[{"t", "'"}], "\[Tau]"], 
-                RowBox[{
-                 RowBox[{"\[Del]", "A"}], 
-                 RowBox[{"(", 
-                  RowBox[{"\[Tau]", "'"}], ")"}], 
-                 RowBox[{"\[DifferentialD]", 
-                  RowBox[{"\[Tau]", "'"}]}], 
-                 RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}], ",", 
-              RowBox[{
-               SubsuperscriptBox["\[Integral]", 
-                RowBox[{"t", "'"}], "t"], 
-               RowBox[{
-                SubscriptBox["A", "k"], 
-                RowBox[{
-                 RowBox[{"(", "\[Tau]", ")"}], "\[CenterDot]", 
-                 RowBox[{
-                  SubsuperscriptBox["\[Integral]", 
-                   RowBox[{"t", "'"}], "\[Tau]"], 
-                  RowBox[{
-                   RowBox[{
-                    SubscriptBox["\[PartialD]", "k"], 
-                    SubscriptBox["A", "j"]}], 
-                   RowBox[{"(", 
-                    RowBox[{"\[Tau]", "'"}], ")"}], 
-                   SubscriptBox["A", "j"], 
-                   RowBox[{"(", 
-                    RowBox[{"\[Tau]", "'"}], ")"}], 
-                   RowBox[{"\[DifferentialD]", 
-                    RowBox[{"\[Tau]", "'"}]}], 
-                   RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}]}], ",", 
-              RowBox[{
-               SubsuperscriptBox["\[Integral]", 
-                RowBox[{"t", "'"}], "t"], 
-               RowBox[{
-                SubsuperscriptBox["\[Integral]", 
-                 RowBox[{"t", "'"}], "\[Tau]"], 
-                RowBox[{
-                 RowBox[{"(", 
-                  RowBox[{
-                   RowBox[{
-                    SubscriptBox["A", "k"], 
-                    RowBox[{"(", 
-                    RowBox[{"\[Tau]", "'"}], ")"}], 
-                    RowBox[{
-                    SubscriptBox["\[PartialD]", "j"], 
-                    SubscriptBox["A", "k"]}], 
-                    RowBox[{"(", 
-                    RowBox[{"\[Tau]", "'"}], ")"}]}], "+", 
-                   RowBox[{
-                    SubscriptBox["A", "k"], 
-                    RowBox[{"(", "\[Tau]", ")"}], 
-                    RowBox[{
-                    SubscriptBox["\[PartialD]", "k"], 
-                    SubscriptBox["A", "j"]}], 
-                    RowBox[{"(", 
-                    RowBox[{"\[Tau]", "'"}], ")"}]}]}], ")"}], 
-                 RowBox[{"\[DifferentialD]", 
-                  RowBox[{"\[Tau]", "'"}]}], 
-                 RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}]}]}]}]}]}], 
-        "}"}], ";"}], "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"Apply", "[", 
       RowBox[{"setPreintegral", ",", 
        RowBox[{"(", GridBox[{
@@ -3210,6 +2938,114 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
          },
          GridBoxAlignment->{"Columns" -> {{Left}}}], ")"}], ",", 
        RowBox[{"{", "1", "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           SubscriptBox["t", "0"], "t"], 
+          RowBox[{"A", 
+           RowBox[{"(", "\[Tau]", ")"}], 
+           RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           SubscriptBox["t", "0"], "t"], 
+          RowBox[{"A", 
+           SuperscriptBox[
+            RowBox[{"(", "\[Tau]", ")"}], "2"], 
+           RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           SubscriptBox["t", "0"], "t"], 
+          RowBox[{
+           RowBox[{"\[Del]", "A"}], 
+           RowBox[{"(", "\[Tau]", ")"}], 
+           RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           SubscriptBox["t", "0"], "t"], 
+          RowBox[{
+           RowBox[{"\[Del]", "A"}], 
+           RowBox[{
+            RowBox[{"(", "\[Tau]", ")"}], "\[CenterDot]", "A"}], 
+           RowBox[{"(", "\[Tau]", ")"}], 
+           RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           SubscriptBox["t", "0"], "t"], 
+          RowBox[{"A", 
+           RowBox[{
+            RowBox[{"(", "\[Tau]", ")"}], "\[CenterDot]", 
+            RowBox[{"\[Del]", "A"}]}], 
+           RowBox[{"(", "\[Tau]", ")"}], 
+           RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           RowBox[{"t", "'"}], "t"], 
+          RowBox[{
+           SubsuperscriptBox["\[Integral]", 
+            RowBox[{"t", "'"}], "\[Tau]"], 
+           RowBox[{
+            RowBox[{"\[Del]", "A"}], 
+            RowBox[{"(", 
+             RowBox[{"\[Tau]", "'"}], ")"}], 
+            RowBox[{"\[DifferentialD]", 
+             RowBox[{"\[Tau]", "'"}]}], 
+            RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           RowBox[{"t", "'"}], "t"], 
+          RowBox[{
+           SubscriptBox["A", "k"], 
+           RowBox[{
+            RowBox[{"(", "\[Tau]", ")"}], "\[CenterDot]", 
+            RowBox[{
+             SubsuperscriptBox["\[Integral]", 
+              RowBox[{"t", "'"}], "\[Tau]"], 
+             RowBox[{
+              RowBox[{
+               SubscriptBox["\[PartialD]", "k"], 
+               SubscriptBox["A", "j"]}], 
+              RowBox[{"(", 
+               RowBox[{"\[Tau]", "'"}], ")"}], 
+              SubscriptBox["A", "j"], 
+              RowBox[{"(", 
+               RowBox[{"\[Tau]", "'"}], ")"}], 
+              RowBox[{"\[DifferentialD]", 
+               RowBox[{"\[Tau]", "'"}]}], 
+              RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           RowBox[{"t", "'"}], "t"], 
+          RowBox[{
+           SubsuperscriptBox["\[Integral]", 
+            RowBox[{"t", "'"}], "\[Tau]"], 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               SubscriptBox["A", "k"], 
+               RowBox[{"(", 
+                RowBox[{"\[Tau]", "'"}], ")"}], 
+               RowBox[{
+                SubscriptBox["\[PartialD]", "j"], 
+                SubscriptBox["A", "k"]}], 
+               RowBox[{"(", 
+                RowBox[{"\[Tau]", "'"}], ")"}]}], "+", 
+              RowBox[{
+               SubscriptBox["A", "k"], 
+               RowBox[{"(", "\[Tau]", ")"}], 
+               RowBox[{
+                SubscriptBox["\[PartialD]", "k"], 
+                SubscriptBox["A", "j"]}], 
+               RowBox[{"(", 
+                RowBox[{"\[Tau]", "'"}], ")"}]}]}], ")"}], 
+            RowBox[{"\[DifferentialD]", 
+             RowBox[{"\[Tau]", "'"}]}], 
+            RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}], "}"}], ";"}], 
+      "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
      RowBox[{"Print", "[", "\[IndentingNewLine]", 
       RowBox[{"Plot3D", "[", "\[IndentingNewLine]", 
        RowBox[{
@@ -3241,264 +3077,9 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}], ";", 
      "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"Return", "[", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{"Analytical", " ", "result"}], "*)"}], "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{
-       RowBox[{"setPreintegral", "[", 
-        RowBox[{"GAIntInt", ",", "GAIntIntList", ",", 
-         RowBox[{
-          RowBox[{"GAInt", "[", 
-           RowBox[{"#1", ",", "#2"}], "]"}], "&"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"3", ",", "3"}], "}"}], ",", "False", ",", "True"}], "]"}], 
-       ";", "\[IndentingNewLine]", 
-       RowBox[{"Print", "[", "\[IndentingNewLine]", 
-        RowBox[{"Plot3D", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"GAIntInt", "[", 
-            RowBox[{
-             RowBox[{"tt", "+", "\[Tau]"}], ",", "tt"}], "]"}], 
-           "\[LeftDoubleBracket]", 
-           RowBox[{"3", ",", "1"}], "\[RightDoubleBracket]"}], 
-          "\[IndentingNewLine]", ",", 
-          RowBox[{"{", 
-           RowBox[{"\[Tau]", ",", "tInit", ",", "tFinal"}], "}"}], ",", 
-          RowBox[{"{", 
-           RowBox[{"tt", ",", "tInit", ",", "tFinal"}], "}"}], 
-          "\[IndentingNewLine]", ",", 
-          RowBox[{"AxesLabel", "\[Rule]", 
-           RowBox[{"{", 
-            RowBox[{"\"\<\[Tau]\>\"", ",", "\"\<tt\>\"", ",", "\"\<\>\""}], 
-            "}"}]}], "\[IndentingNewLine]", ",", 
-          RowBox[{"PlotPoints", "\[Rule]", "100"}], ",", 
-          RowBox[{"ImageSize", "\[Rule]", "800"}], "\[IndentingNewLine]", ",", 
-          RowBox[{"RegionFunction", "\[Rule]", 
-           RowBox[{"Function", "[", 
-            RowBox[{
-             RowBox[{"{", 
-              RowBox[{"\[Tau]", ",", "tt", ",", "sol"}], "}"}], ",", 
-             RowBox[{
-              RowBox[{"\[Tau]", "+", "tt"}], "<", "tFinal"}]}], "]"}]}]}], 
-         "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}], ";"}], 
-      "*)"}], "\[IndentingNewLine]", 
-     RowBox[{"(*", 
-      RowBox[{
-       RowBox[{"Print", "[", 
-        RowBox[{
-         RowBox[{"GAInt", "[", 
-          RowBox[{"t", ",", "tt"}], "]"}], "\[LeftDoubleBracket]", 
-         RowBox[{"3", ",", "1"}], "\[RightDoubleBracket]"}], "]"}], ";"}], 
-      "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{"Apply", "[", 
-      RowBox[{"setPreintegral", ",", 
-       RowBox[{"(", GridBox[{
-          {"AInt", "AIntList", 
-           RowBox[{
-            RowBox[{"A", "[", "#1", "]"}], "&"}], 
-           RowBox[{"{", 
-            RowBox[{"Length", "[", 
-             RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "True", 
-           "False"},
-          {"A2Int", "A2IntList", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"A", "[", "#1", "]"}], ".", 
-             RowBox[{"A", "[", "#1", "]"}]}], "&"}], 
-           RowBox[{"{", "}"}], "True", "False"},
-          {"GAInt", "GAIntList", 
-           RowBox[{
-            RowBox[{"GA", "[", "#1", "]"}], "&"}], 
-           RowBox[{"{", 
-            RowBox[{
-             RowBox[{"Length", "[", 
-              RowBox[{"A", "[", "tInit", "]"}], "]"}], ",", 
-             RowBox[{"Length", "[", 
-              RowBox[{"A", "[", "tInit", "]"}], "]"}]}], "}"}], "False", 
-           "False"},
-          {"GAdotAInt", "GAdotAIntList", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"GA", "[", "#1", "]"}], ".", 
-             RowBox[{"A", "[", "#1", "]"}]}], "&"}], 
-           RowBox[{"{", 
-            RowBox[{"Length", "[", 
-             RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", "False"},
-          {"AdotGAInt", "AdotGAIntList", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"A", "[", "#1", "]"}], ".", 
-             RowBox[{"GA", "[", "#1", "]"}]}], "&"}], 
-           RowBox[{"{", 
-            RowBox[{"Length", "[", 
-             RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", 
-           "False"}
-         },
-         GridBoxAlignment->{"Columns" -> {{Left}}}], ")"}], ",", 
-       RowBox[{"{", "1", "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"Print", "[", "\[IndentingNewLine]", 
-      RowBox[{"Block", "[", 
-       RowBox[{
-        RowBox[{"{", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"preintegrand", "=", 
-           RowBox[{
-            RowBox[{"GAInt", "[", 
-             RowBox[{"#1", ",", "#2"}], "]"}], "&"}]}], 
-          RowBox[{"(*", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"A", "[", "#1", "]"}], ".", 
-             RowBox[{"GAdotAInt", "[", 
-              RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], "*)"}], 
-          RowBox[{"(*", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"GAdotAInt", "[", 
-              RowBox[{"#1", ",", "#2"}], "]"}], "+", 
-             RowBox[{
-              RowBox[{"A", "[", "#1", "]"}], ".", 
-              RowBox[{"GAInt", "[", 
-               RowBox[{"#1", ",", "#2"}], "]"}]}]}], "&"}], "*)"}], 
-          "\[IndentingNewLine]", ",", 
-          RowBox[{"dimensions", "=", 
-           RowBox[{"{", 
-            RowBox[{"3", ",", "3"}], "}"}]}], "\[IndentingNewLine]", ",", 
-          "integralVariable", ",", "\[IndentingNewLine]", 
-          "matrixpreintegrand", ",", "innerVariable"}], "}"}], ",", 
-        "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{
-          RowBox[{"matrixpreintegrand", "[", 
-           RowBox[{"indices_", ",", 
-            RowBox[{"t_", "?", "NumericQ"}], ",", 
-            RowBox[{"tt_", "?", "NumericQ"}]}], "]"}], ":=", 
-          RowBox[{
-           RowBox[{"preintegrand", "[", 
-            RowBox[{"t", ",", "tt"}], "]"}], "\[LeftDoubleBracket]", 
-           RowBox[{
-            RowBox[{"##", "&"}], "@@", "indices"}], 
-           "\[RightDoubleBracket]"}]}], ";", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"integralVariable", "[", 
-           RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
-          RowBox[{"Array", "[", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"(", "\[IndentingNewLine]", 
-              RowBox[{"(*", 
-               RowBox[{
-                RowBox[{
-                 RowBox[{"innerVariable", "[", "##", "]"}], "[", 
-                 RowBox[{
-                  RowBox[{"t", "-", "tt"}], ",", "tt"}], "]"}], "/.", 
-                RowBox[{"First", "@"}]}], "*)"}], 
-              RowBox[{"NDSolve", "[", 
-               RowBox[{
-                RowBox[{"{", "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{
-                   RowBox[{"D", "[", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{"innerVariable", "[", "##", "]"}], "[", 
-                    RowBox[{"\[Tau]", ",", "tt"}], "]"}], ",", "\[Tau]"}], 
-                    "]"}], "\[Equal]", 
-                   RowBox[{
-                    RowBox[{"matrixpreintegrand", "[", 
-                    RowBox[{
-                    RowBox[{"{", "##", "}"}], ",", 
-                    RowBox[{"tt", "+", "\[Tau]"}], ",", "tt"}], "]"}], "+", 
-                    RowBox[{
-                    FractionBox["0.1", "\[Omega]"], 
-                    RowBox[{
-                    SubsuperscriptBox["\[Del]", 
-                    RowBox[{"{", 
-                    RowBox[{"\[Tau]", ",", "tt"}], "}"}], "2"], 
-                    RowBox[{
-                    RowBox[{"innerVariable", "[", "##", "]"}], "[", 
-                    RowBox[{"\[Tau]", ",", "tt"}], "]"}]}]}]}]}], ",", 
-                  "\[IndentingNewLine]", 
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"innerVariable", "[", "##", "]"}], "[", 
-                    RowBox[{"0", ",", "tt"}], "]"}], "\[Equal]", "0"}]}], 
-                 "\[IndentingNewLine]", "}"}], ",", 
-                RowBox[{"innerVariable", "[", "##", "]"}], 
-                "\[IndentingNewLine]", 
-                RowBox[{"(*", 
-                 RowBox[{",", 
-                  RowBox[{"{", 
-                   RowBox[{"\[Tau]", ",", "tInit", ",", "tFinal"}], "}"}], 
-                  ",", 
-                  RowBox[{"{", 
-                   RowBox[{"tt", ",", "tInit", ",", "tFinal"}], "}"}]}], 
-                 "*)"}], "\[IndentingNewLine]", ",", 
-                RowBox[{
-                 RowBox[{"{", 
-                  RowBox[{"\[Tau]", ",", "tt"}], "}"}], "\[Element]", 
-                 RowBox[{"Triangle", "[", 
-                  RowBox[{"{", 
-                   RowBox[{
-                    RowBox[{"{", 
-                    RowBox[{"tInit", ",", "tInit"}], "}"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"tInit", ",", "tFinal"}], "}"}], ",", 
-                    RowBox[{"{", 
-                    RowBox[{"tFinal", ",", "tInit"}], "}"}]}], "}"}], "]"}]}],
-                 "\[IndentingNewLine]", 
-                RowBox[{"(*", 
-                 RowBox[{
-                 "Restricted", " ", "triangular", " ", "domain", " ", 
-                  "currently", " ", "not", " ", "working", " ", "until", " ", 
-                  
-                  RowBox[{
-                   RowBox[{
-                    RowBox[{"mm", ".", "se"}], "/", "q"}], "/", "105687"}], 
-                  " ", "is", " ", "resolved"}], "*)"}], "\[IndentingNewLine]",
-                 ",", 
-                RowBox[{"Method", "\[Rule]", 
-                 RowBox[{"{", "\"\<MethodOfLines\>\"", "}"}]}]}], 
-               "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ")"}], 
-             "&"}], ",", "dimensions"}], "]"}]}]}]}], "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{"Plot3D", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{
-           RowBox[{"integralVariable", "[", 
-            RowBox[{
-             RowBox[{"tt", "+", "\[Tau]"}], ",", "tt"}], "]"}], 
-           "\[LeftDoubleBracket]", 
-           RowBox[{"3", ",", "1"}], "\[RightDoubleBracket]"}], 
-          "\[IndentingNewLine]", ",", 
-          RowBox[{"{", 
-           RowBox[{"\[Tau]", ",", "tInit", ",", "tFinal"}], "}"}], ",", 
-          RowBox[{"{", 
-           RowBox[{"tt", ",", "tInit", ",", "tFinal"}], "}"}], 
-          "\[IndentingNewLine]", ",", 
-          RowBox[{"AxesLabel", "\[Rule]", 
-           RowBox[{"{", 
-            RowBox[{"\"\<\[Tau]\>\"", ",", "\"\<tt\>\"", ",", "\"\<\>\""}], 
-            "}"}]}], "\[IndentingNewLine]", ",", 
-          RowBox[{"PlotPoints", "\[Rule]", "100"}], "\[IndentingNewLine]", 
-          ",", 
-          RowBox[{"ImageSize", "\[Rule]", "800"}], "\[IndentingNewLine]", ",", 
-          RowBox[{"RegionFunction", "\[Rule]", 
-           RowBox[{"Function", "[", 
-            RowBox[{
-             RowBox[{"{", 
-              RowBox[{"\[Tau]", ",", "tt", ",", "sol"}], "}"}], ",", 
-             RowBox[{
-              RowBox[{"\[Tau]", "+", "tt"}], "<", "tFinal"}]}], "]"}]}]}], 
-         "\[IndentingNewLine]", "]"}], "*)"}], "\[IndentingNewLine]", "]"}], 
-      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
-     RowBox[{"Return", "[", "]"}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{"Displaced", " ", "momentum"}], "*)"}], "\[IndentingNewLine]", 
      RowBox[{

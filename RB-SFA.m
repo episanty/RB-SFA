@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:26:57";
+RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:31:54";
 End[];
 
 
@@ -253,6 +253,8 @@ makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1
 makeDipoleList::gradpot="The vector potential GA provided as VectorPotentialGradient\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as GA[`2`] returns `3` and should return a square matrix of numbers. Alternatively, use VectorPotentialGradient\[Rule]None.";
 makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analytic\" and \"Numeric\".";
 
+makeDipoleList::numnondip="The option Preintegrals\[Rule]\"Numeric\" is currently unreliable when a vector potential is specified.";
+
 
 
 makeDipoleList[OptionsPattern[]]:=Block[
@@ -306,26 +308,14 @@ Message[makeDipoleList::gate,OptionValue[Gate],\[Omega]tRandom,OptionValue[nGate
 ];
 
 
-(*Return[
-Block[{preintegrand=(A[#1]&),dimensions={Length[A[tInit]]}},
-innerVariable[t]-innerVariable[tt]/.First[NDSolve[{innerVariable'[\[Tau]]\[Equal]preintegrand[\[Tau],tt],innerVariable[tInit]\[Equal]ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal}]]
-]
-];*)
-
-
 
 setPreintegral[integralVariable_,listVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
 OptionValue[VectorPotentialGradient]=!=None||TrueQ[integrateWithoutGradient],(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
 Which[
 OptionValue[Preintegrals]=="Analytic",
-
 integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
 
 ,OptionValue[Preintegrals]=="Numeric",
-listVariable=\[Delta]t*Accumulate[Table[preintegrand[t,tInit],{t,tInit,tFinal,\[Delta]t}]];
-(*The tInit dependence should be changed to tt. This can wait until an overhaul of the numerical preintegration (in favour of NDSolve and InterpolatingFunction objects as output), though. Until this is done, the numerical preintegration can't really be trusted in a nondipole setting.*)
-integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable[[Round[t/\[Delta]t+1]]]-listVariable[[Round[tt/\[Delta]t+1]]];
-,OptionValue[Preintegrals]=="NewNumeric",
 Which[
 TrueQ[Not[parametric]],
 integralVariable[t_,tt_]=(innerVariable[t]-innerVariable[tt]/.First[
@@ -333,6 +323,7 @@ NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau],tt],innerVariable[tInit]==C
 (*the tt inside preintegrand is bad form - it is formally wrong (would evaluate incorrectly to a symbolic instead of numeric expression if actually called) and it is not actually called by any of the integralVariables for which parametric\[Equal]True.*)
 ]);
 ,True,(*change \[Tau] to protected \[Tau]pre before you're done*)
+Message[makeDipoleList::numnondip];
 Block[{matrixpreintegrand,innerVariable},
 matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
 integralVariable[t_,tt_]=Array[(
@@ -353,45 +344,6 @@ innerVariable[##][0,tt]==0
 integralVariable[t_]=ConstantArray[0,dimensions];
 integralVariable[t_,tt_]=ConstantArray[0,dimensions];
 ];
-(*Apply[setPreintegral,(AInt	AIntList	A[#1]&	{Length[A[tInit]]}	True	False
-A2Int	A2IntList	A[#1].A[#1]&	{}	True	False
-GAInt	GAIntList	GA[#1]&	{Length[A[tInit]],Length[A[tInit]]}	False	False
-GAdotAInt	GAdotAIntList	GA[#1].A[#1]&	{Length[A[tInit]]}	False	False
-AdotGAInt	AdotGAIntList	A[#1].GA[#1]&	{Length[A[tInit]]}	False	False
-GAIntInt	GAIntIntList	GAInt[#1,#2]&	{Length[A[tInit]],Length[A[tInit]]}	False	True
-AdotGAdotAInt	AdotGAdotAIntList	A[#1].GAdotAInt[#1,#2]&	{}	False	True
-bigPScorrectionInt	bigPScorrectionIntList	GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&	{Length[A[tInit]]}	False	True
-
-),{1}];*)
-(*{\!\(
-\*SubsuperscriptBox[\(\[Integral]\), 
-SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[DifferentialD]\[Tau]\)\),\!\(
-\*SubsuperscriptBox[\(\[Integral]\), 
-SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau]
-\*SuperscriptBox[\()\), \(2\)]\[DifferentialD]\[Tau], 
-\*SubsuperscriptBox[\(\[Integral]\), 
-SubscriptBox[\(t\), \(0\)], \(t\)]\[Del]A\((\[Tau])\)\[DifferentialD]\[Tau], 
-\*SubsuperscriptBox[\(\[Integral]\), 
-SubscriptBox[\(t\), \(0\)], \(t\)]\[Del]A\((\[Tau])\)\[CenterDot]A\((\[Tau])\)\[DifferentialD]\[Tau], 
-\*SubsuperscriptBox[\(\[Integral]\), 
-SubscriptBox[\(t\), \(0\)], \(t\)]A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)\[DifferentialD]\[Tau], 
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\[Del]A\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\), 
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)\[CenterDot]\(
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]
-\*SubscriptBox[\(\[PartialD]\), \(k\)]
-\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)
-\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\), 
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\((
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)
-\*SubscriptBox[\(\[PartialD]\), \(j\)]
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\) + 
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)
-\*SubscriptBox[\(\[PartialD]\), \(k\)]
-\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\)\)};*)
-
 Apply[setPreintegral,({
  {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True, False},
  {A2Int, A2IntList, A[#1].A[#1]&, {}, True, False},
@@ -402,6 +354,36 @@ Apply[setPreintegral,({
  {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, {}, False, True},
  {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, {Length[A[tInit]]}, False, True}
 }),{1}];
+(*{\!\(
+\*SubsuperscriptBox[\(\[Integral]\), 
+SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[DifferentialD]\[Tau]\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), 
+SubscriptBox[\(t\), \(0\)], \(t\)]\(A
+\*SuperscriptBox[\((\[Tau])\), \(2\)]\[DifferentialD]\[Tau]\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), 
+SubscriptBox[\(t\), \(0\)], \(t\)]\(\[Del]A\((\[Tau])\)\[DifferentialD]\[Tau]\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), 
+SubscriptBox[\(t\), \(0\)], \(t\)]\(\[Del]A\((\[Tau])\)\[CenterDot]A\((\[Tau])\)\[DifferentialD]\[Tau]\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), 
+SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)\[DifferentialD]\[Tau]\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\[Del]A\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)\[CenterDot]\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]
+\*SubscriptBox[\(\[PartialD]\), \(k\)]
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\((
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)
+\*SubscriptBox[\(\[PartialD]\), \(j\)]
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\) + 
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)
+\*SubscriptBox[\(\[PartialD]\), \(k\)]
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)};*)
+
+
 Print[
 Plot3D[
 bigPScorrectionInt[tt+\[Tau],tt][[3]]
@@ -415,58 +397,6 @@ bigPScorrectionInt[tt+\[Tau],tt][[3]]
 
 Return[];
 
-(*Analytical result*)
-(*setPreintegral[GAIntInt,GAIntIntList,GAInt[#1,#2]&,{3,3},False,True];
-Print[
-Plot3D[
-GAIntInt[tt+\[Tau],tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]
-,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}
-,AxesLabel\[Rule]{"\[Tau]","tt",""}
-,PlotPoints\[Rule]100,ImageSize\[Rule]800
-,RegionFunction\[Rule]Function[{\[Tau],tt,sol},\[Tau]+tt<tFinal]
-]
-];*)
-(*Print[GAInt[t,tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]];*)
-
-Apply[setPreintegral,({
- {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True, False},
- {A2Int, A2IntList, A[#1].A[#1]&, {}, True, False},
- {GAInt, GAIntList, GA[#1]&, {Length[A[tInit]],Length[A[tInit]]}, False, False},
- {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
- {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False}
-}),{1}];
-
-Print[
-Block[{
-preintegrand=GAInt[#1,#2]&(*A[#1].GAdotAInt[#1,#2]&*)(*GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&*)
-,dimensions={3,3}
-,integralVariable,
-matrixpreintegrand,innerVariable},
-matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
-integralVariable[t_,tt_]=Array[(
-(*innerVariable[##][t-tt,tt]/.First@*)NDSolve[{
-D[innerVariable[##][\[Tau],tt],\[Tau]]==matrixpreintegrand[{##},tt+\[Tau],tt]+0.1/\[Omega] \!\(
-\*SubsuperscriptBox[\(\[Del]\), \({\[Tau], tt}\), \(2\)]\(\(innerVariable[##]\)[\[Tau], tt]\)\),
-innerVariable[##][0,tt]==0
-},innerVariable[##]
-(*,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}*)
-,{\[Tau],tt}\[Element]Triangle[{{tInit,tInit},{tInit,tFinal},{tFinal,tInit}}]
-(*Restricted triangular domain currently not working until mm.se/q/105687 is resolved*)
-,Method->{"MethodOfLines"}
-]
-)&,dimensions]
-(*Plot3D[
-integralVariable[tt+\[Tau],tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]
-,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}
-,AxesLabel\[Rule]{"\[Tau]","tt",""}
-,PlotPoints\[Rule]100
-,ImageSize\[Rule]800
-,RegionFunction\[Rule]Function[{\[Tau],tt,sol},\[Tau]+tt<tFinal]
-]*)
-]
-];
-
-Return[];
 
 
 
