@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:31:54";
+RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:33:29";
 End[];
 
 
@@ -382,23 +382,6 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)
 \*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)};*)
-
-
-Print[
-Plot3D[
-bigPScorrectionInt[tt+\[Tau],tt][[3]]
-,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}
-,AxesLabel->{"\[Tau]","tt",""}
-,PlotPoints->100
-,ImageSize->800
-,RegionFunction->Function[{\[Tau],tt,sol},\[Tau]+tt<tFinal]
-]
-];
-
-Return[];
-
-
-
 
 
 
