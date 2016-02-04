@@ -10,7 +10,7 @@ via ",
   FontSlant->"Italic"]
 }], "Title"],
 
-Cell["\[Copyright] Emilio Pisanty 2014-2015. Licensed under GPL and \
+Cell["\[Copyright] Emilio Pisanty 2014-2016. Licensed under GPL and \
 CC-BY-SA.", "Text"],
 
 Cell[CellGroupData[{
@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Thu 4 Feb 2016 22:33:29\>\""}], 
+   "\"\<RB-SFA v2.0.1, Thu 4 Feb 2016 22:51:14\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2386,8 +2386,8 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
        RowBox[{"OptionValue", "[", "DipoleTransitionMatrixElement", "]"}]}], 
       ",", "\[Kappa]", ",", "\[IndentingNewLine]", "A", ",", "F", ",", "GA", 
       ",", "pi", ",", "ps", ",", "S", ",", "\[IndentingNewLine]", "gate", ",",
-       "tGate", ",", "setPreintegral", ",", "\[IndentingNewLine]", "tol", ",",
-       "gridPointQ", ",", "tInit", ",", "tFinal", ",", "\[Delta]t", ",", 
+       "tGate", ",", "setPreintegral", ",", "\[IndentingNewLine]", "tInit", 
+      ",", "tFinal", ",", "\[Delta]t", ",", 
       RowBox[{"\[Epsilon]", "=", 
        RowBox[{"OptionValue", "[", "\[Epsilon]Correction", "]"}]}], ",", 
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
@@ -2529,61 +2529,6 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
            RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";"}]}], 
       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
-     RowBox[{"Which", "[", "\[IndentingNewLine]", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
-        "\"\<Analytic\>\""}], ",", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"gridPointQ", "[", "_", "]"}], "=", "True"}], ";"}], 
-       "\[IndentingNewLine]", ",", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
-         "\"\<Numeric\>\""}], "||", 
-        RowBox[{
-         RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
-         "\"\<NewNumeric\>\""}]}], ",", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"tol", "=", 
-         SuperscriptBox["10", 
-          RowBox[{"-", "5"}]]}], ";", 
-        RowBox[{
-         RowBox[{"gridPointQ", "[", "t_", "]"}], ":=", 
-         RowBox[{
-          RowBox[{"gridPointQ", "[", "t", "]"}], "=", 
-          RowBox[{
-           RowBox[{
-            RowBox[{"Abs", "[", 
-             RowBox[{
-              FractionBox[
-               RowBox[{"t", "-", "tInit"}], "\[Delta]t"], "-", 
-              RowBox[{"Round", "[", 
-               FractionBox[
-                RowBox[{"t", "-", "tInit"}], "\[Delta]t"], "]"}]}], "]"}], 
-            "<", "tol"}], "&&", 
-           RowBox[{
-            RowBox[{"tInit", "-", "tol"}], "\[LessEqual]", "t", 
-            "\[LessEqual]", 
-            RowBox[{"tFinal", "+", "tol"}]}]}]}]}], ";"}], 
-       "\[IndentingNewLine]", 
-       RowBox[{"(*", 
-        RowBox[{
-         RowBox[{
-         "Checks", " ", "whether", " ", "the", " ", "given", " ", "time", " ",
-           "is", " ", "part", " ", "of", " ", "the", " ", "time", " ", "grid",
-           " ", "in", " ", "use"}], ",", " ", 
-         RowBox[{"up", " ", "to", " ", "tolerance", " ", 
-          RowBox[{"tol", "."}]}]}], "*)"}], "\[IndentingNewLine]", ",", 
-       "True", ",", 
-       RowBox[{
-        RowBox[{"Message", "[", 
-         RowBox[{
-          RowBox[{"makeDipoleList", "::", "preint"}], ",", 
-          RowBox[{"OptionValue", "[", "Preintegrals", "]"}]}], "]"}], ";", 
-        RowBox[{"Abort", "[", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
-     ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"gate", "[", "\[Omega]\[Tau]_", "]"}], ":=", 
       RowBox[{
@@ -2697,8 +2642,7 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
                     RowBox[{
                     RowBox[{"innerVariable", "'"}], "[", "\[Tau]", "]"}], 
                     "\[Equal]", 
-                    RowBox[{"preintegrand", "[", 
-                    RowBox[{"\[Tau]", ",", "tt"}], "]"}]}], ",", 
+                    RowBox[{"preintegrand", "[", "\[Tau]", "]"}]}], ",", 
                     RowBox[{
                     RowBox[{"innerVariable", "[", "tInit", "]"}], "\[Equal]", 
                     
@@ -2707,28 +2651,8 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
                     "innerVariable", ",", 
                     RowBox[{"{", 
                     RowBox[{"\[Tau]", ",", "tInit", ",", "tFinal"}], "}"}]}], 
-                    "]"}], "\[IndentingNewLine]", 
-                   RowBox[{"(*", 
-                    RowBox[{
-                    RowBox[{
-                    RowBox[{
-                    "the", " ", "tt", " ", "inside", " ", "preintegrand", " ",
-                     "is", " ", "bad", " ", "form"}], " ", "-", " ", 
-                    RowBox[{
-                    "it", " ", "is", " ", "formally", " ", "wrong", " ", 
-                    RowBox[{"(", 
-                    RowBox[{
-                    "would", " ", "evaluate", " ", "incorrectly", " ", "to", 
-                    " ", "a", " ", "symbolic", " ", "instead", " ", "of", " ",
-                     "numeric", " ", "expression", " ", "if", " ", "actually",
-                     " ", "called"}], ")"}], " ", "and", " ", "it", " ", "is",
-                     " ", "not", " ", "actually", " ", "called", " ", "by", 
-                    " ", "any", " ", "of", " ", "the", " ", 
-                    "integralVariables", " ", "for", " ", "which", " ", 
-                    "parametric"}]}], "\[Equal]", 
-                    RowBox[{"True", "."}]}], "*)"}], "\[IndentingNewLine]", 
-                   "]"}]}], ")"}]}], ";"}], "\[IndentingNewLine]", ",", 
-              "True", ",", 
+                    "]"}], "\[IndentingNewLine]", "]"}]}], ")"}]}], ";"}], 
+              "\[IndentingNewLine]", ",", "True", ",", 
               RowBox[{"(*", 
                RowBox[{
                "change", " ", "\[Tau]", " ", "to", " ", "protected", " ", 
@@ -2825,18 +2749,22 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
                     "]"}]}]}], "*)"}], "\[IndentingNewLine]", 
                     RowBox[{"(*", 
                     RowBox[{
+                    RowBox[{
                     "Restricted", " ", "triangular", " ", "domain", " ", 
                     "currently", " ", "not", " ", "working", " ", "until", 
                     " ", 
                     RowBox[{
                     RowBox[{
                     RowBox[{"mm", ".", "se"}], "/", "q"}], "/", "105687"}], 
-                    " ", "is", " ", "resolved"}], "*)"}], 
-                    "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
-                    ")"}], "&"}], ",", "dimensions"}], "]"}]}], ";"}]}], 
-                "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
-             "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], ";"}], 
-        "\[IndentingNewLine]", ",", 
+                    " ", "is", " ", "resolved"}], " ", "-", " ", 
+                    RowBox[{"this", " ", "causes", " ", "the", " ", 
+                    RowBox[{"makeDipoleList", "::", "numnondip"}], " ", 
+                    "error", " ", 
+                    RowBox[{"here", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+                    "]"}]}]}], "\[IndentingNewLine]", ")"}], "&"}], ",", 
+                    "dimensions"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+                "]"}]}]}], "\[IndentingNewLine]", "]"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}], ";"}], "\[IndentingNewLine]", ",", 
         RowBox[{
          RowBox[{"OptionValue", "[", "VectorPotentialGradient", "]"}], "===", 
          "None"}], ",", 
@@ -3064,9 +2992,7 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
       "*)"}], "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"ps", "[", 
-       RowBox[{
-        RowBox[{"t_", "?", "gridPointQ"}], ",", 
-        RowBox[{"tt_", "?", "gridPointQ"}]}], "]"}], ":=", 
+       RowBox[{"t_", ",", "tt_"}], "]"}], ":=", 
       RowBox[{
        RowBox[{"ps", "[", 
         RowBox[{"t", ",", "tt"}], "]"}], "=", 
@@ -3102,9 +3028,7 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
      "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"S", "[", 
-       RowBox[{
-        RowBox[{"t_", "?", "gridPointQ"}], ",", 
-        RowBox[{"tt_", "?", "gridPointQ"}]}], "]"}], ":=", 
+       RowBox[{"t_", ",", "tt_"}], "]"}], ":=", 
       RowBox[{
        RowBox[{
         FractionBox["1", "2"], 
@@ -3143,6 +3067,7 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
          RowBox[{"AdotGAdotAInt", "[", 
           RowBox[{"t", ",", "tt"}], "]"}]}], "\[IndentingNewLine]", ")"}]}]}],
       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{
        RowBox[{"Debugging", " ", 

@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:33:29";
+RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:51:14";
 End[];
 
 
@@ -263,7 +263,7 @@ num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValu
 dipole=OptionValue[DipoleTransitionMatrixElement],\[Kappa],
 A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
-tol,gridPointQ,tInit,tFinal,\[Delta]t,\[Epsilon]=OptionValue[\[Epsilon]Correction],
+tInit,tFinal,\[Delta]t,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
 AIntList,A2IntList,GAIntList,GAdotAIntList,AdotGAIntList,GAIntIntList,bigPScorrectionIntList,AdotGAdotAIntList,
 dipoleList
@@ -292,15 +292,6 @@ If[!And@@(NumberQ/@A[\[Omega]tRandom/\[Omega]]),Message[makeDipoleList::pot,Opti
 If[!And@@(NumberQ/@Flatten[GA[\[Omega]tRandom/\[Omega]]]),Message[makeDipoleList::gradpot,OptionValue[VectorPotentialGradient],\[Omega]tRandom,GA[\[Omega]tRandom]];Abort[]];
 ];
 
-Which[
-OptionValue[Preintegrals]=="Analytic",
-gridPointQ[_]=True;
-,OptionValue[Preintegrals]=="Numeric"||OptionValue[Preintegrals]=="NewNumeric",
-tol=10^-5;gridPointQ[t_]:=gridPointQ[t]=Abs[(t-tInit)/\[Delta]t-Round[(t-tInit)/\[Delta]t]]<tol&&tInit-tol<=t<=tFinal+tol;
-(*Checks whether the given time is part of the time grid in use, up to tolerance tol.*)
-,True,Message[makeDipoleList::preint,OptionValue[Preintegrals]];Abort[];
-];
-
 gate[\[Omega]\[Tau]_]:=OptionValue[Gate][\[Omega]\[Tau],OptionValue[nGate]];
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
 If[!TrueQ[NumberQ[gate[\[Omega]tRandom]]],
@@ -319,8 +310,7 @@ integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preinte
 Which[
 TrueQ[Not[parametric]],
 integralVariable[t_,tt_]=(innerVariable[t]-innerVariable[tt]/.First[
-NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau],tt],innerVariable[tInit]==ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal}]
-(*the tt inside preintegrand is bad form - it is formally wrong (would evaluate incorrectly to a symbolic instead of numeric expression if actually called) and it is not actually called by any of the integralVariables for which parametric\[Equal]True.*)
+NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau]],innerVariable[tInit]==ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal}]
 ]);
 ,True,(*change \[Tau] to protected \[Tau]pre before you're done*)
 Message[makeDipoleList::numnondip];
@@ -334,7 +324,7 @@ innerVariable[##][0,tt]==0
 },innerVariable[##]
 ,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
 (*,{\[Tau],tt}\[Element]Triangle[{{tInit,tInit},{tInit,tFinal},{tFinal,tInit}}]*)
-(*Restricted triangular domain currently not working until mm.se/q/105687 is resolved*)
+(*Restricted triangular domain currently not working until mm.se/q/105687 is resolved - this causes the makeDipoleList::numnondip error here.*)
 ]
 )&,dimensions];
 ]
@@ -390,12 +380,14 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)
 pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
 
 (*Stationary momentum and action*)
-ps[t_?gridPointQ,tt_?gridPointQ]:=ps[t,tt]=-(1/(t-tt-I \[Epsilon]))Inverse[IdentityMatrix[Length[A[tInit]]]-1/(t-tt-I \[Epsilon]) (GAIntInt[t,tt]+GAIntInt[t,tt]\[Transpose])].(AInt[t,tt]-bigPScorrectionInt[t,tt]);
+ps[t_,tt_]:=ps[t,tt]=-(1/(t-tt-I \[Epsilon]))Inverse[IdentityMatrix[Length[A[tInit]]]-1/(t-tt-I \[Epsilon]) (GAIntInt[t,tt]+GAIntInt[t,tt]\[Transpose])].(AInt[t,tt]-bigPScorrectionInt[t,tt]);
 
 
-S[t_?gridPointQ,tt_?gridPointQ]:=1/2 (Norm[ps[t,tt]]^2+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int[t,tt]-(
+S[t_,tt_]:=1/2 (Norm[ps[t,tt]]^2+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int[t,tt]-(
 ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt[t,tt]
 );
+
+
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops.*)
 Which[
