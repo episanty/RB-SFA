@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 3 Feb 2016 22:07:23";
+RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:26:57";
 End[];
 
 
@@ -330,45 +330,39 @@ Which[
 TrueQ[Not[parametric]],
 integralVariable[t_,tt_]=(innerVariable[t]-innerVariable[tt]/.First[
 NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau],tt],innerVariable[tInit]==ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal}]
+(*the tt inside preintegrand is bad form - it is formally wrong (would evaluate incorrectly to a symbolic instead of numeric expression if actually called) and it is not actually called by any of the integralVariables for which parametric\[Equal]True.*)
 ]);
-,True,
-
-integralVariable[t_,tt_]:=Block[{t1,matrixpreintegrand,result},
-
-(*Print[{integralVariable,t,tt}];*)
-
-matrixpreintegrand[indices_,t1_?NumericQ,tt]:=preintegrand[t1,tt][[##&@@indices]];
-integralVariable[t1_,tt]=Array[innervariable[##][t1]&,dimensions]/.First[
-Check[
-result=NDSolve[
-Flatten[{
-Array[innervariable[##]'[\[Tau]pre]==matrixpreintegrand[{##},\[Tau]pre,tt]&,dimensions],
-Array[innervariable[##][tt]==0&,dimensions]
-}]
-,Flatten[Array[innervariable[##]&,dimensions]]
-,{\[Tau]pre,tt,tFinal}
-(*,EvaluationMonitor\[RuleDelayed]Sow[\[Tau]pre]*)
+,True,(*change \[Tau] to protected \[Tau]pre before you're done*)
+Block[{matrixpreintegrand,innerVariable},
+matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
+integralVariable[t_,tt_]=Array[(
+innerVariable[##][t-tt,tt]/.First@NDSolve[{
+D[innerVariable[##][\[Tau],tt],\[Tau]]==matrixpreintegrand[{##},tt+\[Tau],tt]+0.00001/\[Omega] \!\(
+\*SubsuperscriptBox[\(\[Del]\), \({\[Tau], tt}\), \(2\)]\(\(innerVariable[##]\)[\[Tau], tt]\)\),
+innerVariable[##][0,tt]==0
+},innerVariable[##]
+,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
+(*,{\[Tau],tt}\[Element]Triangle[{{tInit,tInit},{tInit,tFinal},{tFinal,tInit}}]*)
+(*Restricted triangular domain currently not working until mm.se/q/105687 is resolved*)
 ]
-,Print[{integralVariable,t,tt}];result
-]];
-integralVariable[t,tt]
-];
+)&,dimensions];
+]
 ];
 ];
 ,OptionValue[VectorPotentialGradient]===None,(*Vector potential gradient has not been specified, and integral variable depends on it, so return appropriate zero matrix*)
 integralVariable[t_]=ConstantArray[0,dimensions];
 integralVariable[t_,tt_]=ConstantArray[0,dimensions];
 ];
-Apply[setPreintegral,({
- {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True, False},
- {A2Int, A2IntList, A[#1].A[#1]&, {}, True, False},
- {GAInt, GAIntList, GA[#1]&, {Length[A[tInit]],Length[A[tInit]]}, False, False},
- {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
- {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False},
- {GAIntInt, GAIntIntList, GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
- {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, {}, False, True},
- {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, {Length[A[tInit]]}, False, True}
-}),{1}];
+(*Apply[setPreintegral,(AInt	AIntList	A[#1]&	{Length[A[tInit]]}	True	False
+A2Int	A2IntList	A[#1].A[#1]&	{}	True	False
+GAInt	GAIntList	GA[#1]&	{Length[A[tInit]],Length[A[tInit]]}	False	False
+GAdotAInt	GAdotAIntList	GA[#1].A[#1]&	{Length[A[tInit]]}	False	False
+AdotGAInt	AdotGAIntList	A[#1].GA[#1]&	{Length[A[tInit]]}	False	False
+GAIntInt	GAIntIntList	GAInt[#1,#2]&	{Length[A[tInit]],Length[A[tInit]]}	False	True
+AdotGAdotAInt	AdotGAdotAIntList	A[#1].GAdotAInt[#1,#2]&	{}	False	True
+bigPScorrectionInt	bigPScorrectionIntList	GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&	{Length[A[tInit]]}	False	True
+
+),{1}];*)
 (*{\!\(
 \*SubsuperscriptBox[\(\[Integral]\), 
 SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[DifferentialD]\[Tau]\)\),\!\(
@@ -398,42 +392,86 @@ SubscriptBox[\(t\), \(0\)], \(t\)]A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)\[
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\)\)};*)
 
-(*Print[GAIntInt[0.,0.]];*)
-(*Print[GAIntInt[15,1]];
-Print[AdotGAdotAInt[15,1]];
-Print[bigPScorrectionInt[15,1]];*)
-
-
-(*Return[];*)
-
-
-(*setPreintegral[integralVariable_,listVariable_,preintegrand_,nullValue_:False]:=Which[
-OptionValue[VectorPotentialGradient]=!=None||nullValue===False,(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
-Which[
-OptionValue[Preintegrals]\[Equal]"Analytic",
-integralVariable[t_,tt_]=((#/.{\[Tau]\[Rule]t})-(#/.{\[Tau]\[Rule]tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
-,OptionValue[Preintegrals]\[Equal]"Numeric",
-listVariable=\[Delta]t\[Times]Accumulate[Table[preintegrand[t,tInit],{t,tInit,tFinal,\[Delta]t}]];
-(*The tInit dependence should be changed to tt. This can wait until an overhaul of the numerical preintegration (in favour of NDSolve and InterpolatingFunction objects as output), though. Until this is done, the numerical preintegration can't really be trusted in a nondipole setting.*)
-integralVariable[t_?gridPointQ,tt_?gridPointQ]:=listVariable\[LeftDoubleBracket]Round[t/\[Delta]t+1]\[RightDoubleBracket]-listVariable\[LeftDoubleBracket]Round[tt/\[Delta]t+1]\[RightDoubleBracket];
-(*,OptionValue[Preintegrals]\[Equal]"NewNumeric",
-integralVariable[t_,tt_]=NDSolve[{innerVariable'[\[Tau]]\[Equal]preintegrand[\[Tau],tt],innerVariable[tInit]\[Equal]0},innerVariable,{\[Tau],tInit,tFinal}];
-Return[integralVariable[t,tt]];*)
+Apply[setPreintegral,({
+ {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True, False},
+ {A2Int, A2IntList, A[#1].A[#1]&, {}, True, False},
+ {GAInt, GAIntList, GA[#1]&, {Length[A[tInit]],Length[A[tInit]]}, False, False},
+ {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
+ {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False},
+ {GAIntInt, GAIntIntList, GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
+ {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, {}, False, True},
+ {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, {Length[A[tInit]]}, False, True}
+}),{1}];
+Print[
+Plot3D[
+bigPScorrectionInt[tt+\[Tau],tt][[3]]
+,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}
+,AxesLabel->{"\[Tau]","tt",""}
+,PlotPoints->100
+,ImageSize->800
+,RegionFunction->Function[{\[Tau],tt,sol},\[Tau]+tt<tFinal]
+]
 ];
-,OptionValue[VectorPotentialGradient]===None,(*No vector potential has been specified, return appropriate zero matrix*)
-integralVariable[t_]=nullValue;
-integralVariable[t_,tt_]=nullValue;
-];*)
-(*Apply[setPreintegral,(AInt	AIntList	A[#1]&	False
-A2Int	A2IntList	A[#1].A[#1]&	False
-GAInt	GAIntList	GA[#1]&	Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]
-GAdotAInt	GAdotAIntList	GA[#1].A[#1]&	Table[0,{Length[A[tInit]]}]
-AdotGAInt	AdotGAIntList	A[#1].GA[#1]&	Table[0,{Length[A[tInit]]}]
-GAIntInt	GAIntIntList	GAInt[#1,#2]&	Table[0,{Length[A[tInit]]},{Length[A[tInit]]}]
-AdotGAdotAInt	AdotGAdotAIntList	A[#1].GAdotAInt[#1,#2]&	0
-bigPScorrectionInt	bigPScorrectionIntList	GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&	Table[0,{Length[A[tInit]]}]
 
-),{1}];*)
+Return[];
+
+(*Analytical result*)
+(*setPreintegral[GAIntInt,GAIntIntList,GAInt[#1,#2]&,{3,3},False,True];
+Print[
+Plot3D[
+GAIntInt[tt+\[Tau],tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]
+,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}
+,AxesLabel\[Rule]{"\[Tau]","tt",""}
+,PlotPoints\[Rule]100,ImageSize\[Rule]800
+,RegionFunction\[Rule]Function[{\[Tau],tt,sol},\[Tau]+tt<tFinal]
+]
+];*)
+(*Print[GAInt[t,tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]];*)
+
+Apply[setPreintegral,({
+ {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True, False},
+ {A2Int, A2IntList, A[#1].A[#1]&, {}, True, False},
+ {GAInt, GAIntList, GA[#1]&, {Length[A[tInit]],Length[A[tInit]]}, False, False},
+ {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
+ {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False}
+}),{1}];
+
+Print[
+Block[{
+preintegrand=GAInt[#1,#2]&(*A[#1].GAdotAInt[#1,#2]&*)(*GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&*)
+,dimensions={3,3}
+,integralVariable,
+matrixpreintegrand,innerVariable},
+matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
+integralVariable[t_,tt_]=Array[(
+(*innerVariable[##][t-tt,tt]/.First@*)NDSolve[{
+D[innerVariable[##][\[Tau],tt],\[Tau]]==matrixpreintegrand[{##},tt+\[Tau],tt]+0.1/\[Omega] \!\(
+\*SubsuperscriptBox[\(\[Del]\), \({\[Tau], tt}\), \(2\)]\(\(innerVariable[##]\)[\[Tau], tt]\)\),
+innerVariable[##][0,tt]==0
+},innerVariable[##]
+(*,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}*)
+,{\[Tau],tt}\[Element]Triangle[{{tInit,tInit},{tInit,tFinal},{tFinal,tInit}}]
+(*Restricted triangular domain currently not working until mm.se/q/105687 is resolved*)
+,Method->{"MethodOfLines"}
+]
+)&,dimensions]
+(*Plot3D[
+integralVariable[tt+\[Tau],tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]
+,{\[Tau],tInit,tFinal},{tt,tInit,tFinal}
+,AxesLabel\[Rule]{"\[Tau]","tt",""}
+,PlotPoints\[Rule]100
+,ImageSize\[Rule]800
+,RegionFunction\[Rule]Function[{\[Tau],tt,sol},\[Tau]+tt<tFinal]
+]*)
+]
+];
+
+Return[];
+
+
+
+
+
 
 (*Displaced momentum*)
 pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
