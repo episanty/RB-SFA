@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Thu 4 Feb 2016 22:51:14\>\""}], 
+   "\"\<RB-SFA v2.0.1, Thu 4 Feb 2016 23:33:19\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2201,6 +2201,8 @@ FieldParameters\[Rule]pars]", "Code"],
  " construct."
 }], "Text"],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -2292,8 +2294,16 @@ the regularization correction \[Epsilon], i.e. as used in the factor \
     "\"\<PointNumberCorrection is an option for makeDipoleList and timeAxis \
 which specifies an extra number of points to be integrated over, which is \
 useful to prevent Indeterminate errors when a Piecewise envelope is being \
-differentiated at the boundaries.\>\""}], ";"}], "\[IndentingNewLine]", 
+differentiated at the boundaries.\>\""}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IntegrationPointsPerCycle", "::", "usage"}], "=", 
+    "\"\<IntegrationPointsPerCycle is an option for makeDipoleList which \
+controls the number of points per cycle to use for the integration. Set to \
+Automatic, to follow PointsPerCycle, or to an integer.\>\""}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"Protect", "[", 
@@ -2302,7 +2312,7 @@ differentiated at the boundaries.\>\""}], ";"}], "\[IndentingNewLine]",
       ",", "Preintegrals", ",", "ReportingFunction", ",", "Gate", ",", 
      "IonizationPotential", ",", "Target", ",", "nGate", ",", 
      "\[Epsilon]Correction"}], "]"}], ";"}], "\[IndentingNewLine]", 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -2332,8 +2342,10 @@ differentiated at the boundaries.\>\""}], ";"}], "\[IndentingNewLine]",
       RowBox[{"DipoleTransitionMatrixElement", "\[Rule]", "hydrogenicDTME"}], 
       ",", "\[IndentingNewLine]", 
       RowBox[{"PointNumberCorrection", "\[Rule]", "0"}], ",", 
-      RowBox[{"Verbose", "\[Rule]", "0"}]}], "\[IndentingNewLine]", "}"}]}]}],
-   ";"}], "\[IndentingNewLine]", 
+      RowBox[{"Verbose", "\[Rule]", "0"}], "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", ",", 
+      RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}]}], 
+     "\[IndentingNewLine]", "}"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"makeDipoleList", "::", "gate"}], "=", 
@@ -2387,7 +2399,7 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
       ",", "\[Kappa]", ",", "\[IndentingNewLine]", "A", ",", "F", ",", "GA", 
       ",", "pi", ",", "ps", ",", "S", ",", "\[IndentingNewLine]", "gate", ",",
        "tGate", ",", "setPreintegral", ",", "\[IndentingNewLine]", "tInit", 
-      ",", "tFinal", ",", "\[Delta]t", ",", 
+      ",", "tFinal", ",", "\[Delta]t", ",", "\[Delta]tint", ",", 
       RowBox[{"\[Epsilon]", "=", 
        RowBox[{"OptionValue", "[", "\[Epsilon]Correction", "]"}]}], ",", 
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
@@ -2396,8 +2408,9 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
       "AIntList", ",", "A2IntList", ",", "GAIntList", ",", "GAdotAIntList", 
       ",", "AdotGAIntList", ",", "GAIntIntList", ",", 
       "bigPScorrectionIntList", ",", "AdotGAdotAIntList", ",", 
-      "\[IndentingNewLine]", "dipoleList"}], "\[IndentingNewLine]", "}"}], 
-    ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", "integrand", ",", "dipoleList"}], 
+     "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{
       RowBox[{"A", "[", "t_", "]"}], "=", 
@@ -2461,16 +2474,31 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
        FractionBox[
         RowBox[{"2", "\[Pi]"}], "\[Omega]"], " ", "num"}]}], ";", 
      "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"looping", " ", "timestep"}], "*)"}], "\[IndentingNewLine]", 
      RowBox[{"\[Delta]t", "=", 
       FractionBox[
        RowBox[{"tFinal", "-", "tInit"}], 
        RowBox[{
         RowBox[{"num", "\[Times]", "npp"}], "+", 
         RowBox[{"OptionValue", "[", "PointNumberCorrection", "]"}]}]]}], ";", 
-     
+     "\[IndentingNewLine]", 
      RowBox[{"(*", 
-      RowBox[{"integration", " ", "and", " ", "looping", " ", "timestep"}], 
-      "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"integration", " ", "timestep"}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"\[Delta]tint", "=", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"OptionValue", "[", "IntegrationPointsPerCycle", "]"}], "===",
+          "Automatic"}], ",", "\[Delta]t", ",", 
+        FractionBox[
+         RowBox[{"tFinal", "-", "tInit"}], 
+         RowBox[{
+          RowBox[{"num", "\[Times]", 
+           RowBox[{"OptionValue", "[", "IntegrationPointsPerCycle", "]"}]}], 
+          "+", 
+          RowBox[{"OptionValue", "[", "PointNumberCorrection", "]"}]}]]}], 
+       "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"tGate", "=", 
       RowBox[{
        RowBox[{"OptionValue", "[", "nGate", "]"}], 
@@ -3067,7 +3095,49 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
          RowBox[{"AdotGAdotAInt", "[", 
           RowBox[{"t", ",", "tt"}], "]"}]}], "\[IndentingNewLine]", ")"}]}]}],
       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"integrand", "[", 
+       RowBox[{"t_", ",", "\[Tau]_"}], "]"}], "=", 
+      RowBox[{"\[ImaginaryI]", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         FractionBox[
+          RowBox[{"2", "\[Pi]"}], 
+          RowBox[{"\[Epsilon]", "+", 
+           RowBox[{"\[ImaginaryI]", " ", "\[Tau]"}]}]], ")"}], 
+        RowBox[{"3", "/", "2"}]], 
+       RowBox[{
+        RowBox[{"dipole", "[", 
+         RowBox[{
+          RowBox[{"pi", "[", 
+           RowBox[{
+            RowBox[{"ps", "[", 
+             RowBox[{"t", ",", 
+              RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "t", ",", 
+            RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], "]"}], 
+        "\[Conjugate]"}], "\[Times]", 
+       RowBox[{
+        RowBox[{"dipole", "[", 
+         RowBox[{
+          RowBox[{"pi", "[", 
+           RowBox[{
+            RowBox[{"ps", "[", 
+             RowBox[{"t", ",", 
+              RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", 
+            RowBox[{"t", "-", "\[Tau]"}], ",", 
+            RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], "]"}], 
+        ".", 
+        RowBox[{"F", "[", 
+         RowBox[{"t", "-", "\[Tau]"}], "]"}]}], 
+       RowBox[{"Exp", "[", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{"S", "[", 
+          RowBox[{"t", ",", 
+           RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "]"}], 
+       RowBox[{"gate", "[", 
+        RowBox[{"\[Omega]", " ", "\[Tau]"}], "]"}]}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{
        RowBox[{"Debugging", " ", 
@@ -3140,46 +3210,9 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
             RowBox[{"AdotGAdotAInt", "[", "t", "]"}], ",", 
             RowBox[{"AdotGAdotAInt", "[", 
              RowBox[{"t", ",", "tt"}], "]"}], ",", 
-            RowBox[{"\[ImaginaryI]", 
-             SuperscriptBox[
-              RowBox[{"(", 
-               FractionBox[
-                RowBox[{"2", "\[Pi]"}], 
-                RowBox[{"\[Epsilon]", "+", 
-                 RowBox[{"\[ImaginaryI]", " ", "\[Tau]"}]}]], ")"}], 
-              RowBox[{"3", "/", "2"}]], 
-             RowBox[{
-              RowBox[{"dipole", "[", 
-               RowBox[{
-                RowBox[{"pi", "[", 
-                 RowBox[{
-                  RowBox[{"ps", "[", 
-                   RowBox[{"t", ",", 
-                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "t", ",", 
-                  RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], 
-               "]"}], "\[Conjugate]"}], "\[Times]", 
-             RowBox[{
-              RowBox[{"dipole", "[", 
-               RowBox[{
-                RowBox[{"pi", "[", 
-                 RowBox[{
-                  RowBox[{"ps", "[", 
-                   RowBox[{"t", ",", 
-                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", 
-                  RowBox[{"t", "-", "\[Tau]"}], ",", 
-                  RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], 
-               "]"}], ".", 
-              RowBox[{"F", "[", 
-               RowBox[{"t", "-", "\[Tau]"}], "]"}]}], 
-             RowBox[{"Exp", "[", 
-              RowBox[{
-               RowBox[{"-", "\[ImaginaryI]"}], " ", 
-               RowBox[{"S", "[", 
-                RowBox[{"t", ",", 
-                 RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "]"}], 
-             RowBox[{"gate", "[", 
-              RowBox[{"\[Omega]", " ", "\[Tau]"}], "]"}]}]}], "}"}]}], "]"}], 
-        "]"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+            RowBox[{"integrand", "[", 
+             RowBox[{"t", ",", "\[Tau]"}], "]"}]}], "}"}]}], "]"}], "]"}]}], 
+      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{"Numerical", " ", "integration", " ", "loop"}], "*)"}], 
@@ -3191,50 +3224,13 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
          RowBox[{
           RowBox[{"OptionValue", "[", "ReportingFunction", "]"}], "[", 
           "\[IndentingNewLine]", 
-          RowBox[{"\[Delta]t", " ", 
+          RowBox[{"\[Delta]tint", " ", 
            RowBox[{"Sum", "[", 
             RowBox[{
              RowBox[{"(", "\[IndentingNewLine]", 
-              RowBox[{"\[ImaginaryI]", 
-               SuperscriptBox[
-                RowBox[{"(", 
-                 FractionBox[
-                  RowBox[{"2", "\[Pi]"}], 
-                  RowBox[{"\[Epsilon]", "+", 
-                   RowBox[{"\[ImaginaryI]", " ", "\[Tau]"}]}]], ")"}], 
-                RowBox[{"3", "/", "2"}]], 
-               RowBox[{
-                RowBox[{"dipole", "[", 
-                 RowBox[{
-                  RowBox[{"pi", "[", 
-                   RowBox[{
-                    RowBox[{"ps", "[", 
-                    RowBox[{"t", ",", 
-                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "t", ",", 
-                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], 
-                 "]"}], "\[Conjugate]"}], "\[Times]", 
-               RowBox[{
-                RowBox[{"dipole", "[", 
-                 RowBox[{
-                  RowBox[{"pi", "[", 
-                   RowBox[{
-                    RowBox[{"ps", "[", 
-                    RowBox[{"t", ",", 
-                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", 
-                    RowBox[{"t", "-", "\[Tau]"}], ",", 
-                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], 
-                 "]"}], ".", 
-                RowBox[{"F", "[", 
-                 RowBox[{"t", "-", "\[Tau]"}], "]"}]}], 
-               RowBox[{"Exp", "[", 
-                RowBox[{
-                 RowBox[{"-", "\[ImaginaryI]"}], " ", 
-                 RowBox[{"S", "[", 
-                  RowBox[{"t", ",", 
-                   RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "]"}], 
-               RowBox[{"gate", "[", 
-                RowBox[{"\[Omega]", " ", "\[Tau]"}], "]"}]}], " ", 
-              "\[IndentingNewLine]", ")"}], ",", 
+              RowBox[{"integrand", "[", 
+               RowBox[{"t", ",", "\[Tau]"}], "]"}], "\[IndentingNewLine]", 
+              ")"}], ",", 
              RowBox[{"{", 
               RowBox[{"\[Tau]", ",", "0", ",", 
                RowBox[{"If", "[", 
@@ -3245,7 +3241,7 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
                  RowBox[{"Min", "[", 
                   RowBox[{
                    RowBox[{"t", "-", "tInit"}], ",", "tGate"}], "]"}]}], 
-                "]"}], ",", "\[Delta]t"}], "}"}]}], "]"}]}], 
+                "]"}], ",", "\[Delta]tint"}], "}"}]}], "]"}]}], 
           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
          RowBox[{"{", 
           RowBox[{"t", ",", "tInit", ",", "tFinal", ",", "\[Delta]t"}], 
@@ -3255,6 +3251,11 @@ unreliable when a vector potential is specified.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True],
+
+Cell[BoxData["\<\"IntegrationPointsPerCycle is an option for makeDipoleList \
+which controls the number of points per cycle to use for the integration. Set \
+to Automatic, to follow PointsPerCycle, or to an integer.\"\>"], "Output"]
+}, Open  ]],
 
 Cell[BoxData[
  RowBox[{"EndPackage", "[", "]"}]], "Input",

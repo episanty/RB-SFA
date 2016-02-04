@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 22:51:14";
+RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 23:33:19";
 End[];
 
 
@@ -236,8 +236,11 @@ StyleBox[\"I\",\nFontSlant->\"Italic\"], \"p\"]\)]\)], to use as the dipole tran
 \[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 
+IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
+
 
 Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,\[Epsilon]Correction];
+
 
 
 Begin["`Private`"];
@@ -247,6 +250,8 @@ Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
 PointNumberCorrection->0,Verbose->0
+
+,IntegrationPointsPerCycle->Automatic
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
 makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as A[`2`] returns `3` and should return a list of numbers.";
@@ -263,10 +268,10 @@ num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValu
 dipole=OptionValue[DipoleTransitionMatrixElement],\[Kappa],
 A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
-tInit,tFinal,\[Delta]t,\[Epsilon]=OptionValue[\[Epsilon]Correction],
+tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
 AIntList,A2IntList,GAIntList,GAdotAIntList,AdotGAIntList,GAIntIntList,bigPScorrectionIntList,AdotGAdotAIntList,
-dipoleList
+integrand,dipoleList
 },
 
 A[t_]=OptionValue[VectorPotential][t]//.OptionValue[FieldParameters];
@@ -284,7 +289,11 @@ True,\[Kappa]=Sqrt[2getIonizationPotential[OptionValue[Target]]]
 
 tInit=0;
 tFinal=(2\[Pi])/\[Omega] num;
-\[Delta]t=(tFinal-tInit)/(num*npp+OptionValue[PointNumberCorrection]);(*integration and looping timestep*)
+(*looping timestep*)
+\[Delta]t=(tFinal-tInit)/(num*npp+OptionValue[PointNumberCorrection]);
+(*integration timestep*)
+\[Delta]tint=If[OptionValue[IntegrationPointsPerCycle]===Automatic,\[Delta]t,(tFinal-tInit)/(num*OptionValue[IntegrationPointsPerCycle]+OptionValue[PointNumberCorrection])];
+
 tGate=OptionValue[nGate] (2\[Pi])/\[Omega];
 (*Check potential and potential gradient for correctness.*)
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
@@ -387,21 +396,22 @@ S[t_,tt_]:=1/2 (Norm[ps[t,tt]]^2+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int
 ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt[t,tt]
 );
 
+integrand[t_,\[Tau]_]=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops.*)
 Which[
 OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt},
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
-{A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]]}]]
+{A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],integrand[t,\[Tau]]}]]
 ];
 
 (*Numerical integration loop*)
 (dipoleList=Table[
 OptionValue[ReportingFunction][
-\[Delta]t Sum[(
-I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]] 
-),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]t}]
+\[Delta]tint Sum[(
+integrand[t,\[Tau]]
+),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
 ]
 ,{t,tInit,tFinal,\[Delta]t}]);
 dipoleList
