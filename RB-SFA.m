@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Thu 4 Feb 2016 23:33:19";
+RBSFAversion[]="RB-SFA v2.0.1, Fri 5 Feb 2016 15:41:20";
 End[];
 
 
@@ -327,13 +327,11 @@ Block[{matrixpreintegrand,innerVariable},
 matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
 integralVariable[t_,tt_]=Array[(
 innerVariable[##][t-tt,tt]/.First@NDSolve[{
-D[innerVariable[##][\[Tau],tt],\[Tau]]==matrixpreintegrand[{##},tt+\[Tau],tt]+0.00001/\[Omega] \!\(
-\*SubsuperscriptBox[\(\[Del]\), \({\[Tau], tt}\), \(2\)]\(\(innerVariable[##]\)[\[Tau], tt]\)\),
+D[innerVariable[##][\[Tau],tt],\[Tau]]==Piecewise[{{matrixpreintegrand[{##},tt+\[Tau],tt],\[Tau]+tt<=tFinal}},0],
 innerVariable[##][0,tt]==0
 },innerVariable[##]
 ,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
-(*,{\[Tau],tt}\[Element]Triangle[{{tInit,tInit},{tInit,tFinal},{tFinal,tInit}}]*)
-(*Restricted triangular domain currently not working until mm.se/q/105687 is resolved - this causes the makeDipoleList::numnondip error here.*)
+,MaxStepSize->0.25/\[Omega]
 ]
 )&,dimensions];
 ]
@@ -382,7 +380,34 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)};*)
 
+Print["pre"];
+Block[{matrixpreintegrand,innerVariable,   integralVariable,preintegrand=GAInt[#1,#2]&,dimensions={3,3}},
+matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
+integralVariable[t_,tt_]=Array[(
+innerVariable[##][t-tt,tt]/.First@NDSolve[{
+D[innerVariable[##][\[Tau],tt],\[Tau]]==Piecewise[{{matrixpreintegrand[{##},tt+\[Tau],tt],\[Tau]+tt<=tFinal}},0],
+innerVariable[##][0,tt]==0
+},innerVariable[##]
+,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
+,MaxStepSize->0.25/\[Omega]
+]
+)&,dimensions];
+Print["halfway"];
+Print[
+Plot3D[
+integralVariable[\[Tau]+tt,tt][[3,1]](*,GAIntInt[\[Tau]+tt,tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]}*)
+,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
+,PlotRange->Full
+,PlotPoints->100
+,AxesLabel->{"\[Tau]","tt",""}
+,RegionFunction->Function[{\[Tau],tt,f},\[Tau]+tt<tFinal]
+,ImageSize->750
+]
+];
+];
 
+
+Return[];
 
 
 (*Displaced momentum*)
