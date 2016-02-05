@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Fri 5 Feb 2016 15:41:20";
+RBSFAversion[]="RB-SFA v2.0.1, Fri 5 Feb 2016 16:48:06";
 End[];
 
 
@@ -258,7 +258,6 @@ makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1
 makeDipoleList::gradpot="The vector potential GA provided as VectorPotentialGradient\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as GA[`2`] returns `3` and should return a square matrix of numbers. Alternatively, use VectorPotentialGradient\[Rule]None.";
 makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analytic\" and \"Numeric\".";
 
-makeDipoleList::numnondip="The option Preintegrals\[Rule]\"Numeric\" is currently unreliable when a vector potential is specified.";
 
 
 
@@ -270,7 +269,6 @@ A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
-AIntList,A2IntList,GAIntList,GAdotAIntList,AdotGAIntList,GAIntIntList,bigPScorrectionIntList,AdotGAdotAIntList,
 integrand,dipoleList
 },
 
@@ -309,7 +307,7 @@ Message[makeDipoleList::gate,OptionValue[Gate],\[Omega]tRandom,OptionValue[nGate
 
 
 
-setPreintegral[integralVariable_,listVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
+setPreintegral[integralVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
 OptionValue[VectorPotentialGradient]=!=None||TrueQ[integrateWithoutGradient],(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
 Which[
 OptionValue[Preintegrals]=="Analytic",
@@ -318,19 +316,20 @@ integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preinte
 ,OptionValue[Preintegrals]=="Numeric",
 Which[
 TrueQ[Not[parametric]],
+Block[{innerVariable},
 integralVariable[t_,tt_]=(innerVariable[t]-innerVariable[tt]/.First[
-NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau]],innerVariable[tInit]==ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal}]
-]);
-,True,(*change \[Tau] to protected \[Tau]pre before you're done*)
-Message[makeDipoleList::numnondip];
-Block[{matrixpreintegrand,innerVariable},
+NDSolve[{innerVariable'[\[Tau]]==preintegrand[\[Tau]],innerVariable[tInit]==ConstantArray[0,dimensions]},innerVariable,{\[Tau],tInit,tFinal},MaxStepSize->0.25/\[Omega]]
+])
+];
+,True,
+Block[{matrixpreintegrand,innerVariable,\[Tau]pre},
 matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
 integralVariable[t_,tt_]=Array[(
 innerVariable[##][t-tt,tt]/.First@NDSolve[{
-D[innerVariable[##][\[Tau],tt],\[Tau]]==Piecewise[{{matrixpreintegrand[{##},tt+\[Tau],tt],\[Tau]+tt<=tFinal}},0],
+D[innerVariable[##][\[Tau]pre,tt],\[Tau]pre]==Piecewise[{{matrixpreintegrand[{##},tt+\[Tau]pre,tt],tt+\[Tau]pre<=tFinal}},0],
 innerVariable[##][0,tt]==0
 },innerVariable[##]
-,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
+,{\[Tau]pre,0,tFinal-tInit},{tt,tInit,tFinal}
 ,MaxStepSize->0.25/\[Omega]
 ]
 )&,dimensions];
@@ -342,14 +341,14 @@ integralVariable[t_]=ConstantArray[0,dimensions];
 integralVariable[t_,tt_]=ConstantArray[0,dimensions];
 ];
 Apply[setPreintegral,({
- {AInt, AIntList, A[#1]&, {Length[A[tInit]]}, True, False},
- {A2Int, A2IntList, A[#1].A[#1]&, {}, True, False},
- {GAInt, GAIntList, GA[#1]&, {Length[A[tInit]],Length[A[tInit]]}, False, False},
- {GAdotAInt, GAdotAIntList, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
- {AdotGAInt, AdotGAIntList, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False},
- {GAIntInt, GAIntIntList, GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
- {AdotGAdotAInt, AdotGAdotAIntList, A[#1].GAdotAInt[#1,#2]&, {}, False, True},
- {bigPScorrectionInt, bigPScorrectionIntList, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, {Length[A[tInit]]}, False, True}
+ {AInt, A[#1]&, {Length[A[tInit]]}, True, False},
+ {A2Int, A[#1].A[#1]&, {}, True, False},
+ {GAInt, GA[#1]&, {Length[A[tInit]],Length[A[tInit]]}, False, False},
+ {GAdotAInt, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
+ {AdotGAInt, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False},
+ {GAIntInt, GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
+ {AdotGAdotAInt, A[#1].GAdotAInt[#1,#2]&, {}, False, True},
+ {bigPScorrectionInt, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, {Length[A[tInit]]}, False, True}
 }),{1}];
 (*{\!\(
 \*SubsuperscriptBox[\(\[Integral]\), 
@@ -380,35 +379,6 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)};*)
 
-Print["pre"];
-Block[{matrixpreintegrand,innerVariable,   integralVariable,preintegrand=GAInt[#1,#2]&,dimensions={3,3}},
-matrixpreintegrand[indices_,t_?NumericQ,tt_?NumericQ]:=preintegrand[t,tt][[##&@@indices]];
-integralVariable[t_,tt_]=Array[(
-innerVariable[##][t-tt,tt]/.First@NDSolve[{
-D[innerVariable[##][\[Tau],tt],\[Tau]]==Piecewise[{{matrixpreintegrand[{##},tt+\[Tau],tt],\[Tau]+tt<=tFinal}},0],
-innerVariable[##][0,tt]==0
-},innerVariable[##]
-,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
-,MaxStepSize->0.25/\[Omega]
-]
-)&,dimensions];
-Print["halfway"];
-Print[
-Plot3D[
-integralVariable[\[Tau]+tt,tt][[3,1]](*,GAIntInt[\[Tau]+tt,tt]\[LeftDoubleBracket]3,1\[RightDoubleBracket]}*)
-,{\[Tau],0,tFinal-tInit},{tt,tInit,tFinal}
-,PlotRange->Full
-,PlotPoints->100
-,AxesLabel->{"\[Tau]","tt",""}
-,RegionFunction->Function[{\[Tau],tt,f},\[Tau]+tt<tFinal]
-,ImageSize->750
-]
-];
-];
-
-
-Return[];
-
 
 (*Displaced momentum*)
 pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
@@ -421,8 +391,7 @@ S[t_,tt_]:=1/2 (Norm[ps[t,tt]]^2+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int
 ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt[t,tt]
 );
 
-integrand[t_,\[Tau]_]=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
-
+integrand[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops.*)
 Which[
