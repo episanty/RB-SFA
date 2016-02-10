@@ -24,20 +24,22 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 10 Feb 2016 13:29:41";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 10 Feb 2016 16:08:18";
 End[];
 
 
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
 Begin["`Private`"];
-hydrogenicDTME[p_,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Norm[p]^2+\[Kappa]^2)^3
+hydrogenicDTME[p_List,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Total[p^2]+\[Kappa]^2)^3
+hydrogenicDTME[p_?NumberQ,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(p^2+\[Kappa]^2)^3
 End[];
 
 
-gaussianDTME::usage="gaussianDTME[p,\[Kappa]] returns the dipole transition matrix element for a gaussian state of characteristic size 1/\[Kappa]."
+gaussianDTME::usage="gaussianDTME[p,\[Kappa]] returns the dipole transition matrix element for a gaussian state of characteristic size 1/\[Kappa].";
 Begin["`Private`"];
-gaussianDTME[p_,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(Norm[p]^2/(2\[Kappa]^2))]
-End[]
+gaussianDTME[p_List,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(Total[p^2]/(2\[Kappa]^2))]
+gaussianDTME[p_?NumberQ,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(p^2/(2\[Kappa]^2))]
+End[];
 
 
 flatTopEnvelope::usage="flatTopEnvelope[\[Omega],num,nRamp] returns a Function object representing a flat-top envelope at carrier frequency \[Omega] lasting a total of num cycles and with linear ramps nRamp cycles long.";
@@ -399,6 +401,8 @@ OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,Ad
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
 {A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],integrand[t,\[Tau]]}]]
 ];
+
+
 
 (*Numerical integration loop*)
 (dipoleList=Table[
