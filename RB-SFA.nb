@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Wed 10 Feb 2016 16:08:18\>\""}], 
+   "\"\<RB-SFA v2.0.1, Wed 17 Feb 2016 13:16:05\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -913,6 +913,8 @@ Cell["Dipole transition matrix elements", "Subsection"],
 
 Cell["Default DTME is for a hydrogenic 1s state.", "Text"],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -921,6 +923,16 @@ Cell[BoxData[{
 element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\
 \(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\
 \[Kappa]\), \(2\)]\).\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"hydrogenicDTMERegularized", "::", "usage"}], "=", 
+  "\"\<hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole transition \
+matrix element for a 1s hydrogenic state of ionization potential \
+\!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \
+\(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove \
+the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \
+\(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \
+\(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point \
+solutions are singular.\>\""}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -961,8 +973,43 @@ element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\
        SuperscriptBox["\[Kappa]", "2"]}], ")"}], 
      "3"]]}]}], "\[IndentingNewLine]", 
  RowBox[{
+  RowBox[{"hydrogenicDTMERegularized", "[", 
+   RowBox[{"p_List", ",", "\[Kappa]_"}], "]"}], ":=", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"8", "\[ImaginaryI]"}], "\[Pi]"], 
+   FractionBox[
+    RowBox[{
+     SqrtBox[
+      RowBox[{"2", 
+       SuperscriptBox["\[Kappa]", "5"]}]], "p"}], 
+    "1"]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"hydrogenicDTMERegularized", "[", 
+   RowBox[{
+    RowBox[{"p_", "?", "NumberQ"}], ",", "\[Kappa]_"}], "]"}], ":=", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"8", "\[ImaginaryI]"}], "\[Pi]"], 
+   FractionBox[
+    RowBox[{
+     SqrtBox[
+      RowBox[{"2", 
+       SuperscriptBox["\[Kappa]", "5"]}]], "p"}], 
+    "1"]}]}], "\[IndentingNewLine]", 
+ RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True],
+
+Cell[BoxData["\<\"hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole \
+transition matrix element for a 1s hydrogenic state of ionization potential \
+\\!\\(\\*SubscriptBox[\\(I\\), \\(p\\)]\\)=\\!\\(\\*FractionBox[\\(1\\), \\(2\
+\\)]\\)\\!\\(\\*SuperscriptBox[\\(\[Kappa]\\), \\(2\\)]\\), regularized to \
+remove the denominator of 1/(\\!\\(\\*SuperscriptBox[\\(p\\), \\(2\\)]\\)+\\!\
+\\(\\*SuperscriptBox[\\(\[Kappa]\\), \
+\\(2\\)]\\)\\!\\(\\*SuperscriptBox[\\()\\), \\(3\\)]\\), where the \
+saddle-point solutions are singular.\"\>"], "Output"]
+}, Open  ]],
 
 Cell["Another possibility is for a gaussian orbital", "Text"],
 
@@ -2303,11 +2350,12 @@ Wolfram ElementData curated data set.\>\""}], ";"}], "\[IndentingNewLine]",
   RowBox[{
    RowBox[{"DipoleTransitionMatrixElement", "::", "usage"}], "=", 
    "\"\<DipoleTransitionMatrixElement is an option for makeDipoleList which \
-specifies a function f, of the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[
-RowBox[{\"2\", SubscriptBox[
-StyleBox[\"I\",
-FontSlant->\"Italic\"], \"p\"]}]]\)], to use as the dipole transition matrix \
-element.\>\""}], ";"}], "\[IndentingNewLine]", 
+secifies a function f to use as the dipole transition matrix element, or a \
+pair of functions {\!\(\*SubscriptBox[\(f\), \
+\(ion\)]\),\!\(\*SubscriptBox[\(f\), \(rec\)]\)} to be used separately for \
+the ionization and recombination dipoels, to be used in the form \
+f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[\(I\), \
+\(p\)]\)]\)].\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"\[Epsilon]Correction", "::", "usage"}], "=", 
@@ -2339,7 +2387,8 @@ Automatic, to follow PointsPerCycle, or to an integer.\>\""}], ";"}],
     "VectorPotential", ",", "VectorPotentialGradient", ",", "FieldParameters",
       ",", "Preintegrals", ",", "ReportingFunction", ",", "Gate", ",", 
      "IonizationPotential", ",", "Target", ",", "nGate", ",", 
-     "\[Epsilon]Correction"}], "]"}], ";"}], "\[IndentingNewLine]", 
+     "\[Epsilon]Correction", ",", "PointNumberCorrection", ",", 
+     "DipoleTransitionMatrixElement"}], "]"}], ";"}], "\[IndentingNewLine]", 
   "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
@@ -2414,13 +2463,11 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
        RowBox[{"OptionValue", "[", "PointsPerCycle", "]"}]}], ",", 
       RowBox[{"\[Omega]", "=", 
        RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}]}], ",", 
-      "\[IndentingNewLine]", 
-      RowBox[{"dipole", "=", 
-       RowBox[{"OptionValue", "[", "DipoleTransitionMatrixElement", "]"}]}], 
-      ",", "\[Kappa]", ",", "\[IndentingNewLine]", "A", ",", "F", ",", "GA", 
-      ",", "pi", ",", "ps", ",", "S", ",", "\[IndentingNewLine]", "gate", ",",
-       "tGate", ",", "setPreintegral", ",", "\[IndentingNewLine]", "tInit", 
-      ",", "tFinal", ",", "\[Delta]t", ",", "\[Delta]tint", ",", 
+      "\[IndentingNewLine]", "dipoleRec", ",", "dipoleIon", ",", "\[Kappa]", 
+      ",", "\[IndentingNewLine]", "A", ",", "F", ",", "GA", ",", "pi", ",", 
+      "ps", ",", "S", ",", "\[IndentingNewLine]", "gate", ",", "tGate", ",", 
+      "setPreintegral", ",", "\[IndentingNewLine]", "tInit", ",", "tFinal", 
+      ",", "\[Delta]t", ",", "\[Delta]tint", ",", 
       RowBox[{"\[Epsilon]", "=", 
        RowBox[{"OptionValue", "[", "\[Epsilon]Correction", "]"}]}], ",", 
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
@@ -2468,23 +2515,6 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
          RowBox[{"OptionValue", "[", "FieldParameters", "]"}]}]}], 
        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
-     RowBox[{"Which", "[", "\[IndentingNewLine]", 
-      RowBox[{
-       RowBox[{
-        RowBox[{"OptionValue", "[", "Target", "]"}], "===", "Automatic"}], 
-       ",", 
-       RowBox[{"\[Kappa]", "=", 
-        SqrtBox[
-         RowBox[{"2", 
-          RowBox[{"OptionValue", "[", "IonizationPotential", "]"}]}]]}], ",", 
-       "\[IndentingNewLine]", "True", ",", 
-       RowBox[{"\[Kappa]", "=", 
-        SqrtBox[
-         RowBox[{"2", 
-          RowBox[{"getIonizationPotential", "[", 
-           RowBox[{"OptionValue", "[", "Target", "]"}], "]"}]}]]}]}], 
-      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"tInit", "=", "0"}], ";", "\[IndentingNewLine]", 
      RowBox[{"tFinal", "=", 
       RowBox[{
@@ -2608,6 +2638,146 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
             RowBox[{"gate", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
           RowBox[{"Abort", "[", "]"}]}]}], "]"}]}], "\[IndentingNewLine]", 
       "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Target", " ", "setup"}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"Which", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"OptionValue", "[", "Target", "]"}], "===", "Automatic"}], 
+       ",", 
+       RowBox[{"\[Kappa]", "=", 
+        SqrtBox[
+         RowBox[{"2", 
+          RowBox[{"OptionValue", "[", "IonizationPotential", "]"}]}]]}], ",", 
+       "\[IndentingNewLine]", "True", ",", 
+       RowBox[{"\[Kappa]", "=", 
+        SqrtBox[
+         RowBox[{"2", 
+          RowBox[{"getIonizationPotential", "[", 
+           RowBox[{"OptionValue", "[", "Target", "]"}], "]"}]}]]}]}], 
+      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"With", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"dim", "=", 
+         RowBox[{"Length", "[", 
+          RowBox[{"A", "[", 
+           RowBox[{"RandomReal", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"\[Omega]", " ", "tInit"}], ",", 
+              RowBox[{"\[Omega]", " ", "tFinal"}]}], "}"}], "]"}], "]"}], 
+          "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "Explicit", " ", "conjugation", " ", "of", " ", "the", " ", 
+         "recombination", " ", "matrix", " ", "element", " ", "to", " ", 
+         "keep", " ", "the", " ", "integrand", " ", 
+         RowBox[{"analytic", "."}]}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Which", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Head", "[", 
+            RowBox[{
+            "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], "]"}],
+            "===", "List"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"dipoleIon", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"p1_", ",", "p2_", ",", "p3_"}], "}"}], 
+               "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",", 
+              "\[Kappa]\[Kappa]_"}], "]"}], "=", 
+            RowBox[{
+             RowBox[{"First", "[", 
+              RowBox[{
+              "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], 
+              "]"}], "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
+              "\[Kappa]\[Kappa]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"dipoleRec", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"p1_", ",", "p2_", ",", "p3_"}], "}"}], 
+               "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",", 
+              "\[Kappa]\[Kappa]_"}], "]"}], "=", 
+            RowBox[{"Assuming", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                 "p1", ",", "p2", ",", "p3", ",", "\[Kappa]\[Kappa]"}], "}"}],
+                 "\[Element]", "Reals"}], "}"}], ",", 
+              RowBox[{"Simplify", "[", "\[IndentingNewLine]", 
+               RowBox[{"Conjugate", "[", 
+                RowBox[{
+                 RowBox[{"Last", "[", 
+                  RowBox[{
+                  "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], 
+                  "]"}], "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
+                  "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
+               "]"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", ",", "True", 
+          ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"dipoleIon", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"p1_", ",", "p2_", ",", "p3_"}], "}"}], 
+               "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",", 
+              "\[Kappa]\[Kappa]_"}], "]"}], "=", 
+            RowBox[{
+             RowBox[{
+             "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], "[", 
+             
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
+              "\[Kappa]\[Kappa]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"dipoleRec", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"p1_", ",", "p2_", ",", "p3_"}], "}"}], 
+               "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",", 
+              "\[Kappa]\[Kappa]_"}], "]"}], "=", 
+            RowBox[{"Assuming", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{
+                 "p1", ",", "p2", ",", "p3", ",", "\[Kappa]\[Kappa]"}], "}"}],
+                 "\[Element]", "Reals"}], "}"}], ",", 
+              RowBox[{"Simplify", "[", "\[IndentingNewLine]", 
+               RowBox[{"Conjugate", "[", 
+                RowBox[{
+                 RowBox[{
+                 "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], 
+                 "[", 
+                 RowBox[{
+                  RowBox[{"{", 
+                   RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
+                  "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
+               "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+        ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"setPreintegral", "[", 
@@ -3093,18 +3263,17 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
           RowBox[{"\[Epsilon]", "+", 
            RowBox[{"\[ImaginaryI]", " ", "\[Tau]"}]}]], ")"}], 
         RowBox[{"3", "/", "2"}]], 
+       RowBox[{"dipoleRec", "[", 
+        RowBox[{
+         RowBox[{"pi", "[", 
+          RowBox[{
+           RowBox[{"ps", "[", 
+            RowBox[{"t", ",", 
+             RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "t", ",", 
+           RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], "]"}], 
+       "\[Times]", 
        RowBox[{
-        RowBox[{"dipole", "[", 
-         RowBox[{
-          RowBox[{"pi", "[", 
-           RowBox[{
-            RowBox[{"ps", "[", 
-             RowBox[{"t", ",", 
-              RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "t", ",", 
-            RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", "\[Kappa]"}], "]"}], 
-        "\[Conjugate]"}], "\[Times]", 
-       RowBox[{
-        RowBox[{"dipole", "[", 
+        RowBox[{"dipoleIon", "[", 
          RowBox[{
           RowBox[{"pi", "[", 
            RowBox[{
@@ -3200,7 +3369,7 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
             RowBox[{"integrand", "[", 
              RowBox[{"t", ",", "\[Tau]"}], "]"}]}], "}"}]}], "]"}], "]"}]}], 
       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{"Numerical", " ", "integration", " ", "loop"}], "*)"}], 
      "\[IndentingNewLine]", 
@@ -3241,7 +3410,11 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
 
 Cell[BoxData[
  RowBox[{"EndPackage", "[", "]"}]], "Input",
- InitializationCell->True]
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}]], "Input"]
 }, Open  ]]
 }, Open  ]]
 },
@@ -3309,7 +3482,7 @@ PrintingOptions->{"FacingPages"->True,
 PrivateNotebookOptions->{"FileOutlineCache"->False},
 ShowSelection->True,
 TrackCellChangeTimes->False,
-FrontEndVersion->"10.1 for Linux x86 (64-bit) (March 23, 2015)",
+FrontEndVersion->"10.3 for Linux x86 (64-bit) (December 10, 2015)",
 StyleDefinitions->Notebook[{
    Cell[
     StyleData[StyleDefinitions -> "Default.nb"]], 
@@ -3319,7 +3492,7 @@ StyleDefinitions->Notebook[{
     FontVariations -> {
      "Outline" -> False, "Shadow" -> False, "StrikeThrough" -> False, 
       "Underline" -> False}]}, Visible -> False, FrontEndVersion -> 
-  "10.1 for Linux x86 (64-bit) (March 23, 2015)", StyleDefinitions -> 
+  "10.3 for Linux x86 (64-bit) (December 10, 2015)", StyleDefinitions -> 
   "PrivateStylesheetFormatting.nb"]
 ]
 

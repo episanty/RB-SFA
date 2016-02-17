@@ -24,14 +24,17 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 10 Feb 2016 16:08:18";
+RBSFAversion[]="RB-SFA v2.0.1, Wed 17 Feb 2016 13:16:05";
 End[];
 
 
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
+hydrogenicDTMERegularized::usage="hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point solutions are singular."
 Begin["`Private`"];
 hydrogenicDTME[p_List,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Total[p^2]+\[Kappa]^2)^3
 hydrogenicDTME[p_?NumberQ,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(p^2+\[Kappa]^2)^3
+hydrogenicDTMERegularized[p_List,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/1
+hydrogenicDTMERegularized[p_?NumberQ,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/1
 End[];
 
 
@@ -233,15 +236,14 @@ Gate::usage="Gate is an option for makeDipole list which specifies the integrati
 nGate::usage="nGate is an option for makeDipole list which specifies the total number of cycles in the integration gate.";
 IonizationPotential::usage="IonizationPotential is an option for makeDipoleList which specifies the ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\) of the target.";
 Target::usage="Target is an option for makeDipoleList which specifies chemical species producing the HHG emission, pulling the ionization potential from the Wolfram ElementData curated data set.";
-DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which specifies a function f, of the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[
-StyleBox[\"I\",\nFontSlant->\"Italic\"], \"p\"]\)]\)], to use as the dipole transition matrix element.";
+DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which secifies a function f to use as the dipole transition matrix element, or a pair of functions {\!\(\*SubscriptBox[\(f\), \(ion\)]\),\!\(\*SubscriptBox[\(f\), \(rec\)]\)} to be used separately for the ionization and recombination dipoels, to be used in the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[\(I\), \(p\)]\)]\)].";
 \[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
 
 
-Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,\[Epsilon]Correction];
+Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement];
 
 
 
@@ -266,7 +268,7 @@ makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analy
 makeDipoleList[OptionsPattern[]]:=Block[
 {
 num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValue[CarrierFrequency],
-dipole=OptionValue[DipoleTransitionMatrixElement],\[Kappa],
+dipoleRec,dipoleIon,\[Kappa],
 A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
@@ -280,12 +282,6 @@ GA[t_]=If[
 TrueQ[OptionValue[VectorPotentialGradient]==None],        Table[0,{Length[A[tInit]]},{Length[A[tInit]]}],
 OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
 ];
-
-Which[
-OptionValue[Target]===Automatic,\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],
-True,\[Kappa]=Sqrt[2getIonizationPotential[OptionValue[Target]]]
-];
-
 
 tInit=0;
 tFinal=(2\[Pi])/\[Omega] num;
@@ -307,6 +303,26 @@ If[!TrueQ[NumberQ[gate[\[Omega]tRandom]]],
 Message[makeDipoleList::gate,OptionValue[Gate],\[Omega]tRandom,OptionValue[nGate],gate[\[Omega]tRandom]];Abort[]]
 ];
 
+(*Target setup*)
+Which[
+OptionValue[Target]===Automatic,\[Kappa]=Sqrt[2OptionValue[IonizationPotential]],
+True,\[Kappa]=Sqrt[2getIonizationPotential[OptionValue[Target]]]
+];
+With[{dim=Length[A[RandomReal[{\[Omega] tInit,\[Omega] tFinal}]]]},
+(*Explicit conjugation of the recombination matrix element to keep the integrand analytic.*)
+Which[
+Head[OptionValue[DipoleTransitionMatrixElement]]===List,
+dipoleIon[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=First[OptionValue[DipoleTransitionMatrixElement]][{p1,p2,p3},\[Kappa]\[Kappa]];
+dipoleRec[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=Assuming[{{p1,p2,p3,\[Kappa]\[Kappa]}\[Element]Reals},Simplify[
+Conjugate[Last[OptionValue[DipoleTransitionMatrixElement]][{p1,p2,p3},\[Kappa]\[Kappa]]]
+]];
+,True,
+dipoleIon[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3},\[Kappa]\[Kappa]];
+dipoleRec[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=Assuming[{{p1,p2,p3,\[Kappa]\[Kappa]}\[Element]Reals},Simplify[
+Conjugate[OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3},\[Kappa]\[Kappa]]]
+]];
+];
+];
 
 
 setPreintegral[integralVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
@@ -393,7 +409,7 @@ S[t_,tt_]:=1/2 (Total[ps[t,tt]^2]+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2In
 ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt[t,tt]
 );
 
-integrand[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipole[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]\[Conjugate]*dipole[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
+integrand[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipoleRec[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]*dipoleIon[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops.*)
 Which[
@@ -401,7 +417,6 @@ OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,Ad
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
 {A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],integrand[t,\[Tau]]}]]
 ];
-
 
 
 (*Numerical integration loop*)
@@ -419,3 +434,6 @@ End[];
 
 
 EndPackage[]
+
+
+
