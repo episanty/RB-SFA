@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.1, Wed 17 Feb 2016 13:16:05";
+RBSFAversion[]="RB-SFA v2.0.2, Thu 3 Mar 2016 14:49:53";
 End[];
 
 

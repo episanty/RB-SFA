@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.1, Wed 17 Feb 2016 13:16:05\>\""}], 
+   "\"\<RB-SFA v2.0.2, Thu 3 Mar 2016 14:49:53\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -3447,7 +3447,7 @@ RBSFAversion[]=\"",
      EvaluationNotebook[], Previous, Character, 1]; NotebookSave[]), 
   PassEventsDown -> True},
 WindowSize->{1855, 1056},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowMargins->{{Automatic, -2}, {Automatic, -10}},
 PrintingCopies->1,
 PrintingStartingPageNumber->1,
 PrintingPageRange->{Automatic, Automatic},
