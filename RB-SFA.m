@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.2, Thu 3 Mar 2016 14:49:53";
+RBSFAversion[]="RB-SFA v2.0.3, Mon 21 Mar 2016 14:51:25";
 End[];
 
 
@@ -253,9 +253,9 @@ VectorPotential->Automatic,FieldParameters->{},VectorPotentialGradient->None,
 Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
-PointNumberCorrection->0,Verbose->0
+PointNumberCorrection->0,Verbose->0,
 
-,IntegrationPointsPerCycle->Automatic
+IntegrationPointsPerCycle->Automatic
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
 makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as A[`2`] returns `3` and should return a list of numbers.";
@@ -420,13 +420,13 @@ OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=G
 
 
 (*Numerical integration loop*)
-(dipoleList=Table[
+dipoleList=Table[
 OptionValue[ReportingFunction][
 \[Delta]tint Sum[(
 integrand[t,\[Tau]]
 ),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
 ]
-,{t,tInit,tFinal,\[Delta]t}]);
+,{t,tInit,tFinal,\[Delta]t}];
 dipoleList
 
 ]
@@ -436,4 +436,9 @@ End[];
 EndPackage[]
 
 
-
+$DistributedContexts::overwrite="Warning: overwriting previous value of $DistributedContexts. Reinstate your old definition, and include the RBSFA context to ensure proper parallelization of RB-SFA calculations.";
+If[
+ValueQ[$DistributedContexts],
+Message[$DistributedContexts::overwrite]
+]
+$DistributedContexts:={$Context,"RBSFA`"}
