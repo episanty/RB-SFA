@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.3, Mon 21 Mar 2016 14:51:25\>\""}], 
+   "\"\<RB-SFA v2.0.5, Mon 21 Mar 2016 16:45:33\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2365,20 +2365,24 @@ the regularization correction \[Epsilon], i.e. as used in the factor \
 \[Epsilon])\), \(3/2\)]]\).\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{
-    RowBox[{"PointNumberCorrection", "::", "usage"}], "=", 
-    "\"\<PointNumberCorrection is an option for makeDipoleList and timeAxis \
+   RowBox[{"PointNumberCorrection", "::", "usage"}], "=", 
+   "\"\<PointNumberCorrection is an option for makeDipoleList and timeAxis \
 which specifies an extra number of points to be integrated over, which is \
 useful to prevent Indeterminate errors when a Piecewise envelope is being \
-differentiated at the boundaries.\>\""}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+differentiated at the boundaries.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"IntegrationPointsPerCycle", "::", "usage"}], "=", 
+   "\"\<IntegrationPointsPerCycle is an option for makeDipoleList which \
+controls the number of points per cycle to use for the integration. Set to \
+Automatic, to follow PointsPerCycle, or to an integer.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{
-    RowBox[{"IntegrationPointsPerCycle", "::", "usage"}], "=", 
-    "\"\<IntegrationPointsPerCycle is an option for makeDipoleList which \
-controls the number of points per cycle to use for the integration. Set to \
-Automatic, to follow PointsPerCycle, or to an integer.\>\""}], ";"}], 
+    RowBox[{"RunInParallel", "::", "usage"}], "=", 
+    "\"\<RunInParallel is an option for makeDipoleList which, if set to True, \
+parallelizes the loop over harmonic emission time.\>\""}], ";"}], 
   "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -2386,9 +2390,10 @@ Automatic, to follow PointsPerCycle, or to an integer.\>\""}], ";"}],
     RowBox[{
     "VectorPotential", ",", "VectorPotentialGradient", ",", "FieldParameters",
       ",", "Preintegrals", ",", "ReportingFunction", ",", "Gate", ",", 
-     "IonizationPotential", ",", "Target", ",", "nGate", ",", 
+     "nGate", ",", "IonizationPotential", ",", "Target", ",", 
      "\[Epsilon]Correction", ",", "PointNumberCorrection", ",", 
-     "DipoleTransitionMatrixElement"}], "]"}], ";"}], "\[IndentingNewLine]", 
+     "DipoleTransitionMatrixElement", ",", "IntegrationPointsPerCycle", ",", 
+     "RunInParallel"}], "]"}], ";"}], "\[IndentingNewLine]", 
   "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
@@ -2420,6 +2425,7 @@ Automatic, to follow PointsPerCycle, or to an integer.\>\""}], ";"}],
       ",", "\[IndentingNewLine]", 
       RowBox[{"PointNumberCorrection", "\[Rule]", "0"}], ",", 
       RowBox[{"Verbose", "\[Rule]", "0"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"RunInParallel", "\[Rule]", "False"}], ",", 
       "\[IndentingNewLine]", 
       RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}]}], 
      "\[IndentingNewLine]", "}"}]}]}], ";"}], "\[IndentingNewLine]", 
@@ -3374,7 +3380,12 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
       RowBox[{"Numerical", " ", "integration", " ", "loop"}], "*)"}], 
      "\[IndentingNewLine]", 
      RowBox[{"dipoleList", "=", 
-      RowBox[{"Table", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "]"}], ",", 
+         "ParallelTable", ",", "Table"}], "]"}], "[", "\[IndentingNewLine]", 
        RowBox[{
         RowBox[{
          RowBox[{"OptionValue", "[", "ReportingFunction", "]"}], "[", 
@@ -3400,8 +3411,8 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
           "]"}], "\[IndentingNewLine]", ",", 
         RowBox[{"{", 
          RowBox[{"t", ",", "tInit", ",", "tFinal", ",", "\[Delta]t"}], 
-         "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", "dipoleList"}]}], 
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         "}"}]}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+     "dipoleList"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
    "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",

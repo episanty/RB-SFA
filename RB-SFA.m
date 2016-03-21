@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.3, Mon 21 Mar 2016 14:51:25";
+RBSFAversion[]="RB-SFA v2.0.5, Mon 21 Mar 2016 16:45:33";
 End[];
 
 
@@ -239,11 +239,11 @@ Target::usage="Target is an option for makeDipoleList which specifies chemical s
 DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which secifies a function f to use as the dipole transition matrix element, or a pair of functions {\!\(\*SubscriptBox[\(f\), \(ion\)]\),\!\(\*SubscriptBox[\(f\), \(rec\)]\)} to be used separately for the ionization and recombination dipoels, to be used in the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[\(I\), \(p\)]\)]\)].";
 \[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
-
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
+RunInParallel::usage="RunInParallel is an option for makeDipoleList which, if set to True, parallelizes the loop over harmonic emission time.";
 
 
-Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,IonizationPotential,Target,nGate,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement];
+Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel];
 
 
 
@@ -254,7 +254,7 @@ Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
 PointNumberCorrection->0,Verbose->0,
-
+RunInParallel->False,
 IntegrationPointsPerCycle->Automatic
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
@@ -420,13 +420,14 @@ OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=G
 
 
 (*Numerical integration loop*)
-dipoleList=Table[
+dipoleList=If[TrueQ[OptionValue[RunInParallel]],ParallelTable,Table][
 OptionValue[ReportingFunction][
 \[Delta]tint Sum[(
 integrand[t,\[Tau]]
 ),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
 ]
-,{t,tInit,tFinal,\[Delta]t}];
+,{t,tInit,tFinal,\[Delta]t}
+];
 dipoleList
 
 ]
