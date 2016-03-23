@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 13:44:02";
+RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 13:49:46";
 End[];
 
 
@@ -324,8 +324,6 @@ Conjugate[OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3},\[Kappa]\[Kappa]
 ];
 ];
 
-Return["Stop"];
-
 
 setPreintegral[integralVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
 OptionValue[VectorPotentialGradient]=!=None||TrueQ[integrateWithoutGradient],(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
@@ -424,9 +422,11 @@ OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=G
 (*Numerical integration loop*)
 dipoleList=If[TrueQ[OptionValue[RunInParallel]],ParallelTable,Table][
 OptionValue[ReportingFunction][
+{t,
 \[Delta]tint Sum[(
 integrand[t,\[Tau]]
 ),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
+}
 ]
 ,{t,tInit,tFinal,\[Delta]t}
 ];
