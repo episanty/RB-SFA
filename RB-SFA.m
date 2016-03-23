@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 13:49:46";
+RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 15:58:16";
 End[];
 
 
@@ -261,7 +261,7 @@ makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incor
 makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as A[`2`] returns `3` and should return a list of numbers.";
 makeDipoleList::gradpot="The vector potential GA provided as VectorPotentialGradient\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as GA[`2`] returns `3` and should return a square matrix of numbers. Alternatively, use VectorPotentialGradient\[Rule]None.";
 makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analytic\" and \"Numeric\".";
-
+makeDipoleList::runpar="Wrong RunInParallel option `1`. Valid options are Automatic, False, True, Full and \"Indexed\".";
 
 
 
@@ -273,7 +273,8 @@ A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
-integrand,dipoleList
+integrand,dipoleList,
+TableCommand
 },
 
 A[t_]=OptionValue[VectorPotential][t]//.OptionValue[FieldParameters];
@@ -418,15 +419,55 @@ OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=G
 {A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],integrand[t,\[Tau]]}]]
 ];
 
+(*Setting iterator depending on parallelization settings*)
+Which[ 
+OptionValue[RunInParallel]===False,            Print["a"];TableCommand=Table,
+OptionValue[RunInParallel]===True,              Print["b"];TableCommand=ParallelTable,
+OptionValue[RunInParallel]===Full,            
+Print["d"];TableCommand=Function[{expression,iterator},
+ParallelTable[
+{iterator[[1]],expression}
+,iterator]
+,{HoldAll}],
+OptionValue[RunInParallel]==="Indexed",
+Print["d"];TableCommand=Function[{expression,iterator},
+ParallelTable[
+{iterator[[1]],expression}
+,iterator]
+,{HoldAll}],
+True,    Print["e"];Message[makeDipoleList::runpar,OptionValue[RunInParallel]];Abort[]
+];
+
+(*
+Print[
+aTableCommand[
+OptionValue[ReportingFunction][
+\[Delta]tint aSum[(
+integrand[t,\[Tau]]
+),{\[Tau],0,If[OptionValue[Preintegrals]\[Equal]"Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
+]
+,{t,tInit,tFinal,\[Delta]t}
+]
+];
+
+Return[
+ParallelTable[
+OptionValue[ReportingFunction][
+\[Delta]tint Sum[(
+integrand[t,\[Tau]]
+),{\[Tau],0,If[OptionValue[Preintegrals]\[Equal]"Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
+]
+,{t,tInit,tFinal,\[Delta]t}
+]
+];*)
+
 
 (*Numerical integration loop*)
-dipoleList=If[TrueQ[OptionValue[RunInParallel]],ParallelTable,Table][
+dipoleList=TableCommand[
 OptionValue[ReportingFunction][
-{t,
 \[Delta]tint Sum[(
 integrand[t,\[Tau]]
 ),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
-}
 ]
 ,{t,tInit,tFinal,\[Delta]t}
 ];
