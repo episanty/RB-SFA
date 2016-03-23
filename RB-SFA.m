@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 19:34:08";
+RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 19:44:33";
 End[];
 
 
@@ -446,7 +446,7 @@ True,    Print["e"];Message[makeDipoleList::runpar,OptionValue[RunInParallel]];A
 (*Numerical integration loop*)
 dipoleList=TableCommand[
 OptionValue[ReportingFunction][
-\[Delta]tint Sum[(
+\[Delta]tint SumCommand[(
 integrand[t,\[Tau]]
 ),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
 ]
