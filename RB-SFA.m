@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 15:58:16";
+RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 19:34:08";
 End[];
 
 
@@ -274,7 +274,7 @@ gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
 integrand,dipoleList,
-TableCommand
+TableCommand,SumCommand
 },
 
 A[t_]=OptionValue[VectorPotential][t]//.OptionValue[FieldParameters];
@@ -421,45 +421,26 @@ OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=G
 
 (*Setting iterator depending on parallelization settings*)
 Which[ 
-OptionValue[RunInParallel]===False,            Print["a"];TableCommand=Table,
-OptionValue[RunInParallel]===True,              Print["b"];TableCommand=ParallelTable,
+OptionValue[RunInParallel]===Automatic||OptionValue[RunInParallel]===False,
+TableCommand=Table;SumCommand=Sum;,
+OptionValue[RunInParallel]===True,
+TableCommand=ParallelTable;SumCommand=Sum;,
 OptionValue[RunInParallel]===Full,            
-Print["d"];TableCommand=Function[{expression,iterator},
+TableCommand=Function[{expression,iterator},
 ParallelTable[
 {iterator[[1]],expression}
 ,iterator]
-,{HoldAll}],
+,{HoldAll}];SumCommand=Sum;,
 OptionValue[RunInParallel]==="Indexed",
-Print["d"];TableCommand=Function[{expression,iterator},
+TableCommand=Function[{expression,iterator},
 ParallelTable[
 {iterator[[1]],expression}
 ,iterator]
-,{HoldAll}],
+,{HoldAll}];SumCommand=Sum;,
+OptionValue[RunInParallel]==="Inactive",
+TableCommand=Inactive[ParallelTable];SumCommand=Inactive[Sum];,
 True,    Print["e"];Message[makeDipoleList::runpar,OptionValue[RunInParallel]];Abort[]
 ];
-
-(*
-Print[
-aTableCommand[
-OptionValue[ReportingFunction][
-\[Delta]tint aSum[(
-integrand[t,\[Tau]]
-),{\[Tau],0,If[OptionValue[Preintegrals]\[Equal]"Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
-]
-,{t,tInit,tFinal,\[Delta]t}
-]
-];
-
-Return[
-ParallelTable[
-OptionValue[ReportingFunction][
-\[Delta]tint Sum[(
-integrand[t,\[Tau]]
-),{\[Tau],0,If[OptionValue[Preintegrals]\[Equal]"Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
-]
-,{t,tInit,tFinal,\[Delta]t}
-]
-];*)
 
 
 (*Numerical integration loop*)
