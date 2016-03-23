@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.5, Mon 21 Mar 2016 16:45:33";
+RBSFAversion[]="RB-SFA v2.0.5, Wed 23 Mar 2016 13:44:02";
 End[];
 
 
@@ -323,6 +323,8 @@ Conjugate[OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3},\[Kappa]\[Kappa]
 ]];
 ];
 ];
+
+Return["Stop"];
 
 
 setPreintegral[integralVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
