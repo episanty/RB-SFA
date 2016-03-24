@@ -817,7 +817,7 @@ use and its timestamp.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{
    RowBox[{"RBSFAversion", "[", "]"}], "=", 
-   "\"\<RB-SFA v2.0.5, Mon 21 Mar 2016 16:45:33\>\""}], 
+   "\"\<RB-SFA v2.0.5, Thu 24 Mar 2016 16:05:04\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2425,7 +2425,7 @@ parallelizes the loop over harmonic emission time.\>\""}], ";"}],
       ",", "\[IndentingNewLine]", 
       RowBox[{"PointNumberCorrection", "\[Rule]", "0"}], ",", 
       RowBox[{"Verbose", "\[Rule]", "0"}], ",", "\[IndentingNewLine]", 
-      RowBox[{"RunInParallel", "\[Rule]", "False"}], ",", 
+      RowBox[{"RunInParallel", "\[Rule]", "Automatic"}], ",", 
       "\[IndentingNewLine]", 
       RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}]}], 
      "\[IndentingNewLine]", "}"}]}]}], ";"}], "\[IndentingNewLine]", 
@@ -2450,11 +2450,15 @@ and should return a square matrix of numbers. Alternatively, use \
 VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
+   RowBox[{"makeDipoleList", "::", "preint"}], "=", 
+   "\"\<Wrong Preintegrals option `1`. Valid options are \\\"Analytic\\\" and \
+\\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
    RowBox[{
-    RowBox[{"makeDipoleList", "::", "preint"}], "=", 
-    "\"\<Wrong Preintegrals option `1`. Valid options are \\\"Analytic\\\" \
-and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]", 
-  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"makeDipoleList", "::", "runpar"}], "=", 
+    "\"\<Wrong RunInParallel option `1`.\>\""}], ";"}], "\[IndentingNewLine]",
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"makeDipoleList", "[", 
@@ -2479,7 +2483,8 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
       "GAdotAInt", ",", "AdotGAInt", ",", "GAIntInt", ",", 
       "bigPScorrectionInt", ",", "AdotGAdotAInt", ",", "\[IndentingNewLine]", 
-      "integrand", ",", "dipoleList"}], "\[IndentingNewLine]", "}"}], ",", 
+      "integrand", ",", "dipoleList", ",", "\[IndentingNewLine]", 
+      "TableCommand", ",", "SumCommand"}], "\[IndentingNewLine]", "}"}], ",", 
     "\[IndentingNewLine]", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{
@@ -3375,23 +3380,65 @@ and \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]",
             RowBox[{"integrand", "[", 
              RowBox[{"t", ",", "\[Tau]"}], "]"}]}], "}"}]}], "]"}], "]"}]}], 
       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{"Single", "-", 
+       RowBox[{"run", " ", "parallelization"}]}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"Which", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "===", 
+         "Automatic"}], "||", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "===", 
+         "False"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{"TableCommand", "=", "Table"}], ",", 
+       RowBox[{"SumCommand", "=", "Sum"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "===", "True"}], 
+       ",", "\[IndentingNewLine]", 
+       RowBox[{"TableCommand", "=", "ParallelTable"}], ",", 
+       RowBox[{"SumCommand", "=", "Sum"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "===", 
+        "\"\<InactiveDirect\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{"TableCommand", "=", 
+        RowBox[{"Inactive", "[", "Table", "]"}]}], ",", 
+       RowBox[{"SumCommand", "=", 
+        RowBox[{"Inactive", "[", "Sum", "]"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "===", 
+        "\"\<InactiveParallel\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{"TableCommand", "=", 
+        RowBox[{"Inactive", "[", "ParallelTable", "]"}]}], ",", 
+       RowBox[{"SumCommand", "=", 
+        RowBox[{"Inactive", "[", "Sum", "]"}]}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "===", 
+        "\"\<Scramble\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{"TableCommand", "=", "table"}], ",", 
+       RowBox[{"SumCommand", "=", "sum"}], ",", "\[IndentingNewLine]", "True",
+        ",", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"makeDipoleList", "::", "runpar"}], ",", 
+          RowBox[{"OptionValue", "[", "RunInParallel", "]"}]}], "]"}], ";", 
+        RowBox[{"Abort", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}], ";", 
      "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{"Numerical", " ", "integration", " ", "loop"}], "*)"}], 
      "\[IndentingNewLine]", 
      RowBox[{"dipoleList", "=", 
-      RowBox[{
-       RowBox[{"If", "[", 
-        RowBox[{
-         RowBox[{"TrueQ", "[", 
-          RowBox[{"OptionValue", "[", "RunInParallel", "]"}], "]"}], ",", 
-         "ParallelTable", ",", "Table"}], "]"}], "[", "\[IndentingNewLine]", 
+      RowBox[{"TableCommand", "[", "\[IndentingNewLine]", 
        RowBox[{
         RowBox[{
          RowBox[{"OptionValue", "[", "ReportingFunction", "]"}], "[", 
          "\[IndentingNewLine]", 
          RowBox[{"\[Delta]tint", " ", 
-          RowBox[{"Sum", "[", 
+          RowBox[{"SumCommand", "[", 
            RowBox[{
             RowBox[{"(", "\[IndentingNewLine]", 
              RowBox[{"integrand", "[", 
