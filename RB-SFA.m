@@ -24,7 +24,7 @@ BeginPackage["RBSFA`"];
 
 RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.5, Thu 24 Mar 2016 18:24:47";
+RBSFAversion[]="RB-SFA v2.0.5, Wed 30 Mar 2016 15:58:24";
 End[];
 
 
@@ -240,7 +240,7 @@ DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option
 \[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
-RunInParallel::usage="RunInParallel is an option for makeDipoleList which, if set to True, parallelizes the loop over harmonic emission time.";
+RunInParallel::usage="RunInParallel is an option for makeDipoleList which controls whether each RB-SFA instance is parallelized. It accepts False as the (Automatic) option, True, to parallelize each instance, or a pair of functions {TableCommand, SumCommand} to use for the iteration and summing, which could be e.g. {Inactive[ParallelTable], Inactive[Sum]}.";
 
 
 Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel];
@@ -422,17 +422,9 @@ OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=G
 
 (*Single-run parallelization*)
 Which[
-OptionValue[RunInParallel]===Automatic||OptionValue[RunInParallel]===False,
-TableCommand=Table,SumCommand=Sum,
-OptionValue[RunInParallel]===True,
-TableCommand=ParallelTable,SumCommand=Sum,
-OptionValue[RunInParallel]==="InactiveDirect",
-TableCommand=Inactive[Table],SumCommand=Inactive[Sum],
-OptionValue[RunInParallel]==="InactiveParallel",
-TableCommand=Inactive[ParallelTable],SumCommand=Inactive[Sum],
-OptionValue[RunInParallel]==="Scramble",
-TableCommand=table,SumCommand=sum,
-True,Message[makeDipoleList::runpar,OptionValue[RunInParallel]];Abort[]
+OptionValue[RunInParallel]===Automatic||OptionValue[RunInParallel]===False, TableCommand=Table;SumCommand=Sum;,
+OptionValue[RunInParallel]===True,TableCommand=ParallelTable;SumCommand=Sum;,
+True,TableCommand=OptionValue[RunInParallel][[1]];SumCommand=OptionValue[RunInParallel][[2]];
 ];
 
 (*Numerical integration loop*)
