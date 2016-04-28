@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 28 Apr 2016 21:14:57";
+$RBSFAtimestamp="Thu 28 Apr 2016 21:34:24";
 End[];
 
 
@@ -301,7 +301,7 @@ A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
-integrand,dipoleList,
+prefactor,integrand,dipoleList,
 TableCommand,SumCommand
 },
 
@@ -322,9 +322,10 @@ tFinal=(2\[Pi])/\[Omega] num;
 tGate=OptionValue[nGate] (2\[Pi])/\[Omega];
 (*Check potential and potential gradient for correctness.*)
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
+If[OptionValue[Verbose]!=3(*Turn off numerics check if quantum-orbits verbose option is in use.*),
 If[!And@@(NumberQ/@A[\[Omega]tRandom/\[Omega]]),Message[makeDipoleList::pot,OptionValue[VectorPotential],\[Omega]tRandom,A[\[Omega]tRandom]];Abort[]];
 If[!And@@(NumberQ/@Flatten[GA[\[Omega]tRandom/\[Omega]]]),Message[makeDipoleList::gradpot,OptionValue[VectorPotentialGradient],\[Omega]tRandom,GA[\[Omega]tRandom]];Abort[]];
-];
+]];
 
 gate[\[Omega]\[Tau]_]:=OptionValue[Gate][\[Omega]\[Tau],OptionValue[nGate]];
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
@@ -437,14 +438,18 @@ ps[t_,tt_]:=ps[t,tt]=-(1/(t-tt-I \[Epsilon]))Inverse[IdentityMatrix[Length[A[tIn
 S[t_,tt_]:=1/2 (Total[ps[t,tt]^2]+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int[t,tt]-(
 ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt[t,tt]
 );
-
-integrand[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipoleRec[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]*dipoleIon[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
+prefactor[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipoleRec[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]*dipoleIon[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]];
+integrand[t_,\[Tau]_]:=prefactor[t,\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops.*)
 Which[
 OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt},
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
-{A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],integrand[t,\[Tau]]}]]
+{A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],integrand[t,\[Tau]]}]],
+OptionValue[Verbose]==3,
+Return[{
+Function[{Global`t,Global`tt},Evaluate[prefactor[Global`t,Global`t-Global`tt]]],Function[{Global`t,Global`tt},Evaluate[S[Global`t,Global`tt]]]
+}]
 ];
 
 (*Single-run parallelization*)
