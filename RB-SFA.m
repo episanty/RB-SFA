@@ -30,7 +30,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 28 Apr 2016 17:51:07";
+$RBSFAtimestamp="Thu 28 Apr 2016 18:55:32";
 End[];
 
 
@@ -38,6 +38,18 @@ RBSFAversion::usage="RBSFAversion[] has been deprecated in favour of $RBSFAversi
 RBSFAversion::dprc="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
 Begin["`Private`"];
 RBSFAversion[]:=(Message[RBSFAversion::dprc];$RBSFAversion);
+End[];
+
+
+$RBSFAdirectory::usage="$RBSFAdirectory is the directory where the current RB-SFA package instance is located.";
+$RBSFAcommit::usage="$RBSFAcommit returns the git commit log at the location of the RB-SFA package if there is one."
+$RBSFAcommit::OS="$RBSFAcommit has only been tested on Linux.";
+
+
+Begin["`Private`"];
+$RBSFAdirectory=StringReplace[DirectoryName[$InputFileName],{" "->"\\ "}];
+$RBSFAcommit:=(If[$OperatingSystem!="Unix",Message[$RBSFAcommit::OS]];
+StringJoin[Riffle[ReadList["!cd "<>$RBSFAdirectory<>" && git log -1",String],{"\n"}]])
 End[];
 
 
