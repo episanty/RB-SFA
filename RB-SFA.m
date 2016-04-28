@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 28 Apr 2016 21:11:14";
+$RBSFAtimestamp="Thu 28 Apr 2016 21:14:57";
 End[];
 
 
@@ -244,9 +244,11 @@ End[];
 
 
 getIonizationPotential::usage="getIonizationPotential[Target] returns the ionization potential of an atomic target, e.g. \"Hydrogen\", in atomic units.\[IndentingNewLine]
-getIonizationPotential[Target,q] returns the ionization potential of the q-th ion of the specified Target, in atomic units.";
+getIonizationPotential[Target,q] returns the ionization potential of the q-th ion of the specified Target, in atomic units.\[IndentingNewLine]
+getIonizationPotential[{Target,q}] returns the ionization potential of the q-th ion of the specified Target, in atomic units.";
 Begin["`Private`"];
 getIonizationPotential[Target_,Charge_:0]:=UnitConvert[ElementData[Target,"IonizationEnergies"][[Charge+1]]/(Quantity[1,"AvogadroConstant"]Quantity[1,"Hartrees"])]
+getIonizationPotential[{Target_,Charge_:0}]:=getIonizationPotential[Target,Charge]
 End[];
 
 

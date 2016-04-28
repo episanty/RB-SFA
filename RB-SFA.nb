@@ -944,7 +944,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 28 Apr 2016 21:11:14\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 28 Apr 2016 21:14:57\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -955,6 +955,8 @@ Cell[BoxData[{
 Cell[CellGroupData[{
 
 Cell["Git commit hash and message", "Subsubsection"],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
@@ -971,6 +973,10 @@ package if there is one.\>\""}], "\[IndentingNewLine]",
    RowBox[{"$RBSFAcommit", "::", "OS"}], "=", 
    "\"\<$RBSFAcommit has only been tested on Linux.\>\""}], ";"}]}], "Input",
  InitializationCell->True],
+
+Cell[BoxData["\<\"$RBSFAcommit returns the git commit log at the location of \
+the RB-SFA package if there is one.\"\>"], "Output"]
+}, Open  ]],
 
 Cell[BoxData[{
  RowBox[{
@@ -2323,7 +2329,9 @@ Cell[BoxData[{
    "\"\<getIonizationPotential[Target] returns the ionization potential of an \
 atomic target, e.g. \\\"Hydrogen\\\", in atomic units.\[IndentingNewLine]\n\
 getIonizationPotential[Target,q] returns the ionization potential of the q-th \
-ion of the specified Target, in atomic units.\>\""}], 
+ion of the specified Target, in atomic units.\[IndentingNewLine]\n\
+getIonizationPotential[{Target,q}] returns the ionization potential of the \
+q-th ion of the specified Target, in atomic units.\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
@@ -2345,6 +2353,13 @@ ion of the specified Target, in atomic units.\>\""}],
      RowBox[{"Quantity", "[", 
       RowBox[{"1", ",", "\"\<Hartrees\>\""}], "]"}]}]], 
    "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"getIonizationPotential", "[", 
+   RowBox[{"{", 
+    RowBox[{"Target_", ",", 
+     RowBox[{"Charge_:", "0"}]}], "}"}], "]"}], ":=", 
+  RowBox[{"getIonizationPotential", "[", 
+   RowBox[{"Target", ",", "Charge"}], "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
