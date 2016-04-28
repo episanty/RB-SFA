@@ -22,9 +22,22 @@
 BeginPackage["RBSFA`"];
 
 
-RBSFAversion::usage="RBSFAversion[] prints the current version of the RB-SFA package in use and its timestamp.";
+$RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";
+$RBSFAtimestamp::usage="$RBSFAtimestamp prints the timestamp of the current version of the RB-SFA package.";
 Begin["`Private`"];
-RBSFAversion[]="RB-SFA v2.0.6, Wed 30 Mar 2016 17:21:16";
+$RBSFAversion:="RB-SFA v2.0.7, "<>$RBSFAtimestamp;
+End[];
+
+
+Begin["`Private`"];
+$RBSFAtimestamp="Thu 28 Apr 2016 17:51:07";
+End[];
+
+
+RBSFAversion::usage="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
+RBSFAversion::dprc="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
+Begin["`Private`"];
+RBSFAversion[]:=(Message[RBSFAversion::dprc];$RBSFAversion);
 End[];
 
 
