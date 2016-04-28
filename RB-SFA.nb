@@ -944,7 +944,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 28 Apr 2016 21:01:31\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 28 Apr 2016 21:11:14\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -3574,24 +3574,10 @@ Cell[CellGroupData[{
 
 Cell["Add to distributed contexts.", "Subsubsection"],
 
-Cell[BoxData[{
+Cell[BoxData[
  RowBox[{
-  RowBox[{
-   RowBox[{"$DistributedContexts", "::", "overwrite"}], "=", 
-   "\"\<Warning: overwriting previous value of $DistributedContexts. \
-Reinstate your old definition, and include the RBSFA context to ensure proper \
-parallelization of RB-SFA calculations.\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"If", "[", "\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{"ValueQ", "[", "$DistributedContexts", "]"}], ",", 
-   "\[IndentingNewLine]", 
-   RowBox[{"Message", "[", 
-    RowBox[{"$DistributedContexts", "::", "overwrite"}], "]"}]}], 
-  "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
- RowBox[{"$DistributedContexts", ":=", 
-  RowBox[{"{", 
-   RowBox[{"$Context", ",", "\"\<RBSFA`\>\""}], "}"}]}]}], "Input",
+  RowBox[{"DistributeDefinitions", "[", "\"\<RBSFA`\>\"", "]"}], 
+  ";"}]], "Input",
  InitializationCell->True]
 }, Open  ]]
 }, Open  ]]

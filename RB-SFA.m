@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 28 Apr 2016 21:01:31";
+$RBSFAtimestamp="Thu 28 Apr 2016 21:11:14";
 End[];
 
 
@@ -470,9 +470,4 @@ End[];
 EndPackage[]
 
 
-$DistributedContexts::overwrite="Warning: overwriting previous value of $DistributedContexts. Reinstate your old definition, and include the RBSFA context to ensure proper parallelization of RB-SFA calculations.";
-If[
-ValueQ[$DistributedContexts],
-Message[$DistributedContexts::overwrite]
-]
-$DistributedContexts:={$Context,"RBSFA`"}
+DistributeDefinitions["RBSFA`"];
