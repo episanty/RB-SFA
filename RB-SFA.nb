@@ -15,6 +15,14 @@ CC-BY-SA.", "Text"],
 
 Cell[CellGroupData[{
 
+Cell["test", "Section",
+ CellTags->"test-section-tag"],
+
+Cell["test", "Text"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
 Cell["Introduction", "Section",
  CellTags->"Introduction"],
 
@@ -798,7 +806,8 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
-Cell["Version number and timestamp", "Subsubsection"],
+Cell["Version number", "Subsubsection",
+ CellTags->"version-section"],
 
 Cell["\<\
 The command RBSFAversion prints the version of the RB-SFA package currently \
@@ -826,18 +835,6 @@ RB-SFA package.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 28 Apr 2016 18:55:32\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True,
- CellTags->"version-timestamp"],
 
 Cell[TextData[{
  "Old syntax (in functional form ",
@@ -870,6 +867,9 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input"],
 
 Cell["\<\
 The timestamp is updated every time the notebook is saved via an appropriate \
@@ -909,12 +909,47 @@ Cell[BoxData[
               "\[IndentingNewLine]", ",", "\"\<Input\>\"", ",", 
               RowBox[{"InitializationCell", "\[Rule]", "True"}], ",", 
               RowBox[{"CellTags", "\[Rule]", "\"\<version-timestamp\>\""}]}], 
-             "\[IndentingNewLine]", "]"}], ",", "None"}], "]"}], ";", 
+             "\[IndentingNewLine]", "]"}], ",", "None", ",", 
+            RowBox[{"AutoScroll", "\[Rule]", "False"}]}], "]"}], ";", 
           "\[IndentingNewLine]", 
           RowBox[{"NotebookSave", "[", "]"}]}], "\[IndentingNewLine]", 
          ")"}]}], ",", 
        RowBox[{"PassEventsDown", "\[Rule]", "True"}]}], "}"}]}]}], 
-   "\[IndentingNewLine]", "]"}], ";"}]], "Input"]
+   "\[IndentingNewLine]", "]"}], ";"}]], "Input"],
+
+Cell["To reset this behaviour to normal, evaluatethe cell below", "Text"],
+
+Cell[BoxData[
+ RowBox[{"SetOptions", "[", 
+  RowBox[{
+   RowBox[{"EvaluationNotebook", "[", "]"}], ",", 
+   RowBox[{"NotebookEventActions", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"\"\<MenuCommand\>\"", ",", "\"\<Save\>\""}], "}"}], 
+       "\[RuleDelayed]", 
+       RowBox[{"(", 
+        RowBox[{"NotebookSave", "[", "]"}], ")"}]}], ",", 
+      RowBox[{"PassEventsDown", "\[Rule]", "True"}]}], "}"}]}]}], 
+  "]"}]], "Input"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Timestamp", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 28 Apr 2016 21:01:31\>\""}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True,
+ CellTags->"version-timestamp"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -3570,10 +3605,9 @@ NotebookEventActions->{{"MenuCommand", "Save"} :> (NotebookWrite[
      Cell[
       BoxData[
        RowBox[{
-         StringJoin[
-         "Begin[\"`Private`\"];\[IndentingNewLine]$RBSFAtimestamp=\"", 
-          DateString[], "\";\[IndentingNewLine]End[];"]}]], "Input", 
-      InitializationCell -> True, CellTags -> "version-timestamp"], None]; 
+         StringJoin["Begin[\"`Private`\"];\n$RBSFAtimestamp=\"", 
+          DateString[], "\";\nEnd[];"]}]], "Input", InitializationCell -> 
+      True, CellTags -> "version-timestamp"], None, AutoScroll -> False]; 
    NotebookSave[]), PassEventsDown -> True},
 WindowSize->{1861, 1176},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
@@ -3611,6 +3645,7 @@ PrintingOptions->{"FacingPages"->True,
 PrivateNotebookOptions->{"FileOutlineCache"->False},
 ShowSelection->True,
 TrackCellChangeTimes->False,
+Background->None,
 FrontEndVersion->"10.4 for Linux x86 (64-bit) (February 25, 2016)",
 StyleDefinitions->Notebook[{
    Cell[

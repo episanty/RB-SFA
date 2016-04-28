@@ -29,15 +29,15 @@ $RBSFAversion:="RB-SFA v2.0.7, "<>$RBSFAtimestamp;
 End[];
 
 
-Begin["`Private`"];
-$RBSFAtimestamp="Thu 28 Apr 2016 18:55:32";
-End[];
-
-
 RBSFAversion::usage="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
 RBSFAversion::dprc="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
 Begin["`Private`"];
 RBSFAversion[]:=(Message[RBSFAversion::dprc];$RBSFAversion);
+End[];
+
+
+Begin["`Private`"];
+$RBSFAtimestamp="Thu 28 Apr 2016 21:01:31";
 End[];
 
 
