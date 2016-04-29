@@ -37,19 +37,23 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 28 Apr 2016 21:34:24";
+$RBSFAtimestamp="Fri 29 Apr 2016 12:10:17";
 End[];
 
 
 $RBSFAdirectory::usage="$RBSFAdirectory is the directory where the current RB-SFA package instance is located.";
-$RBSFAcommit::usage="$RBSFAcommit returns the git commit log at the location of the RB-SFA package if there is one."
+$RBSFAcommit::usage="$RBSFAcommit returns the git commit log at the location of the RB-SFA package if there is one.";
 $RBSFAcommit::OS="$RBSFAcommit has only been tested on Linux.";
 
 
 Begin["`Private`"];
+With[{softLinkTestString=StringSplit[StringJoin[ReadList["! ls -la "<>StringReplace[$InputFileName,{" "->"\\ "}],String]]," -> "]},
+If[Length[softLinkTestString]>1,(*Testing in case $InputFileName is a soft link to the actual directory.*)
+$RBSFAdirectory=StringReplace[DirectoryName[softLinkTestString[[2]]],{" "->"\\ "}],
 $RBSFAdirectory=StringReplace[DirectoryName[$InputFileName],{" "->"\\ "}];
+]]
 $RBSFAcommit:=(If[$OperatingSystem!="Unix",Message[$RBSFAcommit::OS]];
-StringJoin[Riffle[ReadList["!cd "<>$RBSFAdirectory<>" && git log -1",String],{"\n"}]])
+StringJoin[Riffle[ReadList["!cd "<>$RBSFAdirectory<>" && git log -1",String],{"\n"}]]);
 End[];
 
 

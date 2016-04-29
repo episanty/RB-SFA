@@ -944,7 +944,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 28 Apr 2016 21:34:24\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 29 Apr 2016 12:10:17\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -956,8 +956,6 @@ Cell[CellGroupData[{
 
 Cell["Git commit hash and message", "Subsubsection"],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -965,54 +963,89 @@ Cell[BoxData[{
    "\"\<$RBSFAdirectory is the directory where the current RB-SFA package \
 instance is located.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"$RBSFAcommit", "::", "usage"}], "=", 
-  "\"\<$RBSFAcommit returns the git commit log at the location of the RB-SFA \
-package if there is one.\>\""}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"$RBSFAcommit", "::", "usage"}], "=", 
+   "\"\<$RBSFAcommit returns the git commit log at the location of the RB-SFA \
+package if there is one.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"$RBSFAcommit", "::", "OS"}], "=", 
    "\"\<$RBSFAcommit has only been tested on Linux.\>\""}], ";"}]}], "Input",
  InitializationCell->True],
 
-Cell[BoxData["\<\"$RBSFAcommit returns the git commit log at the location of \
-the RB-SFA package if there is one.\"\>"], "Output"]
-}, Open  ]],
-
 Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"$RBSFAdirectory", "=", 
-   RowBox[{"StringReplace", "[", 
-    RowBox[{
-     RowBox[{"DirectoryName", "[", "$InputFileName", "]"}], ",", 
-     RowBox[{"{", 
-      RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"$RBSFAcommit", ":=", 
-  RowBox[{"(", 
-   RowBox[{
-    RowBox[{"If", "[", 
-     RowBox[{
-      RowBox[{"$OperatingSystem", "\[NotEqual]", "\"\<Unix\>\""}], ",", 
-      RowBox[{"Message", "[", 
-       RowBox[{"$RBSFAcommit", "::", "OS"}], "]"}]}], "]"}], ";", 
-    "\[IndentingNewLine]", 
-    RowBox[{"StringJoin", "[", 
-     RowBox[{"Riffle", "[", 
+ RowBox[{"With", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"softLinkTestString", "=", 
+     RowBox[{"StringSplit", "[", 
       RowBox[{
-       RowBox[{"ReadList", "[", 
-        RowBox[{
+       RowBox[{"StringJoin", "[", 
+        RowBox[{"ReadList", "[", 
          RowBox[{
-         "\"\<!cd \>\"", "<>", "$RBSFAdirectory", "<>", 
-          "\"\< && git log -1\>\""}], ",", "String"}], "]"}], ",", 
-       RowBox[{"{", "\"\<\\n\>\"", "}"}]}], "]"}], "]"}]}], 
-   ")"}]}], "\[IndentingNewLine]", 
+          RowBox[{"\"\<! ls -la \>\"", "<>", 
+           RowBox[{"StringReplace", "[", 
+            RowBox[{"$InputFileName", ",", 
+             RowBox[{"{", 
+              RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], 
+            "]"}]}], ",", "String"}], "]"}], "]"}], ",", "\"\< -> \>\""}], 
+      "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Length", "[", "softLinkTestString", "]"}], ">", "1"}], ",", 
+     RowBox[{"(*", 
+      RowBox[{
+      "Testing", " ", "in", " ", "case", " ", "$InputFileName", " ", "is", 
+       " ", "a", " ", "soft", " ", "link", " ", "to", " ", "the", " ", 
+       "actual", " ", 
+       RowBox[{"directory", "."}]}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"$RBSFAdirectory", "=", 
+      RowBox[{"StringReplace", "[", 
+       RowBox[{
+        RowBox[{"DirectoryName", "[", 
+         RowBox[{
+         "softLinkTestString", "\[LeftDoubleBracket]", "2", 
+          "\[RightDoubleBracket]"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], "]"}]}], 
+     ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"$RBSFAdirectory", "=", 
+       RowBox[{"StringReplace", "[", 
+        RowBox[{
+         RowBox[{"DirectoryName", "[", "$InputFileName", "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], "]"}]}],
+       ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"$RBSFAcommit", ":=", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"$OperatingSystem", "\[NotEqual]", "\"\<Unix\>\""}], ",", 
+       RowBox[{"Message", "[", 
+        RowBox[{"$RBSFAcommit", "::", "OS"}], "]"}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"StringJoin", "[", 
+      RowBox[{"Riffle", "[", 
+       RowBox[{
+        RowBox[{"ReadList", "[", 
+         RowBox[{
+          RowBox[{
+          "\"\<!cd \>\"", "<>", "$RBSFAdirectory", "<>", 
+           "\"\< && git log -1\>\""}], ",", "String"}], "]"}], ",", 
+        RowBox[{"{", "\"\<\\n\>\"", "}"}]}], "]"}], "]"}]}], ")"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
