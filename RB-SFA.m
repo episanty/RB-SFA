@@ -445,7 +445,9 @@ ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt
 prefactor[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipoleRec[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]*dipoleIon[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]];
 integrand[t_,\[Tau]_]:=prefactor[t,\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
-(*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops.*)
+
+
+(*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops. Verbose\[Rule]3 for quantum-orbit constructs.*)
 Which[
 OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt},
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
