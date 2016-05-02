@@ -2877,8 +2877,11 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
               "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], 
               "]"}], "[", 
              RowBox[{
-              RowBox[{"{", 
-               RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], 
+               "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",", 
               "\[Kappa]\[Kappa]"}], "]"}]}], ";", "\[IndentingNewLine]", 
            RowBox[{
             RowBox[{"dipoleRec", "[", 
@@ -2905,9 +2908,12 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
                   "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], 
                   "]"}], "[", 
                  RowBox[{
-                  RowBox[{"{", 
-                   RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
-                  "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], 
+                   "\[LeftDoubleBracket]", 
+                   RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",",
+                   "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
                "]"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", ",", "True", 
           ",", "\[IndentingNewLine]", 
           RowBox[{
@@ -2925,8 +2931,11 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
              "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], "[", 
              
              RowBox[{
-              RowBox[{"{", 
-               RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], 
+               "\[LeftDoubleBracket]", 
+               RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",", 
               "\[Kappa]\[Kappa]"}], "]"}]}], ";", "\[IndentingNewLine]", 
            RowBox[{
             RowBox[{"dipoleRec", "[", 
@@ -2952,9 +2961,12 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
                  "OptionValue", "[", "DipoleTransitionMatrixElement", "]"}], 
                  "[", 
                  RowBox[{
-                  RowBox[{"{", 
-                   RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], ",", 
-                  "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"p1", ",", "p2", ",", "p3"}], "}"}], 
+                   "\[LeftDoubleBracket]", 
+                   RowBox[{"1", ";;", "dim"}], "\[RightDoubleBracket]"}], ",",
+                   "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
                "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
         ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", "\[IndentingNewLine]", 

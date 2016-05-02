@@ -346,14 +346,14 @@ With[{dim=Length[A[RandomReal[{\[Omega] tInit,\[Omega] tFinal}]]]},
 (*Explicit conjugation of the recombination matrix element to keep the integrand analytic.*)
 Which[
 Head[OptionValue[DipoleTransitionMatrixElement]]===List,
-dipoleIon[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=First[OptionValue[DipoleTransitionMatrixElement]][{p1,p2,p3},\[Kappa]\[Kappa]];
+dipoleIon[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=First[OptionValue[DipoleTransitionMatrixElement]][{p1,p2,p3}[[1;;dim]],\[Kappa]\[Kappa]];
 dipoleRec[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=Assuming[{{p1,p2,p3,\[Kappa]\[Kappa]}\[Element]Reals},Simplify[
-Conjugate[Last[OptionValue[DipoleTransitionMatrixElement]][{p1,p2,p3},\[Kappa]\[Kappa]]]
+Conjugate[Last[OptionValue[DipoleTransitionMatrixElement]][{p1,p2,p3}[[1;;dim]],\[Kappa]\[Kappa]]]
 ]];
 ,True,
-dipoleIon[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3},\[Kappa]\[Kappa]];
+dipoleIon[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3}[[1;;dim]],\[Kappa]\[Kappa]];
 dipoleRec[{p1_,p2_,p3_}[[1;;dim]],\[Kappa]\[Kappa]_]=Assuming[{{p1,p2,p3,\[Kappa]\[Kappa]}\[Element]Reals},Simplify[
-Conjugate[OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3},\[Kappa]\[Kappa]]]
+Conjugate[OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3}[[1;;dim]],\[Kappa]\[Kappa]]]
 ]];
 ];
 ];
