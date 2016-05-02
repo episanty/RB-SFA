@@ -15,14 +15,6 @@ CC-BY-SA.", "Text"],
 
 Cell[CellGroupData[{
 
-Cell["test", "Section",
- CellTags->"test-section-tag"],
-
-Cell["test", "Text"]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
 Cell["Introduction", "Section",
  CellTags->"Introduction"],
 
@@ -944,7 +936,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 29 Apr 2016 12:10:17\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 2 May 2016 16:01:51\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1045,7 +1037,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2529,14 +2521,20 @@ Automatic, to follow PointsPerCycle, or to an integer.\>\""}],
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{
-    RowBox[{"RunInParallel", "::", "usage"}], "=", 
-    "\"\<RunInParallel is an option for makeDipoleList which controls whether \
+   RowBox[{"RunInParallel", "::", "usage"}], "=", 
+   "\"\<RunInParallel is an option for makeDipoleList which controls whether \
 each RB-SFA instance is parallelized. It accepts False as the (Automatic) \
 option, True, to parallelize each instance, or a pair of functions \
 {TableCommand, SumCommand} to use for the iteration and summing, which could \
-be e.g. {Inactive[ParallelTable], Inactive[Sum]}.\>\""}], ";"}], 
-  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+be e.g. {Inactive[ParallelTable], Inactive[Sum]}.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Simplifier", "::", "usage"}], "=", 
+    "\"\<Simplifier is an option for makeDipoleList which specifies whether \
+to use \>\""}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"Protect", "[", 
@@ -2546,8 +2544,9 @@ be e.g. {Inactive[ParallelTable], Inactive[Sum]}.\>\""}], ";"}],
      "nGate", ",", "IonizationPotential", ",", "Target", ",", 
      "\[Epsilon]Correction", ",", "PointNumberCorrection", ",", 
      "DipoleTransitionMatrixElement", ",", "IntegrationPointsPerCycle", ",", 
-     "RunInParallel"}], "]"}], ";"}], "\[IndentingNewLine]", 
-  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+     "RunInParallel", ",", "Simplifier"}], "]"}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -2579,9 +2578,10 @@ be e.g. {Inactive[ParallelTable], Inactive[Sum]}.\>\""}], ";"}],
       RowBox[{"PointNumberCorrection", "\[Rule]", "0"}], ",", 
       RowBox[{"Verbose", "\[Rule]", "0"}], ",", "\[IndentingNewLine]", 
       RowBox[{"RunInParallel", "\[Rule]", "Automatic"}], ",", 
+      RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}], ",", 
       "\[IndentingNewLine]", 
-      RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}]}], 
-     "\[IndentingNewLine]", "}"}]}]}], ";"}], "\[IndentingNewLine]", 
+      RowBox[{"Simplifier", "\[Rule]", "Identity"}]}], "\[IndentingNewLine]", 
+     "}"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"makeDipoleList", "::", "gate"}], "=", 
@@ -2636,8 +2636,8 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
       "GAdotAInt", ",", "AdotGAInt", ",", "GAIntInt", ",", 
       "bigPScorrectionInt", ",", "AdotGAdotAInt", ",", "\[IndentingNewLine]", 
-      "prefactor", ",", "integrand", ",", "dipoleList", ",", 
-      "\[IndentingNewLine]", "TableCommand", ",", "SumCommand"}], 
+      "simplifier", ",", "prefactor", ",", "integrand", ",", "dipoleList", 
+      ",", "\[IndentingNewLine]", "TableCommand", ",", "SumCommand"}], 
      "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
     "\[IndentingNewLine]", 
     RowBox[{
@@ -2969,7 +2969,9 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
                    "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
                "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
         ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"simplifier", "=", 
+      RowBox[{"OptionValue", "[", "Simplifier", "]"}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"setPreintegral", "[", 
        RowBox[{
@@ -3001,25 +3003,26 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
             RowBox[{
              RowBox[{"integralVariable", "[", 
               RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
-             RowBox[{
+             RowBox[{"simplifier", "[", 
               RowBox[{
-               RowBox[{"(", 
-                RowBox[{
-                 RowBox[{"(", 
-                  RowBox[{"#", "/.", 
-                   RowBox[{"{", 
-                    RowBox[{"\[Tau]", "\[Rule]", "t"}], "}"}]}], ")"}], "-", 
-                 RowBox[{"(", 
-                  RowBox[{"#", "/.", 
-                   RowBox[{"{", 
-                    RowBox[{"\[Tau]", "\[Rule]", "tt"}], "}"}]}], ")"}]}], 
-                ")"}], "&"}], "[", 
-              RowBox[{"Integrate", "[", 
                RowBox[{
-                RowBox[{"preintegrand", "[", 
-                 RowBox[{"\[Tau]", ",", "tt"}], "]"}], ",", "\[Tau]"}], "]"}],
-               "]"}]}], ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
-           ",", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"#", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{"\[Tau]", "\[Rule]", "t"}], "}"}]}], ")"}], "-", 
+                  RowBox[{"(", 
+                   RowBox[{"#", "/.", 
+                    RowBox[{"{", 
+                    RowBox[{"\[Tau]", "\[Rule]", "tt"}], "}"}]}], ")"}]}], 
+                 ")"}], "&"}], "[", 
+               RowBox[{"Integrate", "[", 
+                RowBox[{
+                 RowBox[{"preintegrand", "[", 
+                  RowBox[{"\[Tau]", ",", "tt"}], "]"}], ",", "\[Tau]"}], 
+                "]"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", ",", 
            RowBox[{
             RowBox[{"OptionValue", "[", "Preintegrals", "]"}], "\[Equal]", 
             "\"\<Numeric\>\""}], ",", "\[IndentingNewLine]", 
@@ -3401,48 +3404,50 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
             RowBox[{"t", ",", "tt"}], "]"}], "-", 
            RowBox[{"bigPScorrectionInt", "[", 
             RowBox[{"t", ",", "tt"}], "]"}]}], ")"}]}]}]}]}], ";", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"S", "[", 
        RowBox[{"t_", ",", "tt_"}], "]"}], ":=", 
-      RowBox[{
+      RowBox[{"simplifier", "[", "\[IndentingNewLine]", 
        RowBox[{
-        FractionBox["1", "2"], 
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{"Total", "[", 
-           SuperscriptBox[
-            RowBox[{"ps", "[", 
-             RowBox[{"t", ",", "tt"}], "]"}], "2"], "]"}], "+", 
-          SuperscriptBox["\[Kappa]", "2"]}], ")"}], 
-        RowBox[{"(", 
-         RowBox[{"t", "-", "tt"}], ")"}]}], "+", 
-       RowBox[{
-        RowBox[{"ps", "[", 
-         RowBox[{"t", ",", "tt"}], "]"}], ".", 
-        RowBox[{"AInt", "[", 
-         RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
-       RowBox[{
-        FractionBox["1", "2"], 
-        RowBox[{"A2Int", "[", 
-         RowBox[{"t", ",", "tt"}], "]"}]}], "-", 
-       RowBox[{"(", "\[IndentingNewLine]", 
         RowBox[{
+         FractionBox["1", "2"], 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Total", "[", 
+            SuperscriptBox[
+             RowBox[{"ps", "[", 
+              RowBox[{"t", ",", "tt"}], "]"}], "2"], "]"}], "+", 
+           SuperscriptBox["\[Kappa]", "2"]}], ")"}], 
+         RowBox[{"(", 
+          RowBox[{"t", "-", "tt"}], ")"}]}], "+", 
+        RowBox[{
+         RowBox[{"ps", "[", 
+          RowBox[{"t", ",", "tt"}], "]"}], ".", 
+         RowBox[{"AInt", "[", 
+          RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
+        RowBox[{
+         FractionBox["1", "2"], 
+         RowBox[{"A2Int", "[", 
+          RowBox[{"t", ",", "tt"}], "]"}]}], "-", 
+        RowBox[{"(", "\[IndentingNewLine]", 
          RowBox[{
-          RowBox[{"ps", "[", 
-           RowBox[{"t", ",", "tt"}], "]"}], ".", 
-          RowBox[{"GAIntInt", "[", 
-           RowBox[{"t", ",", "tt"}], "]"}], ".", 
-          RowBox[{"ps", "[", 
-           RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
-         RowBox[{
-          RowBox[{"ps", "[", 
-           RowBox[{"t", ",", "tt"}], "]"}], ".", 
-          RowBox[{"bigPScorrectionInt", "[", 
-           RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
-         RowBox[{"AdotGAdotAInt", "[", 
-          RowBox[{"t", ",", "tt"}], "]"}]}], "\[IndentingNewLine]", ")"}]}]}],
-      ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"ps", "[", 
+            RowBox[{"t", ",", "tt"}], "]"}], ".", 
+           RowBox[{"GAIntInt", "[", 
+            RowBox[{"t", ",", "tt"}], "]"}], ".", 
+           RowBox[{"ps", "[", 
+            RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
+          RowBox[{
+           RowBox[{"ps", "[", 
+            RowBox[{"t", ",", "tt"}], "]"}], ".", 
+           RowBox[{"bigPScorrectionInt", "[", 
+            RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
+          RowBox[{"AdotGAdotAInt", "[", 
+           RowBox[{"t", ",", "tt"}], "]"}]}], "\[IndentingNewLine]", ")"}]}], 
+       "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"prefactor", "[", 
        RowBox[{"t_", ",", "\[Tau]_"}], "]"}], ":=", 

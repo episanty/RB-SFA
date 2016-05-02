@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 29 Apr 2016 12:10:17";
+$RBSFAtimestamp="Mon 2 May 2016 16:01:51";
 End[];
 
 
@@ -272,9 +272,10 @@ DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
 RunInParallel::usage="RunInParallel is an option for makeDipoleList which controls whether each RB-SFA instance is parallelized. It accepts False as the (Automatic) option, True, to parallelize each instance, or a pair of functions {TableCommand, SumCommand} to use for the iteration and summing, which could be e.g. {Inactive[ParallelTable], Inactive[Sum]}.";
+Simplifier::usage="Simplifier is an option for makeDipoleList which specifies whether to use ";
 
 
-Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel];
+Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel,Simplifier];
 
 
 
@@ -285,8 +286,8 @@ Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
 PointNumberCorrection->0,Verbose->0,
-RunInParallel->Automatic,
-IntegrationPointsPerCycle->Automatic
+RunInParallel->Automatic,IntegrationPointsPerCycle->Automatic,
+Simplifier->Identity
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
 makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as A[`2`] returns `3` and should return a list of numbers.";
@@ -305,7 +306,7 @@ A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
-prefactor,integrand,dipoleList,
+simplifier,prefactor,integrand,dipoleList,
 TableCommand,SumCommand
 },
 
@@ -357,13 +358,14 @@ Conjugate[OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3}[[1;;dim]],\[Kapp
 ]];
 ];
 ];
+simplifier=OptionValue[Simplifier];
 
 
 setPreintegral[integralVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
 OptionValue[VectorPotentialGradient]=!=None||TrueQ[integrateWithoutGradient],(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
 Which[
 OptionValue[Preintegrals]=="Analytic",
-integralVariable[t_,tt_]=((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]];
+integralVariable[t_,tt_]=simplifier[((#/.{\[Tau]->t})-(#/.{\[Tau]->tt}))&[Integrate[preintegrand[\[Tau],tt],\[Tau]]]];
 
 ,OptionValue[Preintegrals]=="Numeric",
 Which[
@@ -437,11 +439,12 @@ pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
 
 (*Stationary momentum and action*)
 ps[t_,tt_]:=ps[t,tt]=-(1/(t-tt-I \[Epsilon]))Inverse[IdentityMatrix[Length[A[tInit]]]-1/(t-tt-I \[Epsilon]) (GAIntInt[t,tt]+GAIntInt[t,tt]\[Transpose])].(AInt[t,tt]-bigPScorrectionInt[t,tt]);
-
-
-S[t_,tt_]:=1/2 (Total[ps[t,tt]^2]+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int[t,tt]-(
+S[t_,tt_]:=simplifier[
+1/2 (Total[ps[t,tt]^2]+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int[t,tt]-(
 ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt[t,tt]
-);
+)
+];
+
 prefactor[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipoleRec[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]*dipoleIon[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]];
 integrand[t_,\[Tau]_]:=prefactor[t,\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
