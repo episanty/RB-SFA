@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 2 May 2016 16:01:51";
+$RBSFAtimestamp="Tue 3 May 2016 12:51:18";
 End[];
 
 
@@ -143,10 +143,10 @@ End[];
 
 getSpectrum::usage="getSpectrum[DipoleList] returns the power spectrum of DipoleList.";
 Polarization::usage="Polarization is an option for getSpectrum which specifies a polarization vector along which to polarize the dipole list. The default, Polarization\[Rule]False, specifies an unpolarized spectrum.";
-ComplexPart::usage="part is an option for getSpectrum which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
+ComplexPart::usage="ComplexPart is an option for getSpectrum which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
 \[Omega]Power::usage="\[Omega]Power is an option for getSpectrum which specifies a power of frequency which should multiply the spectrum.";
 DifferentiationOrder::usage="DifferentiationOrder is an option for getSpectrum which specifies the order to which the dipole list should be differentiated before the spectrum is taken.";
-Protect[Polarization,part,\[Omega]Power,DifferentiationOrder];
+Protect[Polarization,ComplexPart,\[Omega]Power,DifferentiationOrder];
 
 Begin["`Private`"];
 Options[getSpectrum]={Polarization->False,ComplexPart->(#&),\[Omega]Power->0,DifferentiationOrder->0}~Join~standardOptions;

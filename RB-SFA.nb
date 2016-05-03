@@ -936,7 +936,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 2 May 2016 16:01:51\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 3 May 2016 12:51:18\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1760,9 +1760,9 @@ Polarization\[Rule]False, specifies an unpolarized spectrum.\>\""}],
  RowBox[{
   RowBox[{
    RowBox[{"ComplexPart", "::", "usage"}], "=", 
-   "\"\<part is an option for getSpectrum which specifies a function (like \
-Re, Im, or by default #&) which should be applied to the dipole list before \
-the spectrum is taken.\>\""}], ";"}], "\[IndentingNewLine]", 
+   "\"\<ComplexPart is an option for getSpectrum which specifies a function \
+(like Re, Im, or by default #&) which should be applied to the dipole list \
+before the spectrum is taken.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"\[Omega]Power", "::", "usage"}], "=", 
@@ -1779,7 +1779,7 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
   RowBox[{
    RowBox[{"Protect", "[", 
     RowBox[{
-    "Polarization", ",", "part", ",", "\[Omega]Power", ",", 
+    "Polarization", ",", "ComplexPart", ",", "\[Omega]Power", ",", 
      "DifferentiationOrder"}], "]"}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
@@ -2026,7 +2026,7 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2341,7 +2341,7 @@ periods and nGateRamp ramp periods.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
