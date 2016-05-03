@@ -936,7 +936,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 3 May 2016 12:51:18\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 3 May 2016 21:12:13\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2532,8 +2532,9 @@ be e.g. {Inactive[ParallelTable], Inactive[Sum]}.\>\""}],
   RowBox[{
    RowBox[{
     RowBox[{"Simplifier", "::", "usage"}], "=", 
-    "\"\<Simplifier is an option for makeDipoleList which specifies whether \
-to use \>\""}], ";"}], "\[IndentingNewLine]", 
+    "\"\<Simplifier is an option for makeDipoleList which specifies a \
+function to use to simplify the intermediate and final analytical \
+results.\>\""}], ";"}], "\[IndentingNewLine]", 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{

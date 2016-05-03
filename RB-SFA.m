@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Tue 3 May 2016 12:51:18";
+$RBSFAtimestamp="Tue 3 May 2016 21:12:13";
 End[];
 
 
@@ -272,7 +272,7 @@ DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
 RunInParallel::usage="RunInParallel is an option for makeDipoleList which controls whether each RB-SFA instance is parallelized. It accepts False as the (Automatic) option, True, to parallelize each instance, or a pair of functions {TableCommand, SumCommand} to use for the iteration and summing, which could be e.g. {Inactive[ParallelTable], Inactive[Sum]}.";
-Simplifier::usage="Simplifier is an option for makeDipoleList which specifies whether to use ";
+Simplifier::usage="Simplifier is an option for makeDipoleList which specifies a function to use to simplify the intermediate and final analytical results.";
 
 
 Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel,Simplifier];
