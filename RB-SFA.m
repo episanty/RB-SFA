@@ -19,7 +19,7 @@
 
 
 
-BeginPackage["RBSFA`"];
+BeginPackage["RBSFA`",{"EPToolbox`"}];
 
 
 $RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";

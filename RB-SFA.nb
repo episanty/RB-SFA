@@ -1085,7 +1085,9 @@ Cell["Initialization", "Subsection"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"BeginPackage", "[", "\"\<RBSFA`\>\"", "]"}], ";"}]], "Input",
+  RowBox[{"BeginPackage", "[", 
+   RowBox[{"\"\<RBSFA`\>\"", ",", 
+    RowBox[{"{", "\"\<EPToolbox`\>\"", "}"}]}], "]"}], ";"}]], "Input",
  InitializationCell->True],
 
 Cell[CellGroupData[{
