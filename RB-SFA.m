@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 11 May 2016 15:20:30";
+$RBSFAtimestamp="Wed 11 May 2016 15:26:26";
 End[];
 
 
@@ -480,6 +480,74 @@ integrand[t,\[Tau]]
 dipoleList
 
 ]
+End[];
+
+
+GetSaddlePoints::usage="GetSaddlePoints[\[CapitalOmega],S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where both ranges should be the lower-left and upper-right corners of rectangles in the complex plane.
+
+GetSaddlePoints[\[CapitalOmega]Range,S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds solutions of the HHG temporal saddle-point equations for a range of harmonic energies \[CapitalOmega]Range, and returns an Association with each harmonic energy \[CapitalOmega] indexing a list of saddle-point solution pairs {t,\[Tau]}.
+
+GetSaddlePoints[\[CapitalOmega]spec,S,{{{\!\(\*SubscriptBox[\(tmin\), \(1\)]\),\!\(\*SubscriptBox[\(tmax\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(1\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \(2\)]\),\!\(\*SubscriptBox[\(tmax\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(2\)]\)}},\[Ellipsis]}] uses multiple time domains and combines the solutions.
+
+GetSaddlePoints[\[CapitalOmega]spec,S,{{urange,vrange},\[Ellipsis]},IndependentVariables\[Rule]{u,v}] uses the explicit independent variables u and v to solve the equations and over the given ranges, where u and v can be any of \"RecombinationTime\", \"IonizationTime\" and \"ExcursionTime\", or their shorthands \"t\", \"tt\" and \"\[Tau]\" resp.";
+SortingFunction::usage="SortingFunction is an option of GetSaddlePoints which sets a function f, to be used as f[t,\[Tau],S,\[CapitalOmega]], to be used to sort the solutions, or a list of such functions.";
+SelectionFunction::usage="SelectionFunction is an option of GetSaddlePoints that sets a function f, to be used as f[t,\[Tau],S,\[CapitalOmega]], such that roots are only kept if f returns True.";
+IndependentVariables::usage="IndependentVariables is an option for GetSaddlePoints that specifies the two independent variables, out of \"RecombinationTime\", \"IonizationTime\" and \"ExcursionTime\" (or their shorthands \"t\", \"tt\" and \"\[Tau]\", respectively), to be used in solving the saddle-point equations, and which range over the given regions.";
+
+FiniteDifference::usage="FiniteDifference is a value for the option Jacobian of FindRoot, FindComplexRoots, GetSaddlePoints, and related functions, which specifies that the Jacobian at each step should be evaluated using numerical finite difference procedures.";
+
+GetSaddlePoints::error="Errors encountered for frequency \[CapitalOmega]=`1`";
+
+Begin["`Private`"];
+Options[GetSaddlePoints]=Join[{SortingFunction->(#2&),SelectionFunction->(True&),IndependentVariables->{"RecombinationTime","ExcursionTime"}},Options[FindComplexRoots]];
+Protect[SortingFunction,SelectionFunction,IndependentVariables,FiniteDifference];
+
+GetSaddlePoints[\[CapitalOmega]spec_,S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},options:OptionsPattern[]]:=GetSaddlePoints[\[CapitalOmega]spec,S,{{{tmin,tmax},{\[Tau]min,\[Tau]max}}},options]
+
+GetSaddlePoints[\[CapitalOmega]_,S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t,tt,\[Tau],indVars,depVar,depVarRule,tolerances},
+indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
+depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
+depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
+equations={D[S[t,tt],t]==\[CapitalOmega],D[S[t,tt],tt]==0}/.depVarRule;
+tolerances=Which[
+ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,ConstantArray[
+Which[
+NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
+]
+,2]];
+
+SortBy[
+DeleteDuplicates[
+Flatten[Table[
+Select[
+Check[
+roots=({t,\[Tau]}/.depVarRule)/.(FindComplexRoots[
+equations
+,Evaluate[Sequence[{Symbol[indVars[[1]]],range[[1,1]],range[[1,2]]},{Symbol[indVars[[2]]],range[[2,1]],range[[2,2]]}]]
+,Evaluate[Sequence@@FilterRules[{options},Options[FindComplexRoots]]]
+,SeedGenerator->RandomSobolComplexes
+,Seeds->50
+]/.{{}->(({t,\[Tau]}/.depVarRule)->{})})(*to deal with empty results*)
+,Message[GetSaddlePoints::error,\[CapitalOmega]];roots
+]
+,Function[timesPair,OptionValue[SelectionFunction][timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]]
+]
+,{range,timeRanges}],1]
+,Function[{timesPair1,timesPair2},    And@@Thread[Abs[timesPair1-timesPair2]<tolerances]     ]
+]
+,If[
+ListQ[OptionValue[SortingFunction]],
+Table[Function[timesPair,f[timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]],{f,OptionValue[SortingFunction]}],
+Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]]
+]
+]
+]
+GetSaddlePoints[\[CapitalOmega]Range_List,S_,timeRanges_,options:OptionsPattern[]]:=Association[ParallelTable[
+\[CapitalOmega]->GetSaddlePoints[\[CapitalOmega],S,timeRanges,options]
+,{\[CapitalOmega],Sort[\[CapitalOmega]Range]}]]
+
 End[];
 
 

@@ -1228,7 +1228,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 15:20:30\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 15:26:26\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -3974,7 +3974,7 @@ Cell["Quantum orbit functions suite", "Section"],
 
 Cell[CellGroupData[{
 
-Cell["GetSaddlePoints definition", "Subsection"],
+Cell["GetSaddlePoints", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{
@@ -4348,12 +4348,13 @@ difference procedures.\>\""}], ";"}],
         RowBox[{"Sort", "[", "\[CapitalOmega]Range", "]"}]}], "}"}]}], "]"}], 
     "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"End", "[", "]"}], ";"}]}], "Input"]
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
 }, Closed]],
 
 Cell[CellGroupData[{
 
-Cell["ClassifyQuantumOrbits definition", "Subsection"],
+Cell["ClassifyQuantumOrbits", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{
@@ -4473,7 +4474,7 @@ specifies a list of labels to discard from the final output.\>\""}], ";"}],
 
 Cell[CellGroupData[{
 
-Cell["ReperiodSaddles definition", "Subsection"],
+Cell["ReperiodSaddles", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{"ClearAll", "[", "ReperiodSaddles", "]"}], "\[IndentingNewLine]", 
@@ -4543,7 +4544,7 @@ pairs of a classified set of saddle points.\>\""}], ";"}],
 
 Cell[CellGroupData[{
 
-Cell["HessianRoot definition", "Subsection"],
+Cell["HessianRoot", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{
@@ -4611,7 +4612,7 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell["FindStokesTransitions definition", "Subsection"],
+Cell["FindStokesTransitions", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{
@@ -4954,7 +4955,7 @@ is preferable to do this in a single go using ReperiodSaddles.\>\""}], ";"}],
 
 Cell[CellGroupData[{
 
-Cell["SPAdipole definition", "Subsection"],
+Cell["SPAdipole", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{
@@ -5128,7 +5129,7 @@ to unstructured evaluation.\>\""}], ";"}],
 
 Cell[CellGroupData[{
 
-Cell["UAdipole definition", "Subsection"],
+Cell["UAdipole", "Subsection"],
 
 Cell[BoxData[{
  RowBox[{
