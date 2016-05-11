@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 11 May 2016 14:37:55";
+$RBSFAtimestamp="Wed 11 May 2016 14:47:33";
 End[];
 
 
@@ -483,84 +483,17 @@ dipoleList
 End[];
 
 
-Options[GetSaddlePoints]=Join[{SortingFunction->(#2&),SelectionFunction->(True&),IndependentVariables->{"RecombinationTime","ExcursionTime"}},Options[FindComplexRoots]];
-GetSaddlePoints::usage="GetSaddlePoints[\[CapitalOmega],S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where both ranges should be the lower-left and upper-right corners of rectangles in the complex plane.
-
-GetSaddlePoints[\[CapitalOmega]Range,S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds solutions of the HHG temporal saddle-point equations for a range of harmonic energies \[CapitalOmega]Range, and returns an Association with each harmonic energy \[CapitalOmega] indexing a list of saddle-point solution pairs {t,\[Tau]}.
-
-GetSaddlePoints[\[CapitalOmega]spec,S,{{{\!\(\*SubscriptBox[\(tmin\), \(1\)]\),\!\(\*SubscriptBox[\(tmax\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(1\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \(2\)]\),\!\(\*SubscriptBox[\(tmax\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(2\)]\)}},\[Ellipsis]}] uses multiple time domains and combines the solutions.
-
-GetSaddlePoints[\[CapitalOmega]spec,S,{{urange,vrange},\[Ellipsis]},IndependentVariables\[Rule]{u,v}] uses the explicit independent variables u and v to solve the equations and over the given ranges, where u and v can be any of \"RecombinationTime\", \"IonizationTime\" and \"ExcursionTime\", or their shorthands \"t\", \"tt\" and \"\[Tau]\" resp.";
-SortingFunction::usage="SortingFunction is an option of GetSaddlePoints which sets a function f, to be used as f[t,\[Tau],S,\[CapitalOmega]], to be used to sort the solutions, or a list of such functions.";
-SelectionFunction::usage="SelectionFunction is an option of GetSaddlePoints that sets a function f, to be used as f[t,\[Tau],S,\[CapitalOmega]], such that roots are only kept if f returns True.";
-IndependentVariables::usage="IndependentVariables is an option for GetSaddlePoints that specifies the two independent variables, out of \"RecombinationTime\", \"IonizationTime\" and \"ExcursionTime\" (or their shorthands \"t\", \"tt\" and \"\[Tau]\", respectively), to be used in solving the saddle-point equations, and which range over the given regions.";
-
-FiniteDifference::usage="FiniteDifference is a value for the option Jacobian of FindRoot, FindComplexRoots, GetSaddlePoints, and related functions, which specifies that the Jacobian at each step should be evaluated using numerical finite difference procedures.";
-
-GetSaddlePoints::error="Errors encountered for frequency \[CapitalOmega]=`1`";
-Protect[SortingFunction,SelectionFunction,IndependentVariables,FiniteDifference];
-
-Begin["`Private`"];
-
-GetSaddlePoints[\[CapitalOmega]spec_,S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},options:OptionsPattern[]]:=GetSaddlePoints[\[CapitalOmega]spec,S,{{{tmin,tmax},{\[Tau]min,\[Tau]max}}},options]
-
-GetSaddlePoints[\[CapitalOmega]_,S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t,tt,\[Tau],indVars,depVar,depVarRule,tolerances},
-indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
-depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
-depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
-equations={D[S[t,tt],t]==\[CapitalOmega],D[S[t,tt],tt]==0}/.depVarRule;
-tolerances=Which[
-ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,ConstantArray[
-Which[
-NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
-]
-,2]];
-
-SortBy[
-DeleteDuplicates[
-Flatten[Table[
-Select[
-Check[
-roots=({t,\[Tau]}/.depVarRule)/.(FindComplexRoots[
-equations
-,Evaluate[Sequence[{Symbol[indVars[[1]]],range[[1,1]],range[[1,2]]},{Symbol[indVars[[2]]],range[[2,1]],range[[2,2]]}]]
-,Evaluate[Sequence@@FilterRules[{options},Options[FindComplexRoots]]]
-,SeedGenerator->RandomSobolComplexes
-,Seeds->50
-]/.{{}->(({t,\[Tau]}/.depVarRule)->{})})(*to deal with empty results*)
-,Message[GetSaddlePoints::error,\[CapitalOmega]];roots
-]
-,Function[timesPair,OptionValue[SelectionFunction][timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]]
-]
-,{range,timeRanges}],1]
-,Function[{timesPair1,timesPair2},    And@@Thread[Abs[timesPair1-timesPair2]<tolerances]     ]
-]
-,If[
-ListQ[OptionValue[SortingFunction]],
-Table[Function[timesPair,f[timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]],{f,OptionValue[SortingFunction]}],
-Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]]
-]
-]
-]
-GetSaddlePoints[\[CapitalOmega]Range_List,S_,timeRanges_,options:OptionsPattern[]]:=Association[ParallelTable[
-\[CapitalOmega]->GetSaddlePoints[\[CapitalOmega],S,timeRanges,options]
-,{\[CapitalOmega],Sort[\[CapitalOmega]Range]}]]
-
-End[];
-
-
 ClassifyQuantumOrbits::usage="ClassifyQuantumOrbits[saddlePoints,f] sorts an indexed set of saddle points of the form \[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]}\[Ellipsis]\[RightAssociation] using a function f, which should turn f[t,\[Tau],\[CapitalOmega]] into an appropriate label, and returns an association of the form \[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(1\)]\)\[RightArrow]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{t,\[Tau]},2\[RightArrow]{t,\[Tau]},\[Ellipsis]\[RightAssociation],\[Ellipsis]\[RightAssociation],\[Ellipsis]\[RightAssociation].
 
 ClassifyQuantumOrbits[saddlePoints,f,sortFunction] uses the function sortFunction to sort the sets of saddle points {{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]} for each label and harmonic energy.
 
 ClassifyQuantumOrbits[saddlePoints,f,sortFunction,DiscardedLabels\[RightArrow]{\!\(\*SubscriptBox[\(label\), \(1\)]\),\!\(\*SubscriptBox[\(label\), \(2\)]\),\[Ellipsis]}] specifies a list of labels to discard from the final output.";
 DiscardedLabels::usage="DiscardedLabels is an option for ClassifyQuantumOrbits which specifies a list of labels to discard from the final output.";
-Options[ClassifyQuantumOrbits]={DiscardedLabels->{}};
-Protect[DiscardedLabels];
 
 Begin["`Private`"];
+
+Options[ClassifyQuantumOrbits]={DiscardedLabels->{}};
+Protect[DiscardedLabels];
 
 ClassifyQuantumOrbits[saddlePointList_,classifierFunction_,sortingFunction_:Sort,OptionsPattern[]]:=Map[
 Association,
@@ -601,7 +534,6 @@ HessianRoot[S_,t_,\[Tau]_]:=Sqrt[(2\[Pi])/(I Derivative[0,2][S][t,t-\[Tau]])] Sq
 End[];
 
 
-ClearAll[FindStokesTransitions];
 FindStokesTransitions::usage="FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)}\[RightAssociation],\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(21\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)}\[RightAssociation],\[Ellipsis]\[RightAssociation]] finds the set {{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(S\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\)},n} of the Stokes and anti-Stokes transition energies for the given set of saddle points, where Re(S) changes sign after the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(S\)]\) and Im(S) changes sign after the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\), and n is the index of the member of the pair that should be chosen after the transition (taken as the member with a positive imaginary part of the action at the largest \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\) in the given keys).
 
 FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(1\)]\)\[RightArrow]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[Ellipsis]\[RightAssociation]\[RightAssociation]] finds the Stokes transitions for the given set of saddle-point curve pairs, and returns them labeled with the \!\(\*SubscriptBox[\(label\), \(i\)]\).";
@@ -610,10 +542,11 @@ FindStokesTransitions::multipleS="FindStokesTransitions found multiple Stokes tr
 FindStokesTransitions::multipleAS="FindStokesTransitions found multiple anti-Stokes transitions; using `1` to return a single transition.";
 ChooserFunction::usage="ChooserFunction is an option for FindStokesTransitions that specifies which transition to take if there are multiple transitions in the given dataset. The default is Last and gives the one with higher energy; to get the full set of transitions found use Full or Identity.";
 ReperiodingFunction::usage="ReperiodingFunction is an option for FindStokesTransitions, SPAdipole and UAdipole which specifies a function f[t,\[Tau]] of recombination time t and excursion time \[Tau] that will be used to re-period the pairs {t,\[Tau]} into the form {t+f[t,\[Tau]],\[Tau]}. The default is Function[0], but if pairs are split it can be useful to set ReperiodingFunction to Function[{t,\[Tau]},Floor[-Re[t-\[Tau]],\!\(\*FractionBox[\(2  \[Pi]\), \(\[Omega]\)]\)]] for \[Omega] the carrier frequency. In general, however, it is preferable to do this in a single go using ReperiodSaddles.";
-Protect[ReperiodingFunction,ChooserFunction];
-Options[FindStokesTransitions]={ReperiodingFunction->Function[{t,\[Tau]},0],ChooserFunction->Automatic};
 
 Begin["`Private`"];
+
+Protect[ReperiodingFunction,ChooserFunction];
+Options[FindStokesTransitions]={ReperiodingFunction->Function[{t,\[Tau]},0],ChooserFunction->Automatic};
 
 FindStokesTransitions[S_,deeperAssociation_/;Depth[deeperAssociation]==5,options:OptionsPattern[]]:=Map[
 FindStokesTransitions[S,#,options]&,
@@ -660,9 +593,10 @@ SPAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*Sub
 SPAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)}\[RightAssociation],transition] uses the given Stokes transition set to drop the relevant saddle after the anti-Stokes transition.";
 SPAdipole::wrongno="SPAdipole called with a Stokes transition but with an input association of length `1` at harmonic energy \[CapitalOmega]=`2`. Reverting to unstructured evaluation.";
 SPAdipole::invldtrns="SPAdipole called with invalid Stokes transition set `1`. Reverting to unstructured evaluation.";
-Options[SPAdipole]={ReperiodingFunction->Function[{t,\[Tau]},0]};
 
 Begin["`Private`"];
+
+Options[SPAdipole]={ReperiodingFunction->Function[{t,\[Tau]},0]};
 
 SPAdipole[S_,prefactor_,\[CapitalOmega]_,{t_,\[Tau]_},options:OptionsPattern[]]:=Block[{tr=t+OptionValue[ReperiodingFunction][t,\[Tau]]},
 HessianRoot[S,tr,\[Tau]]prefactor[tr,tr-\[Tau]]Exp[-I S[tr,tr-\[Tau]]+I \[CapitalOmega] tr]
@@ -686,9 +620,10 @@ End[];
 UAdipole::usage="UAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation],transition] returns the total harmonic-dipole contribution in the uniform approximation from the specified saddle points, taking the given Stokes transition set as a reference.";
 UAdipole::saddleno="UAdipole called with `1` time pairs at \[CapitalOmega]=`2`. Reverting to the saddle-point approximation for this set.";
 UAdipole::invldtrns="UAdipole called with invalid Stokes transition set `1`. Reverting to the saddle-point approximation for this set.";
-Options[UAdipole]={ReperiodingFunction->Function[{t,\[Tau]},0]};
 
 Begin["`Private`"];
+
+Options[UAdipole]={ReperiodingFunction->Function[{t,\[Tau]},0]};
 
 UAdipole[S_,prefactor_,\[CapitalOmega]_,times_,transition_,options:OptionsPattern[]]:=(
 If[Length[times]!= 2,Message[UAdipole::saddleno,Length[times],\[CapitalOmega]];Return[SPAdipole[S,prefactor,\[CapitalOmega],times] ]];

@@ -940,7 +940,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 14:37:55\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 14:47:33\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -3691,25 +3691,6 @@ Cell["GetSaddlePoints definition", "Subsection"],
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"Options", "[", "GetSaddlePoints", "]"}], "=", 
-   RowBox[{"Join", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"SortingFunction", "\[Rule]", 
-        RowBox[{"(", 
-         RowBox[{"#2", "&"}], ")"}]}], ",", 
-       RowBox[{"SelectionFunction", "\[Rule]", 
-        RowBox[{"(", 
-         RowBox[{"True", "&"}], ")"}]}], ",", 
-       RowBox[{"IndependentVariables", "\[Rule]", 
-        RowBox[{"{", 
-         RowBox[{"\"\<RecombinationTime\>\"", ",", "\"\<ExcursionTime\>\""}], 
-         "}"}]}]}], "}"}], ",", 
-     RowBox[{"Options", "[", "FindComplexRoots", "]"}]}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
    RowBox[{"GetSaddlePoints", "::", "usage"}], "=", 
    "\"\<GetSaddlePoints[\[CapitalOmega],S,{tmin,tmax},{\[Tau]min,\[Tau]max}] \
 finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point \
@@ -3769,8 +3750,31 @@ difference procedures.\>\""}], ";"}],
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{"GetSaddlePoints", "::", "error"}], "=", 
-   "\"\<Errors encountered for frequency \[CapitalOmega]=`1`\>\""}], 
+   RowBox[{
+    RowBox[{"GetSaddlePoints", "::", "error"}], "=", 
+    "\"\<Errors encountered for frequency \[CapitalOmega]=`1`\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "GetSaddlePoints", "]"}], "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"SortingFunction", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"#2", "&"}], ")"}]}], ",", 
+       RowBox[{"SelectionFunction", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"True", "&"}], ")"}]}], ",", 
+       RowBox[{"IndependentVariables", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"\"\<RecombinationTime\>\"", ",", "\"\<ExcursionTime\>\""}], 
+         "}"}]}]}], "}"}], ",", 
+     RowBox[{"Options", "[", "FindComplexRoots", "]"}]}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -3778,10 +3782,6 @@ difference procedures.\>\""}], ";"}],
     RowBox[{
     "SortingFunction", ",", "SelectionFunction", ",", "IndependentVariables", 
      ",", "FiniteDifference"}], "]"}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -4060,9 +4060,8 @@ difference procedures.\>\""}], ";"}],
         RowBox[{"Sort", "[", "\[CapitalOmega]Range", "]"}]}], "}"}]}], "]"}], 
     "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True]
-}, Closed]],
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4097,10 +4096,15 @@ ClassifyQuantumOrbits[saddlePoints,f,sortFunction,DiscardedLabels\[RightArrow]\
 output.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{"DiscardedLabels", "::", "usage"}], "=", 
-   "\"\<DiscardedLabels is an option for ClassifyQuantumOrbits which \
-specifies a list of labels to discard from the final output.\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"DiscardedLabels", "::", "usage"}], "=", 
+    "\"\<DiscardedLabels is an option for ClassifyQuantumOrbits which \
+specifies a list of labels to discard from the final output.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"Options", "[", "ClassifyQuantumOrbits", "]"}], "=", 
@@ -4110,10 +4114,6 @@ specifies a list of labels to discard from the final output.\>\""}],
  RowBox[{
   RowBox[{
    RowBox[{"Protect", "[", "DiscardedLabels", "]"}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -4181,7 +4181,7 @@ specifies a list of labels to discard from the final output.\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4251,7 +4251,7 @@ pairs of a classified set of saddle points.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4318,27 +4318,14 @@ Cell[BoxData[{
        ")"}]}]]]}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{
-  RowBox[{"Function", "[", "0", "]"}], "[", 
-  RowBox[{"j", ",", "j", ",", "l"}], "]"}]], "Input"],
-
-Cell[BoxData["0"], "Output"]
-}, Open  ]]
-}, Closed]],
+ InitializationCell->True]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell["FindStokesTransitions definition", "Subsection"],
 
 Cell[BoxData[{
- RowBox[{
-  RowBox[{"ClearAll", "[", "FindStokesTransitions", "]"}], 
-  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"FindStokesTransitions", "::", "usage"}], "=", 
@@ -4392,16 +4379,22 @@ full set of transitions found use Full or Identity.\>\""}],
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{"ReperiodingFunction", "::", "usage"}], "=", 
-   "\"\<ReperiodingFunction is an option for FindStokesTransitions, SPAdipole \
-and UAdipole which specifies a function f[t,\[Tau]] of recombination time t \
-and excursion time \[Tau] that will be used to re-period the pairs {t,\[Tau]} \
-into the form {t+f[t,\[Tau]],\[Tau]}. The default is Function[0], but if \
-pairs are split it can be useful to set ReperiodingFunction to Function[{t,\
-\[Tau]},Floor[-Re[t-\[Tau]],\!\(\*FractionBox[\(2  \[Pi]\), \(\[Omega]\)]\)]] \
-for \[Omega] the carrier frequency. In general, however, it is preferable to \
-do this in a single go using ReperiodSaddles.\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ReperiodingFunction", "::", "usage"}], "=", 
+    "\"\<ReperiodingFunction is an option for FindStokesTransitions, \
+SPAdipole and UAdipole which specifies a function f[t,\[Tau]] of \
+recombination time t and excursion time \[Tau] that will be used to re-period \
+the pairs {t,\[Tau]} into the form {t+f[t,\[Tau]],\[Tau]}. The default is \
+Function[0], but if pairs are split it can be useful to set \
+ReperiodingFunction to \
+Function[{t,\[Tau]},Floor[-Re[t-\[Tau]],\!\(\*FractionBox[\(2  \[Pi]\), \(\
+\[Omega]\)]\)]] for \[Omega] the carrier frequency. In general, however, it \
+is preferable to do this in a single go using ReperiodSaddles.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Protect", "[", 
    RowBox[{"ReperiodingFunction", ",", "ChooserFunction"}], "]"}], 
@@ -4418,10 +4411,6 @@ do this in a single go using ReperiodSaddles.\>\""}],
          RowBox[{"{", 
           RowBox[{"t", ",", "\[Tau]"}], "}"}], ",", "0"}], "]"}]}], ",", 
       RowBox[{"ChooserFunction", "\[Rule]", "Automatic"}]}], "}"}]}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -4673,7 +4662,7 @@ do this in a single go using ReperiodSaddles.\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4707,9 +4696,15 @@ association of length `1` at harmonic energy \[CapitalOmega]=`2`. Reverting \
 to unstructured evaluation.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{"SPAdipole", "::", "invldtrns"}], "=", 
-   "\"\<SPAdipole called with invalid Stokes transition set `1`. Reverting to \
-unstructured evaluation.\>\""}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"SPAdipole", "::", "invldtrns"}], "=", 
+    "\"\<SPAdipole called with invalid Stokes transition set `1`. Reverting \
+to unstructured evaluation.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -4721,10 +4716,6 @@ unstructured evaluation.\>\""}], ";"}], "\[IndentingNewLine]",
         RowBox[{"{", 
          RowBox[{"t", ",", "\[Tau]"}], "}"}], ",", "0"}], "]"}]}], "}"}]}], 
    ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"SPAdipole", "[", 
    RowBox[{"S_", ",", "prefactor_", ",", "\[CapitalOmega]_", ",", 
@@ -4845,7 +4836,7 @@ unstructured evaluation.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4871,10 +4862,15 @@ to the saddle-point approximation for this set.\>\""}],
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{"UAdipole", "::", "invldtrns"}], "=", 
-   "\"\<UAdipole called with invalid Stokes transition set `1`. Reverting to \
-the saddle-point approximation for this set.\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"UAdipole", "::", "invldtrns"}], "=", 
+    "\"\<UAdipole called with invalid Stokes transition set `1`. Reverting to \
+the saddle-point approximation for this set.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -4886,10 +4882,6 @@ the saddle-point approximation for this set.\>\""}],
         RowBox[{"{", 
          RowBox[{"t", ",", "\[Tau]"}], "}"}], ",", "0"}], "]"}]}], "}"}]}], 
    ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"UAdipole", "[", 
@@ -5079,7 +5071,7 @@ the saddle-point approximation for this set.\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
