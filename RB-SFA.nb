@@ -472,12 +472,300 @@ spreading (which scales as ",
    SuperscriptBox["\[Tau]", 
     RowBox[{
      RowBox[{"-", "3"}], "/", "2"}]], TraditionalForm]]],
- ") makes the contributions after the gate negligible.\nMore physically, \
+ ") makes the contributions after the gate negligible.\n\nMore physically, \
 supressing the contributions from large excursion times represents the fact \
 that the extra-long trajectories they represent produce harmonics which are \
 much harder to phase match (as their harmonic phase is very sensitively \
 dependent on many factors) which means that they are rarely present in \
 experimental spectra unless a concerted effort is performed to observe them."
+}], "Text"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Quantum-orbit functions suite", "Subsection"],
+
+Cell[TextData[{
+ "The package also includes an experimental suite of functions for \
+calculating spectra via quantum-orbit methods. That is, the goal is to \
+calculate the Fourier transform directly,\n\n          ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     StyleBox["D",
+      FontWeight->"Bold"], "(", "\[CapitalOmega]", ")"}], "=", 
+    RowBox[{"\[ImaginaryI]", 
+     RowBox[{
+      SubsuperscriptBox["\[Integral]", 
+       RowBox[{"-", "\[Infinity]"}], "\[Infinity]"], 
+      RowBox[{
+       RowBox[{"\[DifferentialD]", "t"}], 
+       RowBox[{
+        SubsuperscriptBox["\[Integral]", 
+         RowBox[{"-", "\[Infinity]"}], "t"], 
+        RowBox[{
+         RowBox[{"\[DifferentialD]", 
+          RowBox[{"t", "'"}]}], 
+         SuperscriptBox[
+          RowBox[{"(", 
+           FractionBox[
+            RowBox[{"2", "\[Pi]"}], 
+            RowBox[{"\[Epsilon]", "+", 
+             RowBox[{"\[ImaginaryI]", " ", "\[Tau]"}]}]], ")"}], 
+          RowBox[{"3", "/", "2"}]], " ", 
+         RowBox[{
+          StyleBox["d",
+           FontWeight->"Bold"], "(", 
+          RowBox[{
+           StyleBox["\[Pi]",
+            FontWeight->"Bold"], "(", 
+           RowBox[{
+            RowBox[{
+             SubscriptBox[
+              StyleBox["p",
+               FontWeight->"Bold"], "s"], "(", 
+             RowBox[{"t", ",", 
+              RowBox[{"t", "-", 
+               RowBox[{"t", "'"}]}]}], ")"}], ",", "t"}], ")"}], ")"}], " ", 
+         "\[Times]", " ", 
+         RowBox[{
+          RowBox[{
+           StyleBox["F",
+            FontWeight->"Bold"], "(", 
+           RowBox[{"t", "'"}], ")"}], "\[CenterDot]", 
+          RowBox[{
+           StyleBox["d",
+            FontWeight->"Bold"], "(", 
+           RowBox[{
+            StyleBox["\[Pi]",
+             FontWeight->"Bold"], "(", 
+            RowBox[{
+             RowBox[{
+              SubscriptBox[
+               StyleBox["p",
+                FontWeight->"Bold"], "s"], "(", 
+              RowBox[{"t", ",", 
+               RowBox[{"t", "'"}]}], ")"}], ",", 
+             RowBox[{"t", "'"}]}], ")"}], ")"}]}], "\[Times]", 
+         RowBox[{"exp", "[", 
+          RowBox[{
+           RowBox[{"-", "\[ImaginaryI]"}], " ", 
+           RowBox[{"S", "(", 
+            RowBox[{
+             RowBox[{
+              StyleBox[
+               SubscriptBox[
+                StyleBox["p",
+                 FontWeight->"Bold"], 
+                StyleBox["s",
+                 FontWeight->"Plain"]],
+               FontWeight->"Bold"], "(", 
+              RowBox[{"t", ",", 
+               RowBox[{"t", "'"}]}], ")"}], ",", "t", ",", 
+             RowBox[{"t", "'"}]}], ")"}]}], "]"}], "\[Times]", 
+         SuperscriptBox["\[ExponentialE]", 
+          RowBox[{
+           RowBox[{"+", "\[ImaginaryI]"}], " ", "\[CapitalOmega]", " ", 
+           "t"}]]}]}]}]}]}]}], TraditionalForm]]],
+ ",\n\nvia a saddle-point approximation on the ionization and recombination \
+times ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"t", "'"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " and ",
+ Cell[BoxData[
+  FormBox["t", TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ", which gives a harmonic dipole of the form\n\n          ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     StyleBox["D",
+      FontWeight->"Bold"], "(", "\[CapitalOmega]", ")"}], "=", 
+    RowBox[{"\[ImaginaryI]", 
+     RowBox[{
+      UnderscriptBox["\[Sum]", "s"], 
+      RowBox[{
+       SqrtBox[
+        FractionBox[
+         SuperscriptBox[
+          RowBox[{"(", 
+           RowBox[{"2", "\[Pi]"}], ")"}], "2"], 
+         RowBox[{
+          SuperscriptBox["\[ImaginaryI]", "2"], 
+          RowBox[{"det", "(", 
+           RowBox[{
+            SubsuperscriptBox["\[PartialD]", 
+             RowBox[{"(", 
+              RowBox[{"t", ",", 
+               RowBox[{"t", "'"}]}], ")"}], "2"], 
+            SubscriptBox[
+             RowBox[{"S", "(", 
+              RowBox[{"t", ",", 
+               RowBox[{"t", "'"}]}], ")"}], "s"]}], ")"}]}]]], 
+       SuperscriptBox[
+        RowBox[{"(", 
+         FractionBox[
+          RowBox[{"2", "\[Pi]"}], 
+          RowBox[{"\[Epsilon]", "+", 
+           RowBox[{"\[ImaginaryI]", " ", 
+            RowBox[{"(", 
+             RowBox[{
+              SubscriptBox["t", "s"], "-", 
+              SubscriptBox[
+               RowBox[{"t", "'"}], "s"]}], ")"}]}]}]], ")"}], 
+        RowBox[{"3", "/", "2"}]], " ", 
+       RowBox[{
+        StyleBox["d",
+         FontWeight->"Bold"], "(", 
+        RowBox[{
+         StyleBox["\[Pi]",
+          FontWeight->"Bold"], "(", 
+         RowBox[{
+          RowBox[{
+           SubscriptBox[
+            StyleBox["p",
+             FontWeight->"Bold"], "s"], "(", 
+           RowBox[{
+            SubscriptBox["t", "s"], ",", 
+            RowBox[{
+             SubscriptBox["t", "s"], "-", 
+             SubscriptBox[
+              RowBox[{"t", "'"}], "s"]}]}], ")"}], ",", 
+          SubscriptBox["t", "s"]}], ")"}], ")"}], " ", "\[Times]", " ", 
+       RowBox[{
+        RowBox[{
+         StyleBox["F",
+          FontWeight->"Bold"], "(", 
+         SubscriptBox[
+          RowBox[{"t", "'"}], "s"], ")"}], "\[CenterDot]", 
+        RowBox[{
+         StyleBox["d",
+          FontWeight->"Bold"], "(", 
+         RowBox[{
+          StyleBox["\[Pi]",
+           FontWeight->"Bold"], "(", 
+          RowBox[{
+           RowBox[{
+            SubscriptBox[
+             StyleBox["p",
+              FontWeight->"Bold"], "s"], "(", 
+            RowBox[{
+             SubscriptBox["t", "s"], ",", 
+             SubscriptBox[
+              RowBox[{"t", "'"}], "s"]}], ")"}], ",", 
+           SubscriptBox[
+            RowBox[{"t", "'"}], "s"]}], ")"}], ")"}]}], "\[Times]", 
+       RowBox[{"exp", "[", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{"S", "(", 
+          RowBox[{
+           RowBox[{
+            StyleBox[
+             SubscriptBox[
+              StyleBox["p",
+               FontWeight->"Bold"], 
+              StyleBox["s",
+               FontWeight->"Plain"]],
+             FontWeight->"Bold"], "(", 
+            RowBox[{
+             SubscriptBox["t", "s"], ",", 
+             SubscriptBox[
+              RowBox[{"t", "'"}], "s"]}], ")"}], ",", 
+           SubscriptBox["t", "s"], ",", 
+           SubscriptBox[
+            RowBox[{"t", "'"}], "s"]}], ")"}]}], "]"}], "\[Times]", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"+", "\[ImaginaryI]"}], " ", "\[CapitalOmega]", " ", 
+         SubscriptBox["t", "s"]}]]}]}]}]}], TraditionalForm]]],
+ ",\n\nwhere the times ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["t", "s"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " and ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox[
+    RowBox[{"t", "'"}], "s"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " (and equivalently ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["\[Tau]", "s"], "=", 
+    RowBox[{
+     SubscriptBox["t", "s"], "-", 
+     SubscriptBox[
+      RowBox[{"t", "'"}], "s"]}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ") are obtained via the saddle-point equations\n\n          ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      FractionBox[
+       RowBox[{"\[PartialD]", "S"}], 
+       RowBox[{"\[PartialD]", 
+        RowBox[{"t", "'"}]}]], 
+      RowBox[{"(", 
+       RowBox[{
+        SubscriptBox["t", "s"], ",", 
+        SubscriptBox[
+         RowBox[{"t", "'"}], "s"]}], ")"}]}], "=", "0"}], ",", " ", 
+    RowBox[{
+     RowBox[{
+      FractionBox[
+       RowBox[{"\[PartialD]", "S"}], 
+       RowBox[{"\[PartialD]", "t"}]], 
+      RowBox[{"(", 
+       RowBox[{
+        SubscriptBox["t", "s"], ",", 
+        SubscriptBox[
+         RowBox[{"t", "'"}], "s"]}], ")"}]}], "=", "\[CapitalOmega]"}]}], 
+   TraditionalForm]]],
+ ",\n\nas described in detail in the original paper by Lewenstein et al. (",
+ StyleBox[ButtonBox["Phys. Rev. A",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://dx.doi.org/10.1103/PhysRevA.49.2117"], None},
+  ButtonNote->"http://dx.doi.org/10.1103/PhysRevA.49.2117"],
+  FontSlant->"Italic"],
+ ButtonBox[" ",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://dx.doi.org/10.1103/PhysRevA.49.2117"], None},
+  ButtonNote->"http://dx.doi.org/10.1103/PhysRevA.49.2117"],
+ StyleBox[ButtonBox["49",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://dx.doi.org/10.1103/PhysRevA.49.2117"], None},
+  ButtonNote->"http://dx.doi.org/10.1103/PhysRevA.49.2117"],
+  FontWeight->"Bold"],
+ ButtonBox[" no. 3, 2117 (1994)",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://dx.doi.org/10.1103/PhysRevA.49.2117"], None},
+  ButtonNote->"http://dx.doi.org/10.1103/PhysRevA.49.2117"],
+ "), or in e.g. M. Ivanov and O. Smirnova. ",
+ StyleBox["Multielectron high harmonic generation: simple man on a complex \
+plane",
+  FontSlant->"Italic"],
+ ". In T. Schultz and M. Vrakking (eds.), Attosecond and\nXUV Physics: \
+Ultrafast Dynamics and Spectroscopy, pp. 201\[Dash]256 (Wiley-VCH, Weinheim, \
+2014), ",
+ ButtonBox["arXiv:1304.2413",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://arxiv.org/abs/1304.2413"], None},
+  ButtonNote->"http://arxiv.org/abs/1304.2413"],
+ "."
 }], "Text"]
 }, Closed]],
 
@@ -940,7 +1228,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 14:47:33\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 15:20:30\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -4061,7 +4349,7 @@ difference procedures.\>\""}], ";"}],
     "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4181,7 +4469,7 @@ specifies a list of labels to discard from the final output.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4251,7 +4539,7 @@ pairs of a classified set of saddle points.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4319,7 +4607,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4662,7 +4950,7 @@ is preferable to do this in a single go using ReperiodSaddles.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4836,7 +5124,7 @@ to unstructured evaluation.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -5071,7 +5359,7 @@ the saddle-point approximation for this set.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
