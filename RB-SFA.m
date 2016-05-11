@@ -496,7 +496,7 @@ IndependentVariables::usage="IndependentVariables is an option for GetSaddlePoin
 
 FiniteDifference::usage="FiniteDifference is a value for the option Jacobian of FindRoot, FindComplexRoots, GetSaddlePoints, and related functions, which specifies that the Jacobian at each step should be evaluated using numerical finite difference procedures.";
 
-GetSaddlePoints::error="Errors encountered for frequency \[CapitalOmega]=`1`";
+GetSaddlePoints::error="Errors encountered for frequency \[CapitalOmega]=`1`.";
 
 Begin["`Private`"];
 Options[GetSaddlePoints]=Join[{SortingFunction->(#2&),SelectionFunction->(True&),IndependentVariables->{"RecombinationTime","ExcursionTime"}},Options[FindComplexRoots]];

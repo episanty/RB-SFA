@@ -4042,7 +4042,7 @@ difference procedures.\>\""}], ";"}],
   RowBox[{
    RowBox[{
     RowBox[{"GetSaddlePoints", "::", "error"}], "=", 
-    "\"\<Errors encountered for frequency \[CapitalOmega]=`1`\>\""}], ";"}], 
+    "\"\<Errors encountered for frequency \[CapitalOmega]=`1`.\>\""}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
