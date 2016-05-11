@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 11 May 2016 15:26:26";
+$RBSFAtimestamp="Wed 11 May 2016 15:48:30";
 End[];
 
 
@@ -504,7 +504,7 @@ Protect[SortingFunction,SelectionFunction,IndependentVariables,FiniteDifference]
 
 GetSaddlePoints[\[CapitalOmega]spec_,S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},options:OptionsPattern[]]:=GetSaddlePoints[\[CapitalOmega]spec,S,{{{tmin,tmax},{\[Tau]min,\[Tau]max}}},options]
 
-GetSaddlePoints[\[CapitalOmega]_,S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t,tt,\[Tau],indVars,depVar,depVarRule,tolerances},
+GetSaddlePoints[\[CapitalOmega]_,S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,tolerances},
 indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
 depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
 depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};

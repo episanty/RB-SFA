@@ -1230,7 +1230,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 15:26:26\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 15:48:30\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -4101,10 +4101,15 @@ difference procedures.\>\""}], ";"}],
   RowBox[{"Block", "[", 
    RowBox[{
     RowBox[{"{", 
-     RowBox[{
-     "equations", ",", "roots", ",", "t", ",", "tt", ",", "\[Tau]", ",", 
-      "indVars", ",", "depVar", ",", "depVarRule", ",", "tolerances"}], "}"}],
-     ",", "\[IndentingNewLine]", 
+     RowBox[{"equations", ",", "roots", ",", 
+      RowBox[{"t", "=", 
+       RowBox[{"Symbol", "[", "\"\<t\>\"", "]"}]}], ",", 
+      RowBox[{"tt", "=", 
+       RowBox[{"Symbol", "[", "\"\<tt\>\"", "]"}]}], ",", 
+      RowBox[{"\[Tau]", "=", 
+       RowBox[{"Symbol", "[", "\"\<\[Tau]\>\"", "]"}]}], ",", "indVars", ",", 
+      "depVar", ",", "depVarRule", ",", "tolerances"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{"indVars", "=", 
       RowBox[{
@@ -4352,7 +4357,7 @@ difference procedures.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
