@@ -15,7 +15,7 @@ CC-BY-SA.", "Text"],
 
 Cell[CellGroupData[{
 
-Cell["Introduction", "Section",
+Cell["Introduction", "Subchapter",
  CellTags->"Introduction"],
 
 Cell[CellGroupData[{
@@ -785,7 +785,11 @@ reads\n\n          ",
 
 Cell[CellGroupData[{
 
-Cell["Implementation: supporting functions", "Section"],
+Cell["Implementation", "Subchapter"],
+
+Cell[CellGroupData[{
+
+Cell["Supporting functions", "Section"],
 
 Cell[CellGroupData[{
 
@@ -822,7 +826,7 @@ RB-SFA package.\>\""}], ";"}], "\[IndentingNewLine]",
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"$RBSFAversion", ":=", 
-   RowBox[{"\"\<RB-SFA v2.0.7, \>\"", "<>", "$RBSFAtimestamp"}]}], 
+   RowBox[{"\"\<RB-SFA v2.1.0, \>\"", "<>", "$RBSFAtimestamp"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -936,7 +940,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 3 May 2016 21:12:13\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 14:37:55\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2026,7 +2030,7 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2341,7 +2345,7 @@ periods and nGateRamp ramp periods.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2393,7 +2397,7 @@ q-th ion of the specified Target, in atomic units.\>\""}],
 
 Cell[CellGroupData[{
 
-Cell["Implementation: main integrator function", "Section"],
+Cell["makeDipoleList: main numerical integrator", "Section"],
 
 Cell[TextData[{
  "The main integration function is ",
@@ -3673,18 +3677,1422 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
    "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Quantum orbit functions suite", "Section"],
+
+Cell[CellGroupData[{
+
+Cell["GetSaddlePoints definition", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "GetSaddlePoints", "]"}], "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"SortingFunction", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"#2", "&"}], ")"}]}], ",", 
+       RowBox[{"SelectionFunction", "\[Rule]", 
+        RowBox[{"(", 
+         RowBox[{"True", "&"}], ")"}]}], ",", 
+       RowBox[{"IndependentVariables", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"\"\<RecombinationTime\>\"", ",", "\"\<ExcursionTime\>\""}], 
+         "}"}]}]}], "}"}], ",", 
+     RowBox[{"Options", "[", "FindComplexRoots", "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetSaddlePoints", "::", "usage"}], "=", 
+   "\"\<GetSaddlePoints[\[CapitalOmega],S,{tmin,tmax},{\[Tau]min,\[Tau]max}] \
+finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point \
+equations at harmonic energy \[CapitalOmega] for action S, in the range \
+{tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion \
+time, where both ranges should be the lower-left and upper-right corners of \
+rectangles in the complex plane.\n\n\
+GetSaddlePoints[\[CapitalOmega]Range,S,{tmin,tmax},{\[Tau]min,\[Tau]max}] \
+finds solutions of the HHG temporal saddle-point equations for a range of \
+harmonic energies \[CapitalOmega]Range, and returns an Association with each \
+harmonic energy \[CapitalOmega] indexing a list of saddle-point solution \
+pairs {t,\[Tau]}.\n\n\
+GetSaddlePoints[\[CapitalOmega]spec,S,{{{\!\(\*SubscriptBox[\(tmin\), \
+\(1\)]\),\!\(\*SubscriptBox[\(tmax\), \
+\(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(1\)]\),\!\(\*SubscriptBox[\(\
+\[Tau]max\), \(1\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \
+\(2\)]\),\!\(\*SubscriptBox[\(tmax\), \
+\(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\
+\[Tau]max\), \(2\)]\)}},\[Ellipsis]}] uses multiple time domains and combines \
+the solutions.\n\nGetSaddlePoints[\[CapitalOmega]spec,S,{{urange,vrange},\
+\[Ellipsis]},IndependentVariables\[Rule]{u,v}] uses the explicit independent \
+variables u and v to solve the equations and over the given ranges, where u \
+and v can be any of \\\"RecombinationTime\\\", \\\"IonizationTime\\\" and \
+\\\"ExcursionTime\\\", or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\
+\[Tau]\\\" resp.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SortingFunction", "::", "usage"}], "=", 
+   "\"\<SortingFunction is an option of GetSaddlePoints which sets a function \
+f, to be used as f[t,\[Tau],S,\[CapitalOmega]], to be used to sort the \
+solutions, or a list of such functions.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SelectionFunction", "::", "usage"}], "=", 
+   "\"\<SelectionFunction is an option of GetSaddlePoints that sets a \
+function f, to be used as f[t,\[Tau],S,\[CapitalOmega]], such that roots are \
+only kept if f returns True.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"IndependentVariables", "::", "usage"}], "=", 
+    "\"\<IndependentVariables is an option for GetSaddlePoints that specifies \
+the two independent variables, out of \\\"RecombinationTime\\\", \
+\\\"IonizationTime\\\" and \\\"ExcursionTime\\\" (or their shorthands \\\"t\\\
+\", \\\"tt\\\" and \\\"\[Tau]\\\", respectively), to be used in solving the \
+saddle-point equations, and which range over the given regions.\>\""}], ";"}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"FiniteDifference", "::", "usage"}], "=", 
+    "\"\<FiniteDifference is a value for the option Jacobian of FindRoot, \
+FindComplexRoots, GetSaddlePoints, and related functions, which specifies \
+that the Jacobian at each step should be evaluated using numerical finite \
+difference procedures.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetSaddlePoints", "::", "error"}], "=", 
+   "\"\<Errors encountered for frequency \[CapitalOmega]=`1`\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Protect", "[", 
+    RowBox[{
+    "SortingFunction", ",", "SelectionFunction", ",", "IndependentVariables", 
+     ",", "FiniteDifference"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetSaddlePoints", "[", 
+    RowBox[{"\[CapitalOmega]spec_", ",", "S_", ",", 
+     RowBox[{"{", 
+      RowBox[{"tmin_", ",", "tmax_"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\[Tau]min_", ",", "\[Tau]max_"}], "}"}], ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"GetSaddlePoints", "[", 
+    RowBox[{"\[CapitalOmega]spec", ",", "S", ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"tmin", ",", "tmax"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"\[Tau]min", ",", "\[Tau]max"}], "}"}]}], "}"}], "}"}], ",", 
+     "options"}], "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GetSaddlePoints", "[", 
+   RowBox[{"\[CapitalOmega]_", ",", "S_", ",", "timeRanges_", ",", 
+    RowBox[{"options", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "equations", ",", "roots", ",", "t", ",", "tt", ",", "\[Tau]", ",", 
+      "indVars", ",", "depVar", ",", "depVarRule", ",", "tolerances"}], "}"}],
+     ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"indVars", "=", 
+      RowBox[{
+       RowBox[{"OptionValue", "[", "IndependentVariables", "]"}], "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<RecombinationTime\>\"", "\[Rule]", "\"\<t\>\""}], ",", 
+         RowBox[{"\"\<ExcursionTime\>\"", "\[Rule]", "\"\<\[Tau]\>\""}], ",", 
+         
+         RowBox[{"\"\<IonizationTime\>\"", "\[Rule]", "\"\<tt\>\""}]}], 
+        "}"}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"depVar", "=", 
+      RowBox[{"First", "[", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"\"\<t\>\"", ",", "\"\<\[Tau]\>\"", ",", "\"\<tt\>\""}], 
+          "}"}], ",", 
+         RowBox[{"Alternatives", "@@", "indVars"}]}], "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"depVarRule", "=", 
+      RowBox[{"depVar", "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<tt\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"tt", "\[Rule]", 
+            RowBox[{"t", "-", "\[Tau]"}]}], "}"}]}], ",", 
+         RowBox[{"\"\<t\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"t", "\[Rule]", 
+            RowBox[{"tt", "+", "\[Tau]"}]}], "}"}]}], ",", 
+         RowBox[{"\"\<\[Tau]\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"\[Tau]", "\[Rule]", 
+            RowBox[{"t", "-", "tt"}]}], "}"}]}]}], "}"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"equations", "=", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"D", "[", 
+           RowBox[{
+            RowBox[{"S", "[", 
+             RowBox[{"t", ",", "tt"}], "]"}], ",", "t"}], "]"}], "\[Equal]", 
+          "\[CapitalOmega]"}], ",", 
+         RowBox[{
+          RowBox[{"D", "[", 
+           RowBox[{
+            RowBox[{"S", "[", 
+             RowBox[{"t", ",", "tt"}], "]"}], ",", "tt"}], "]"}], "\[Equal]", 
+          "0"}]}], "}"}], "/.", "depVarRule"}]}], ";", "\[IndentingNewLine]", 
+     
+     RowBox[{"tolerances", "=", 
+      RowBox[{"Which", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ListQ", "[", 
+         RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
+        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
+        "\[IndentingNewLine]", "True", ",", 
+        RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Which", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"NumberQ", "[", 
+             RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
+            RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
+            "\[IndentingNewLine]", "True", ",", 
+            RowBox[{"10", "^", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"NumberQ", "[", 
+                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}], 
+               ",", " ", 
+               RowBox[{"2", "-", 
+                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
+               
+               RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
+           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}], 
+         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     
+     RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Flatten", "[", 
+          RowBox[{
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Select", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"Check", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"roots", "=", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"t", ",", "\[Tau]"}], "}"}], "/.", "depVarRule"}],
+                     ")"}], "/.", 
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"FindComplexRoots", "[", "\[IndentingNewLine]", 
+                    RowBox[{"equations", "\[IndentingNewLine]", ",", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Sequence", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Symbol", "[", 
+                    RowBox[{
+                    "indVars", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "}"}], ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Symbol", "[", 
+                    RowBox[{
+                    "indVars", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "}"}]}], "]"}], "]"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"{", "options", "}"}], ",", 
+                    RowBox[{"Options", "[", "FindComplexRoots", "]"}]}], 
+                    "]"}]}], "]"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    "SeedGenerator", "\[Rule]", "RandomSobolComplexes"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{"Seeds", "\[Rule]", "50"}]}], 
+                    "\[IndentingNewLine]", "]"}], "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", "}"}], "\[Rule]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"t", ",", "\[Tau]"}], "}"}], "/.", "depVarRule"}],
+                     ")"}], "\[Rule]", 
+                    RowBox[{"{", "}"}]}], ")"}]}], "}"}]}], ")"}]}]}], 
+                 RowBox[{"(*", 
+                  RowBox[{
+                  "to", " ", "deal", " ", "with", " ", "empty", " ", 
+                   "results"}], "*)"}], "\[IndentingNewLine]", ",", 
+                 RowBox[{
+                  RowBox[{"Message", "[", 
+                   RowBox[{
+                    RowBox[{"GetSaddlePoints", "::", "error"}], ",", 
+                    "\[CapitalOmega]"}], "]"}], ";", "roots"}]}], 
+                "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+               RowBox[{"Function", "[", 
+                RowBox[{"timesPair", ",", 
+                 RowBox[{
+                  RowBox[{"OptionValue", "[", "SelectionFunction", "]"}], "[", 
+                  RowBox[{
+                   RowBox[{
+                   "timesPair", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                   RowBox[{
+                   "timesPair", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "S", ",", 
+                   "\[CapitalOmega]"}], "]"}]}], "]"}]}], 
+              "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+             RowBox[{"{", 
+              RowBox[{"range", ",", "timeRanges"}], "}"}]}], "]"}], ",", 
+           "1"}], "]"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"Function", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"timesPair1", ",", "timesPair2"}], "}"}], ",", "    ", 
+           RowBox[{"And", "@@", 
+            RowBox[{"Thread", "[", 
+             RowBox[{
+              RowBox[{"Abs", "[", 
+               RowBox[{"timesPair1", "-", "timesPair2"}], "]"}], "<", 
+              "tolerances"}], "]"}]}]}], "     ", "]"}]}], 
+        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"ListQ", "[", 
+          RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{"Function", "[", 
+            RowBox[{"timesPair", ",", 
+             RowBox[{"f", "[", 
+              RowBox[{
+               RowBox[{
+               "timesPair", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}], ",", 
+               RowBox[{
+               "timesPair", "\[LeftDoubleBracket]", "2", 
+                "\[RightDoubleBracket]"}], ",", "S", ",", "\[CapitalOmega]"}],
+               "]"}]}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"f", ",", 
+             RowBox[{"OptionValue", "[", "SortingFunction", "]"}]}], "}"}]}], 
+          "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Function", "[", 
+          RowBox[{"timesPair", ",", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "[", 
+            RowBox[{
+             RowBox[{
+             "timesPair", "\[LeftDoubleBracket]", "1", 
+              "\[RightDoubleBracket]"}], ",", 
+             RowBox[{
+             "timesPair", "\[LeftDoubleBracket]", "2", 
+              "\[RightDoubleBracket]"}], ",", "S", ",", "\[CapitalOmega]"}], 
+            "]"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetSaddlePoints", "[", 
+    RowBox[{"\[CapitalOmega]Range_List", ",", "S_", ",", "timeRanges_", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Association", "[", 
+    RowBox[{"ParallelTable", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"\[CapitalOmega]", "\[Rule]", 
+       RowBox[{"GetSaddlePoints", "[", 
+        RowBox[{
+        "\[CapitalOmega]", ",", "S", ",", "timeRanges", ",", "options"}], 
+        "]"}]}], "\[IndentingNewLine]", ",", 
+      RowBox[{"{", 
+       RowBox[{"\[CapitalOmega]", ",", 
+        RowBox[{"Sort", "[", "\[CapitalOmega]Range", "]"}]}], "}"}]}], "]"}], 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["ClassifyQuantumOrbits definition", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ClassifyQuantumOrbits", "::", "usage"}], "=", 
+   "\"\<ClassifyQuantumOrbits[saddlePoints,f] sorts an indexed set of saddle \
+points of the form \[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \
+\(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \
+\(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(11\)]\)},{\!\(\*SubscriptBox[\(t\), \
+\(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]}\[Ellipsis]\
+\[RightAssociation] using a function f, which should turn f[t,\[Tau],\
+\[CapitalOmega]] into an appropriate label, and returns an association of the \
+form \[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(1\)]\)\[RightArrow]\
+\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\
+\[RightArrow]\[LeftAssociation]1\[RightArrow]{t,\[Tau]},2\[RightArrow]{t,\
+\[Tau]},\[Ellipsis]\[RightAssociation],\[Ellipsis]\[RightAssociation],\
+\[Ellipsis]\[RightAssociation].\n\n\
+ClassifyQuantumOrbits[saddlePoints,f,sortFunction] uses the function \
+sortFunction to sort the sets of saddle points {{\!\(\*SubscriptBox[\(t\), \
+\(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(11\)]\)},{\!\(\*SubscriptBox[\(t\), \
+\(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]} for each \
+label and harmonic energy.\n\n\
+ClassifyQuantumOrbits[saddlePoints,f,sortFunction,DiscardedLabels\[RightArrow]\
+{\!\(\*SubscriptBox[\(label\), \(1\)]\),\!\(\*SubscriptBox[\(label\), \
+\(2\)]\),\[Ellipsis]}] specifies a list of labels to discard from the final \
+output.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DiscardedLabels", "::", "usage"}], "=", 
+   "\"\<DiscardedLabels is an option for ClassifyQuantumOrbits which \
+specifies a list of labels to discard from the final output.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "ClassifyQuantumOrbits", "]"}], "=", 
+   RowBox[{"{", 
+    RowBox[{"DiscardedLabels", "\[Rule]", 
+     RowBox[{"{", "}"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Protect", "[", "DiscardedLabels", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ClassifyQuantumOrbits", "[", 
+    RowBox[{"saddlePointList_", ",", "classifierFunction_", ",", 
+     RowBox[{"sortingFunction_:", "Sort"}], ",", 
+     RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
+   RowBox[{"Map", "[", "\[IndentingNewLine]", 
+    RowBox[{"Association", ",", "\[IndentingNewLine]", 
+     RowBox[{"MapIndexed", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"#2", "\[LeftDoubleBracket]", 
+           RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], "\[Rule]", "#1"}], 
+         "&"}], ")"}], ",", 
+       RowBox[{"(*", 
+        RowBox[{
+        "index", " ", "after", " ", "sorting", " ", "each", " ", "pair"}], 
+        "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"Map", "[", "\[IndentingNewLine]", 
+        RowBox[{"sortingFunction", ",", "\[IndentingNewLine]", 
+         RowBox[{"Delete", "[", 
+          RowBox[{
+           RowBox[{"DeleteMissing", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Query", "[", "Transpose", "]"}], "[", 
+              "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"MapIndexed", "[", "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"GroupBy", "[", 
+                    RowBox[{
+                    RowBox[{"classifierFunction", "@@", "#"}], "&"}], "]"}], 
+                   "[", 
+                   RowBox[{"Flatten", "/@", 
+                    RowBox[{"Transpose", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"#1", ",", 
+                    RowBox[{"ConstantArray", "[", 
+                    RowBox[{
+                    RowBox[{"#2", "\[LeftDoubleBracket]", 
+                    RowBox[{
+                    RowBox[{"{", "1", "}"}], ",", "1"}], 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"Length", "[", "#1", "]"}]}], "]"}]}], "}"}], 
+                    "]"}]}], "]"}], "&"}], "\[IndentingNewLine]", ",", 
+                 "saddlePointList"}], "]"}], "\[LeftDoubleBracket]", 
+               RowBox[{"All", ",", "All", ",", "All", ",", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "2"}], "}"}]}], "\[RightDoubleBracket]"}], 
+              "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}],
+             "]"}], ",", 
+           RowBox[{"List", "/@", 
+            RowBox[{"OptionValue", "[", "DiscardedLabels", "]"}]}]}], "]"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+       RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+     RowBox[{"{", "2", "}"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["ReperiodSaddles definition", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{"ClearAll", "[", "ReperiodSaddles", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ReperiodSaddles", "::", "usage"}], "=", 
+    "\"\<ReperiodSaddles[{{\!\(\*SubscriptBox[\(t\), \
+\(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},{\!\(\*SubscriptBox[\(t\), \
+\(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]},f] readjusts \
+the assigned cycle of the saddle points {\!\(\*SubscriptBox[\(t\), \
+\(i\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i\)]\)}, returning the list \
+{{\!\(\*SubscriptBox[\(t\), \(1\)]\)+f[\!\(\*SubscriptBox[\(t\), \
+\(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)],\!\(\*SubscriptBox[\(\[Tau]\
+\), \(1\)]\)},\[Ellipsis]}.\n\n\
+ReperiodSaddles[\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\
+\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\
+\[Tau]\), \(11\)]\)},\[Ellipsis]},\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\
+\)]\)\[Rule]\[Ellipsis]\[RightAssociation],f] reperiods saddle-point pairs in \
+a harmonic-energy-indexed association.\n\n\
+ReperiodSaddles[\[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(l\)]\)\
+\[Rule]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\
+\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \
+\(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},\[Ellipsis]},\[Ellipsis]\
+\[RightAssociation],\[Ellipsis]\[RightAssociation],f] reperiods saddle-point \
+pairs of a classified set of saddle points.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ReperiodSaddles", "[", 
+   RowBox[{
+    RowBox[{"pair_", "/;", 
+     RowBox[{
+      RowBox[{"Depth", "[", "pair", "]"}], "\[Equal]", "2"}]}], ",", "f_"}], 
+   "]"}], ":=", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"pair", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+     "+", 
+     RowBox[{"f", "[", 
+      RowBox[{
+       RowBox[{"pair", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}],
+        ",", 
+       RowBox[{
+       "pair", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+      "]"}]}], ",", 
+    RowBox[{"pair", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+   "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ReperiodSaddles", "[", 
+    RowBox[{"association_", ",", "f_"}], "]"}], ":=", 
+   RowBox[{"Apply", "[", 
+    RowBox[{"f", ",", "association", ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Depth", "[", "association", "]"}], "-", "2"}], "}"}]}], 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["HessianRoot definition", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"HessianRoot", "::", "usage"}], "=", 
+   "\"\<HessianRoot[S,t,\[Tau]] calculates the Hessian root \
+\!\(\*SqrtBox[FractionBox[SuperscriptBox[\((2  \[Pi])\), \(2\)], \
+\(\*SuperscriptBox[\(\[ImaginaryI]\), \(2\)] Det[\*SubsuperscriptBox[\(\
+\[PartialD]\), \({t, tt}\), \(2\)]S]\)]]\).\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"HessianRoot", "[", 
+   RowBox[{"S_", ",", "t_", ",", "\[Tau]_"}], "]"}], ":=", 
+  RowBox[{
+   SqrtBox[
+    FractionBox[
+     RowBox[{"2", "\[Pi]"}], 
+     RowBox[{"\[ImaginaryI]", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Derivative", "[", 
+         RowBox[{"0", ",", "2"}], "]"}], "[", "S", "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}]]], 
+   SqrtBox[
+    FractionBox[
+     RowBox[{"2", "\[Pi]", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Derivative", "[", 
+         RowBox[{"0", ",", "2"}], "]"}], "[", "S", "]"}], "[", 
+       RowBox[{"t", ",", 
+        RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], 
+     RowBox[{"\[ImaginaryI]", 
+      RowBox[{"(", " ", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"Derivative", "[", 
+            RowBox[{"2", ",", "0"}], "]"}], "[", "S", "]"}], "[", 
+          RowBox[{"t", ",", 
+           RowBox[{"t", "-", "\[Tau]"}]}], "]"}], 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Derivative", "[", 
+            RowBox[{"0", ",", "2"}], "]"}], "[", "S", "]"}], "[", 
+          RowBox[{"t", ",", 
+           RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "-", 
+        SuperscriptBox[
+         RowBox[{
+          RowBox[{
+           RowBox[{"Derivative", "[", 
+            RowBox[{"1", ",", "1"}], "]"}], "[", "S", "]"}], "[", 
+          RowBox[{"t", ",", 
+           RowBox[{"t", "-", "\[Tau]"}]}], "]"}], "2"]}], 
+       ")"}]}]]]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True],
 
 Cell[CellGroupData[{
 
-Cell["Package closure", "Subsection"],
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Function", "[", "0", "]"}], "[", 
+  RowBox[{"j", ",", "j", ",", "l"}], "]"}]], "Input"],
+
+Cell[BoxData["0"], "Output"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["FindStokesTransitions definition", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "FindStokesTransitions", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindStokesTransitions", "::", "usage"}], "=", 
+   "\"\<FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(\
+\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\
+\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},2\
+\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\
+\), \(12\)]\)}\[RightAssociation],\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\
+\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
+\(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(21\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
+\(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)}\[RightAssociation],\
+\[Ellipsis]\[RightAssociation]] finds the set {{\!\(\*SubscriptBox[\(\
+\[CapitalOmega]\), \(S\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\
+\)},n} of the Stokes and anti-Stokes transition energies for the given set of \
+saddle points, where Re(S) changes sign after the \!\(\*SubscriptBox[\(\
+\[CapitalOmega]\), \(S\)]\) and Im(S) changes sign after the \
+\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\), and n is the index of the \
+member of the pair that should be chosen after the transition (taken as the \
+member with a positive imaginary part of the action at the largest \
+\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\) in the given keys).\n\n\
+FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(label\), \
+\(1\)]\)\[RightArrow]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\),\
+ \(1\)]\)\[RightArrow]\[Ellipsis]\[RightAssociation]\[RightAssociation]] \
+finds the Stokes transitions for the given set of saddle-point curve pairs, \
+and returns them labeled with the \!\(\*SubscriptBox[\(label\), \
+\(i\)]\).\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindStokesTransitions", "::", "saddleno"}], "=", 
+   "\"\<FindStokesTransitions called with `1` of `2` saddle-point sets of \
+length different from 2, with set length structure `3`. Excluding those sets \
+from the calculation.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindStokesTransitions", "::", "multipleS"}], "=", 
+   "\"\<FindStokesTransitions found multiple Stokes transitions; using `1` to \
+return a single transition.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindStokesTransitions", "::", "multipleAS"}], "=", 
+   "\"\<FindStokesTransitions found multiple anti-Stokes transitions; using \
+`1` to return a single transition.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChooserFunction", "::", "usage"}], "=", 
+   "\"\<ChooserFunction is an option for FindStokesTransitions that specifies \
+which transition to take if there are multiple transitions in the given \
+dataset. The default is Last and gives the one with higher energy; to get the \
+full set of transitions found use Full or Identity.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ReperiodingFunction", "::", "usage"}], "=", 
+   "\"\<ReperiodingFunction is an option for FindStokesTransitions, SPAdipole \
+and UAdipole which specifies a function f[t,\[Tau]] of recombination time t \
+and excursion time \[Tau] that will be used to re-period the pairs {t,\[Tau]} \
+into the form {t+f[t,\[Tau]],\[Tau]}. The default is Function[0], but if \
+pairs are split it can be useful to set ReperiodingFunction to Function[{t,\
+\[Tau]},Floor[-Re[t-\[Tau]],\!\(\*FractionBox[\(2  \[Pi]\), \(\[Omega]\)]\)]] \
+for \[Omega] the carrier frequency. In general, however, it is preferable to \
+do this in a single go using ReperiodSaddles.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Protect", "[", 
+   RowBox[{"ReperiodingFunction", ",", "ChooserFunction"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "FindStokesTransitions", "]"}], "=", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"ReperiodingFunction", "\[Rule]", 
+       RowBox[{"Function", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"t", ",", "\[Tau]"}], "}"}], ",", "0"}], "]"}]}], ",", 
+      RowBox[{"ChooserFunction", "\[Rule]", "Automatic"}]}], "}"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindStokesTransitions", "[", 
+    RowBox[{"S_", ",", 
+     RowBox[{"deeperAssociation_", "/;", 
+      RowBox[{
+       RowBox[{"Depth", "[", "deeperAssociation", "]"}], "\[Equal]", "5"}]}], 
+     ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Map", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"FindStokesTransitions", "[", 
+       RowBox[{"S", ",", "#", ",", "options"}], "]"}], "&"}], ",", 
+     "\[IndentingNewLine]", "deeperAssociation"}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindStokesTransitions", "[", 
+    RowBox[{"S_", ",", "saddlesAssociation_", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "reducedSaddlesAssociation", ",", "actionList", ",", "signsList", ",", 
+       "s", ",", "processor"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"reducedSaddlesAssociation", "=", 
+       RowBox[{"KeySort", "[", 
+        RowBox[{"Select", "[", 
+         RowBox[{"saddlesAssociation", ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "#", "]"}], "\[Equal]", "2"}], "&"}]}], 
+         "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "[", "saddlesAssociation", "]"}], "-", 
+          RowBox[{"Length", "[", "reducedSaddlesAssociation", "]"}]}], ">", 
+         "0"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"FindStokesTransitions", "::", "saddleno"}], ",", 
+          RowBox[{
+           RowBox[{"Length", "[", "saddlesAssociation", "]"}], "-", 
+           RowBox[{"Length", "[", "reducedSaddlesAssociation", "]"}]}], ",", 
+          RowBox[{"Length", "[", "saddlesAssociation", "]"}], ",", 
+          RowBox[{"First", "/@", 
+           RowBox[{"Tally", "/@", 
+            RowBox[{"Split", "[", 
+             RowBox[{"Values", "[", 
+              RowBox[{"Length", "/@", "saddlesAssociation"}], "]"}], 
+             "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"actionList", "=", 
+       RowBox[{"ReIm", "[", "\[IndentingNewLine]", 
+        RowBox[{"Map", "[", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"reduces", " ", "each", " ", "\[CapitalOmega]"}], 
+           "\[Rule]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\[LeftAssociation]", 
+              RowBox[{
+               RowBox[{"1", "\[Rule]", 
+                SubscriptBox["S", "1"]}], ",", 
+               RowBox[{"2", "\[Rule]", 
+                SubscriptBox["S", "2"]}]}], "\[RightAssociation]"}], " ", 
+             "to", " ", "\[CapitalOmega]"}], "\[RightArrow]", 
+            RowBox[{"(", 
+             RowBox[{
+              SubscriptBox["S", "1"], "-", 
+              SubscriptBox["S", "2"]}], ")"}]}]}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Apply", "[", "Subtract", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"MapIndexed", "[", 
+           RowBox[{"(*", 
+            RowBox[{
+             RowBox[{"reduces", " ", "each", " ", "\[CapitalOmega]"}], 
+             "\[Rule]", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"\[LeftAssociation]", 
+                RowBox[{
+                 RowBox[{"1", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    SubscriptBox["t", "1"], ",", 
+                    SubscriptBox["\[Tau]", "1"]}], "}"}]}], ",", 
+                 RowBox[{"2", "\[Rule]", 
+                  RowBox[{"{", 
+                   RowBox[{
+                    SubscriptBox["t", "2"], ",", 
+                    SubscriptBox["\[Tau]", "2"]}], "}"}]}]}], 
+                "\[RightAssociation]"}], " ", "to", " ", "\[CapitalOmega]"}], 
+              "\[Rule]", 
+              RowBox[{"\[LeftAssociation]", 
+               RowBox[{
+                RowBox[{"1", "\[Rule]", 
+                 SubscriptBox["S", "1"]}], ",", 
+                RowBox[{"2", "\[Rule]", 
+                 SubscriptBox["S", "2"]}]}], "\[RightAssociation]"}]}]}], 
+            "*)"}], "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"With", "[", 
+              RowBox[{
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"t", "=", 
+                  RowBox[{
+                   RowBox[{
+                   "#1", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "+", 
+                   RowBox[{
+                    RowBox[{"OptionValue", "[", "ReperiodingFunction", "]"}], 
+                    "[", 
+                    RowBox[{
+                    RowBox[{
+                    "#1", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "#2", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}]}], "]"}]}]}], ",", 
+                 RowBox[{"\[Tau]", "=", 
+                  RowBox[{
+                  "#1", "\[LeftDoubleBracket]", "2", 
+                   "\[RightDoubleBracket]"}]}], ",", 
+                 RowBox[{"\[CapitalOmega]", "=", 
+                  RowBox[{"#2", "\[LeftDoubleBracket]", 
+                   RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}]}]}], 
+                "}"}], ",", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"S", "[", 
+                 RowBox[{"t", ",", 
+                  RowBox[{"t", "-", "\[Tau]"}]}], "]"}], "-", 
+                RowBox[{"\[CapitalOmega]", " ", "t"}]}]}], 
+              "\[IndentingNewLine]", "]"}], "&"}], "\[IndentingNewLine]", ",",
+             "reducedSaddlesAssociation", ",", 
+            RowBox[{"{", "2", "}"}]}], "\[IndentingNewLine]", "]"}]}], "]"}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"signsList", "=", 
+       RowBox[{"Sign", "[", 
+        RowBox[{"Times", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Rest", "[", "actionList", "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"AssociationThread", "[", 
+           RowBox[{
+            RowBox[{"Rest", "[", 
+             RowBox[{"Keys", "[", "actionList", "]"}], "]"}], ",", 
+            RowBox[{"Most", "[", 
+             RowBox[{"Values", "[", "actionList", "]"}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"processor", "=", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "ChooserFunction", "]"}], "/.", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Automatic", "\[Rule]", "Last"}], ",", 
+          RowBox[{"Full", "\[Rule]", "Identity"}]}], "}"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", 
+          RowBox[{"Keys", "[", 
+           RowBox[{"Select", "[", 
+            RowBox[{"signsList", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+               "#", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+               "<", "0"}], "&"}]}], "]"}], "]"}], "]"}], ">", "1"}], ",", 
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"FindStokesTransitions", "::", "multipleS"}], ",", 
+          "processor"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", 
+          RowBox[{"Keys", "[", 
+           RowBox[{"Select", "[", 
+            RowBox[{"signsList", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+               "#", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+               "<", "0"}], "&"}]}], "]"}], "]"}], "]"}], ">", "1"}], ",", 
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"FindStokesTransitions", "::", "multipleAS"}], ",", 
+          "processor"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"processor", "[", 
+         RowBox[{
+          RowBox[{"Keys", "[", 
+           RowBox[{"Select", "[", 
+            RowBox[{"signsList", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+               "#", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+               "<", "0"}], "&"}]}], "]"}], "]"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", "}"}], "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"Missing", "[", "\"\<No transition\>\"", "]"}], "}"}]}], 
+           "}"}]}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"processor", "[", 
+         RowBox[{
+          RowBox[{"Keys", "[", 
+           RowBox[{"Select", "[", 
+            RowBox[{"signsList", ",", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+               "#", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+               "<", "0"}], "&"}]}], "]"}], "]"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", "}"}], "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"Missing", "[", "\"\<No transition\>\"", "]"}], "}"}]}], 
+           "}"}]}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Sign", "[", 
+          RowBox[{
+           RowBox[{"Last", "[", "actionList", "]"}], "\[LeftDoubleBracket]", 
+           "2", "\[RightDoubleBracket]"}], "]"}], "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"1", "\[Rule]", "2"}], ",", 
+           RowBox[{
+            RowBox[{"-", "1"}], "\[Rule]", "1"}]}], "}"}]}]}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["SPAdipole definition", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"SPAdipole", "::", "usage"}], "=", 
+   "\"\<SPAdipole[S,prefactor,\[CapitalOmega],{t,\[Tau]}] returns the \
+saddle-point approximation amplitude corresponding to action S[t,t-\[Tau]]-\
+\[CapitalOmega]t and the given prefactor.\n\nSPAdipole[S,prefactor,\
+\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
+\(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
+\(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\
+\[RightAssociation]] returns the total harmonic-dipole contribution in the \
+saddle-point approximation from the specified saddle points.\n\n\
+SPAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*\
+SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\
+\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
+\(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(2\)]\)}\[RightAssociation],transition] uses the given Stokes transition set \
+to drop the relevant saddle after the anti-Stokes transition.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SPAdipole", "::", "wrongno"}], "=", 
+   "\"\<SPAdipole called with a Stokes transition but with an input \
+association of length `1` at harmonic energy \[CapitalOmega]=`2`. Reverting \
+to unstructured evaluation.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SPAdipole", "::", "invldtrns"}], "=", 
+   "\"\<SPAdipole called with invalid Stokes transition set `1`. Reverting to \
+unstructured evaluation.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "SPAdipole", "]"}], "=", 
+    RowBox[{"{", 
+     RowBox[{"ReperiodingFunction", "\[Rule]", 
+      RowBox[{"Function", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"t", ",", "\[Tau]"}], "}"}], ",", "0"}], "]"}]}], "}"}]}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SPAdipole", "[", 
+   RowBox[{"S_", ",", "prefactor_", ",", "\[CapitalOmega]_", ",", 
+    RowBox[{"{", 
+     RowBox[{"t_", ",", "\[Tau]_"}], "}"}], ",", 
+    RowBox[{"options", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"tr", "=", 
+      RowBox[{"t", "+", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "ReperiodingFunction", "]"}], "[", 
+        RowBox[{"t", ",", "\[Tau]"}], "]"}]}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"HessianRoot", "[", 
+      RowBox[{"S", ",", "tr", ",", "\[Tau]"}], "]"}], 
+     RowBox[{"prefactor", "[", 
+      RowBox[{"tr", ",", 
+       RowBox[{"tr", "-", "\[Tau]"}]}], "]"}], 
+     RowBox[{"Exp", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "\[ImaginaryI]"}], " ", 
+        RowBox[{"S", "[", 
+         RowBox[{"tr", ",", 
+          RowBox[{"tr", "-", "\[Tau]"}]}], "]"}]}], "+", 
+       RowBox[{"\[ImaginaryI]", " ", "\[CapitalOmega]", " ", "tr"}]}], 
+      "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SPAdipole", "[", 
+    RowBox[{
+    "S_", ",", "prefactor_", ",", "\[CapitalOmega]_", ",", 
+     "times_Association", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Total", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"SPAdipole", "[", 
+         RowBox[{
+         "S", ",", "prefactor", ",", "\[CapitalOmega]", ",", "#", ",", 
+          "options"}], "]"}], "&"}], "/@", "times"}], "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SPAdipole", "[", 
+    RowBox[{
+    "S_", ",", "prefactor_", ",", "\[CapitalOmega]_", ",", 
+     "times_Association", ",", "transition_", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"NumberQ", "[", 
+          RowBox[{
+          "transition", "\[LeftDoubleBracket]", "2", 
+           "\[RightDoubleBracket]"}], "]"}]}], ",", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"SPAdipole", "::", "invldtrns"}], ",", "transition"}], 
+          "]"}], ";", 
+         RowBox[{"Return", "[", 
+          RowBox[{"SPAdipole", "[", 
+           RowBox[{
+           "S", ",", "prefactor", ",", "\[CapitalOmega]", ",", "times"}], 
+           "]"}], " ", "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "times", "]"}], "\[NotEqual]", "2"}], ",", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"SPAdipole", "::", "wrongno"}], ",", 
+           RowBox[{"Length", "[", "times", "]"}], ",", "\[CapitalOmega]"}], 
+          "]"}], ";", 
+         RowBox[{"Return", "[", 
+          RowBox[{"SPAdipole", "[", 
+           RowBox[{
+           "S", ",", "prefactor", ",", "\[CapitalOmega]", ",", "times", ",", 
+            "options"}], "]"}], "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"\[CapitalOmega]", "<", 
+         RowBox[{
+         "transition", "\[LeftDoubleBracket]", "2", 
+          "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+        RowBox[{"SPAdipole", "[", 
+         RowBox[{
+         "S", ",", "prefactor", ",", "\[CapitalOmega]", ",", "times", ",", 
+          "options"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"SPAdipole", "[", 
+         RowBox[{"S", ",", "prefactor", ",", "\[CapitalOmega]", ",", 
+          RowBox[{"KeySelect", "[", 
+           RowBox[{"times", ",", 
+            RowBox[{
+             RowBox[{"#", "\[Equal]", 
+              RowBox[{
+              "transition", "\[LeftDoubleBracket]", "3", 
+               "\[RightDoubleBracket]"}]}], "&"}]}], "]"}], ",", "options"}], 
+         "]"}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["UAdipole definition", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"UAdipole", "::", "usage"}], "=", 
+   "\"\<UAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\
+\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\
+\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
+\(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\
+\[RightAssociation],transition] returns the total harmonic-dipole \
+contribution in the uniform approximation from the specified saddle points, \
+taking the given Stokes transition set as a reference.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"UAdipole", "::", "saddleno"}], "=", 
+   "\"\<UAdipole called with `1` time pairs at \[CapitalOmega]=`2`. Reverting \
+to the saddle-point approximation for this set.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"UAdipole", "::", "invldtrns"}], "=", 
+   "\"\<UAdipole called with invalid Stokes transition set `1`. Reverting to \
+the saddle-point approximation for this set.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "UAdipole", "]"}], "=", 
+    RowBox[{"{", 
+     RowBox[{"ReperiodingFunction", "\[Rule]", 
+      RowBox[{"Function", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"t", ",", "\[Tau]"}], "}"}], ",", "0"}], "]"}]}], "}"}]}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"UAdipole", "[", 
+    RowBox[{
+    "S_", ",", "prefactor_", ",", "\[CapitalOmega]_", ",", "times_", ",", 
+     "transition_", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"(", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "[", "times", "]"}], "\[NotEqual]", " ", "2"}], ",", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"UAdipole", "::", "saddleno"}], ",", 
+          RowBox[{"Length", "[", "times", "]"}], ",", "\[CapitalOmega]"}], 
+         "]"}], ";", 
+        RowBox[{"Return", "[", 
+         RowBox[{"SPAdipole", "[", 
+          RowBox[{
+          "S", ",", "prefactor", ",", "\[CapitalOmega]", ",", "times"}], 
+          "]"}], " ", "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"NumberQ", "[", 
+         RowBox[{
+         "transition", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
+          "]"}]}], ",", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"UAdipole", "::", "invldtrns"}], ",", "transition"}], "]"}],
+         ";", 
+        RowBox[{"Return", "[", 
+         RowBox[{"SPAdipole", "[", 
+          RowBox[{
+          "S", ",", "prefactor", ",", "\[CapitalOmega]", ",", "times"}], 
+          "]"}], " ", "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Block", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "A1", ",", "A2", ",", "S1", ",", "S2", ",", "Ss", ",", "Sm", ",", "z",
+          ",", "\[IndentingNewLine]", 
+         RowBox[{"t1", "=", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"times", "[", "1", "]"}], "\[LeftDoubleBracket]", "1", 
+            "\[RightDoubleBracket]"}], "+", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "ReperiodingFunction", "]"}], "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"times", "[", "1", "]"}], "\[LeftDoubleBracket]", "1", 
+              "\[RightDoubleBracket]"}], ",", 
+             RowBox[{
+              RowBox[{"times", "[", "1", "]"}], "\[LeftDoubleBracket]", "2", 
+              "\[RightDoubleBracket]"}]}], "]"}]}]}], ",", 
+         RowBox[{"\[Tau]1", "=", 
+          RowBox[{
+           RowBox[{"times", "[", "1", "]"}], "\[LeftDoubleBracket]", "2", 
+           "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"t2", "=", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"times", "[", "2", "]"}], "\[LeftDoubleBracket]", "1", 
+            "\[RightDoubleBracket]"}], "+", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "ReperiodingFunction", "]"}], "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"times", "[", "2", "]"}], "\[LeftDoubleBracket]", "1", 
+              "\[RightDoubleBracket]"}], ",", 
+             RowBox[{
+              RowBox[{"times", "[", "2", "]"}], "\[LeftDoubleBracket]", "2", 
+              "\[RightDoubleBracket]"}]}], "]"}]}]}], ",", 
+         RowBox[{"\[Tau]2", "=", 
+          RowBox[{
+           RowBox[{"times", "[", "2", "]"}], "\[LeftDoubleBracket]", "2", 
+           "\[RightDoubleBracket]"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"A1", "=", 
+         RowBox[{
+          RowBox[{"HessianRoot", "[", 
+           RowBox[{"S", ",", "t1", ",", "\[Tau]1"}], "]"}], 
+          RowBox[{"prefactor", "[", 
+           RowBox[{"t1", ",", 
+            RowBox[{"t1", "-", "\[Tau]1"}]}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"S1", "=", 
+         RowBox[{
+          RowBox[{"S", "[", 
+           RowBox[{"t1", ",", 
+            RowBox[{"t1", "-", "\[Tau]1"}]}], "]"}], "-", " ", 
+          RowBox[{"\[CapitalOmega]", " ", "t1"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"A2", "=", 
+         RowBox[{
+          RowBox[{"HessianRoot", "[", 
+           RowBox[{"S", ",", "t2", ",", "\[Tau]2"}], "]"}], 
+          RowBox[{"prefactor", "[", 
+           RowBox[{"t2", ",", 
+            RowBox[{"t2", "-", "\[Tau]2"}]}], "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"S2", "=", 
+         RowBox[{
+          RowBox[{"S", "[", 
+           RowBox[{"t2", ",", 
+            RowBox[{"t2", "-", "\[Tau]2"}]}], "]"}], "-", " ", 
+          RowBox[{"\[CapitalOmega]", " ", "t2"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Ss", "=", 
+         FractionBox[
+          RowBox[{"S1", "+", "S2"}], "2"]}], ";", 
+        RowBox[{"Sm", "=", 
+         FractionBox[
+          RowBox[{"S1", "-", "S2"}], "2"]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"\[CapitalOmega]", "<", 
+           RowBox[{
+           "transition", "\[LeftDoubleBracket]", "2", 
+            "\[RightDoubleBracket]"}]}], ",", 
+          RowBox[{"z", "=", 
+           SuperscriptBox[
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"-", 
+               FractionBox["3", "2"]}], "Sm"}], ")"}], 
+            RowBox[{"2", "/", "3"}]]}], ",", 
+          RowBox[{"z", "=", 
+           RowBox[{
+            SuperscriptBox[
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", 
+                FractionBox["3", "2"]}], "Sm"}], ")"}], 
+             RowBox[{"2", "/", "3"}]], 
+            RowBox[{"Exp", "[", 
+             RowBox[{"\[ImaginaryI]", " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                "transition", "\[LeftDoubleBracket]", "3", 
+                 "\[RightDoubleBracket]"}], "/.", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"2", "\[Rule]", 
+                   RowBox[{"-", "1"}]}], ",", 
+                  RowBox[{"1", "\[Rule]", "1"}]}], "}"}]}], ")"}], 
+              FractionBox[
+               RowBox[{"2", " ", "\[Pi]"}], "3"]}], "]"}]}]}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         SqrtBox[
+          RowBox[{"6", "\[Pi]", " ", "Sm"}]], 
+         RowBox[{"Exp", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "\[ImaginaryI]"}], " ", "Ss"}], "+", 
+           RowBox[{"\[ImaginaryI]", " ", 
+            FractionBox["\[Pi]", "4"]}]}], "]"}], 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            FractionBox[
+             RowBox[{"A1", "-", 
+              RowBox[{"\[ImaginaryI]", " ", "A2"}]}], "2"], 
+            FractionBox[
+             RowBox[{"AiryAi", "[", 
+              RowBox[{"-", "z"}], "]"}], 
+             SqrtBox["z"]]}], "+", 
+           RowBox[{"\[ImaginaryI]", " ", 
+            FractionBox[
+             RowBox[{"A1", "+", 
+              RowBox[{"\[ImaginaryI]", " ", "A2"}]}], "2"], 
+            FractionBox[
+             RowBox[{
+              RowBox[{"AiryAi", "'"}], "[", 
+              RowBox[{"-", "z"}], "]"}], "z"]}]}], ")"}]}]}]}], 
+      "\[IndentingNewLine]", "]"}]}], ")"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Package closure", "Section"],
 
 Cell[CellGroupData[{
 
 Cell["End of package", "Subsubsection"],
 
 Cell[BoxData[
- RowBox[{"EndPackage", "[", "]"}]], "Input",
+ RowBox[{
+  RowBox[{"EndPackage", "[", "]"}], ";"}]], "Input",
  InitializationCell->True]
 }, Open  ]],
 
@@ -3698,7 +5106,7 @@ Cell[BoxData[
   ";"}]], "Input",
  InitializationCell->True]
 }, Open  ]]
-}, Open  ]]
+}, Closed]]
 }, Open  ]]
 }, Open  ]]
 },
