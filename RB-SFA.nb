@@ -572,12 +572,10 @@ calculate the Fourier transform directly,\n\n          ",
 times ",
  Cell[BoxData[
   FormBox[
-   RowBox[{"t", "'"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+   RowBox[{"t", "'"}], TraditionalForm]]],
  " and ",
  Cell[BoxData[
-  FormBox["t", TraditionalForm]],
-  FormatType->"TraditionalForm"],
+  FormBox["t", TraditionalForm]]],
  ", which gives a harmonic dipole of the form\n\n          ",
  Cell[BoxData[
   FormBox[
@@ -686,14 +684,12 @@ times ",
  ",\n\nwhere the times ",
  Cell[BoxData[
   FormBox[
-   SubscriptBox["t", "s"], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+   SubscriptBox["t", "s"], TraditionalForm]]],
  " and ",
  Cell[BoxData[
   FormBox[
    SubscriptBox[
-    RowBox[{"t", "'"}], "s"], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+    RowBox[{"t", "'"}], "s"], TraditionalForm]]],
  " (and equivalently ",
  Cell[BoxData[
   FormBox[
@@ -702,8 +698,7 @@ times ",
     RowBox[{
      SubscriptBox["t", "s"], "-", 
      SubscriptBox[
-      RowBox[{"t", "'"}], "s"]}]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+      RowBox[{"t", "'"}], "s"]}]}], TraditionalForm]]],
  ") are obtained via the saddle-point equations\n\n          ",
  Cell[BoxData[
   FormBox[
@@ -1230,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 11 May 2016 15:48:30\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 13 May 2016 16:49:42\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2930,11 +2925,14 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
        RowBox[{"OptionValue", "[", "\[Epsilon]Correction", "]"}]}], ",", 
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
       "GAdotAInt", ",", "AdotGAInt", ",", "GAIntInt", ",", 
-      "bigPScorrectionInt", ",", "AdotGAdotAInt", ",", "\[IndentingNewLine]", 
-      "simplifier", ",", "prefactor", ",", "integrand", ",", "dipoleList", 
-      ",", "\[IndentingNewLine]", "TableCommand", ",", "SumCommand"}], 
-     "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
-    "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", "PScorrectionInt", ",", "constCorrectionInt", 
+      ",", "GAIntdotGAIntInt", ",", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{",", "bigPScorrectionInt", ",", "AdotGAdotAInt", ","}], "*)"}],
+       "\[IndentingNewLine]", "simplifier", ",", "prefactor", ",", 
+      "integrand", ",", "dipoleList", ",", "\[IndentingNewLine]", 
+      "TableCommand", ",", "SumCommand"}], "\[IndentingNewLine]", "}"}], ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{
       RowBox[{"A", "[", "t_", "]"}], "=", 
@@ -3012,72 +3010,75 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
        FractionBox[
         RowBox[{"2", "\[Pi]"}], "\[Omega]"]}]}], ";", "\[IndentingNewLine]", 
      RowBox[{"(*", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Check", " ", "potential", " ", "and", " ", "potential", " ", 
+        "gradient", " ", "for", " ", 
+        RowBox[{"correctness", "."}]}], "*)"}], "\[IndentingNewLine]", 
       RowBox[{
-      "Check", " ", "potential", " ", "and", " ", "potential", " ", 
-       "gradient", " ", "for", " ", 
-       RowBox[{"correctness", "."}]}], "*)"}], "\[IndentingNewLine]", 
-     RowBox[{"With", "[", 
-      RowBox[{
-       RowBox[{"{", 
-        RowBox[{"\[Omega]tRandom", "=", 
-         RowBox[{"RandomReal", "[", 
-          RowBox[{"{", 
-           RowBox[{
-            RowBox[{"\[Omega]", " ", "tInit"}], ",", 
-            RowBox[{"\[Omega]", " ", "tFinal"}]}], "}"}], "]"}]}], "}"}], ",",
-        "\[IndentingNewLine]", 
-       RowBox[{"If", "[", 
+       RowBox[{"With", "[", 
         RowBox[{
-         RowBox[{
-          RowBox[{"OptionValue", "[", "Verbose", "]"}], "\[NotEqual]", "3"}], 
-         
-         RowBox[{"(*", 
+         RowBox[{"{", 
+          RowBox[{"\[Omega]tRandom", "=", 
+           RowBox[{"RandomReal", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"\[Omega]", " ", "tInit"}], ",", 
+              RowBox[{"\[Omega]", " ", "tFinal"}]}], "}"}], "]"}]}], "}"}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
           RowBox[{
            RowBox[{
-           "Turn", " ", "off", " ", "numerics", " ", "check", " ", "if", " ", 
-            "quantum"}], "-", 
-           RowBox[{
-           "orbits", " ", "verbose", " ", "option", " ", "is", " ", "in", " ", 
-            RowBox[{"use", "."}]}]}], "*)"}], ",", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"If", "[", 
-           RowBox[{
-            RowBox[{"!", 
-             RowBox[{"And", "@@", 
-              RowBox[{"(", 
-               RowBox[{"NumberQ", "/@", 
-                RowBox[{"A", "[", 
-                 RowBox[{"\[Omega]tRandom", "/", "\[Omega]"}], "]"}]}], 
-               ")"}]}]}], ",", 
+            RowBox[{"OptionValue", "[", "Verbose", "]"}], "\[NotEqual]", 
+            "3"}], 
+           RowBox[{"(*", 
             RowBox[{
-             RowBox[{"Message", "[", 
-              RowBox[{
-               RowBox[{"makeDipoleList", "::", "pot"}], ",", 
-               RowBox[{"OptionValue", "[", "VectorPotential", "]"}], ",", 
-               "\[Omega]tRandom", ",", 
-               RowBox[{"A", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
-             RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";", 
-          "\[IndentingNewLine]", 
-          RowBox[{"If", "[", 
+             RowBox[{
+             "Turn", " ", "off", " ", "numerics", " ", "check", " ", "if", 
+              " ", "quantum"}], "-", 
+             RowBox[{
+             "orbits", " ", "verbose", " ", "option", " ", "is", " ", "in", 
+              " ", 
+              RowBox[{"use", "."}]}]}], "*)"}], ",", "\[IndentingNewLine]", 
            RowBox[{
-            RowBox[{"!", 
-             RowBox[{"And", "@@", 
-              RowBox[{"(", 
-               RowBox[{"NumberQ", "/@", 
-                RowBox[{"Flatten", "[", 
-                 RowBox[{"GA", "[", 
-                  RowBox[{"\[Omega]tRandom", "/", "\[Omega]"}], "]"}], 
-                 "]"}]}], ")"}]}]}], ",", 
-            RowBox[{
-             RowBox[{"Message", "[", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"!", 
+               RowBox[{"And", "@@", 
+                RowBox[{"(", 
+                 RowBox[{"NumberQ", "/@", 
+                  RowBox[{"A", "[", 
+                   RowBox[{"\[Omega]tRandom", "/", "\[Omega]"}], "]"}]}], 
+                 ")"}]}]}], ",", 
               RowBox[{
-               RowBox[{"makeDipoleList", "::", "gradpot"}], ",", 
-               RowBox[{"OptionValue", "[", "VectorPotentialGradient", "]"}], 
-               ",", "\[Omega]tRandom", ",", 
-               RowBox[{"GA", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
-             RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";"}]}], 
-        "\[IndentingNewLine]", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
+               RowBox[{"Message", "[", 
+                RowBox[{
+                 RowBox[{"makeDipoleList", "::", "pot"}], ",", 
+                 RowBox[{"OptionValue", "[", "VectorPotential", "]"}], ",", 
+                 "\[Omega]tRandom", ",", 
+                 RowBox[{"A", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
+               RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";", 
+            "\[IndentingNewLine]", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{"!", 
+               RowBox[{"And", "@@", 
+                RowBox[{"(", 
+                 RowBox[{"NumberQ", "/@", 
+                  RowBox[{"Flatten", "[", 
+                   RowBox[{"GA", "[", 
+                    RowBox[{"\[Omega]tRandom", "/", "\[Omega]"}], "]"}], 
+                   "]"}]}], ")"}]}]}], ",", 
+              RowBox[{
+               RowBox[{"Message", "[", 
+                RowBox[{
+                 RowBox[{"makeDipoleList", "::", "gradpot"}], ",", 
+                 RowBox[{"OptionValue", "[", "VectorPotentialGradient", "]"}],
+                  ",", "\[Omega]tRandom", ",", 
+                 RowBox[{"GA", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
+               RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";"}]}], 
+          "\[IndentingNewLine]", "]"}]}], "]"}], ";"}], "*)"}], 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"gate", "[", "\[Omega]\[Tau]_", "]"}], ":=", 
       RowBox[{
@@ -3518,14 +3519,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
              RowBox[{"Length", "[", 
               RowBox[{"A", "[", "tInit", "]"}], "]"}]}], "}"}], "False", 
            "True"},
-          {"AdotGAdotAInt", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"A", "[", "#1", "]"}], ".", 
-             RowBox[{"GAdotAInt", "[", 
-              RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], 
-           RowBox[{"{", "}"}], "False", "True"},
-          {"bigPScorrectionInt", 
+          {"PScorrectionInt", 
            RowBox[{
             RowBox[{
              RowBox[{"GAdotAInt", "[", 
@@ -3533,10 +3527,45 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
              RowBox[{
               RowBox[{"A", "[", "#1", "]"}], ".", 
               RowBox[{"GAInt", "[", 
+               RowBox[{"#1", ",", "#2"}], "]"}]}], "-", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"GAInt", "[", 
+                RowBox[{"#1", ",", "#2"}], "]"}], "\[Transpose]"}], ".", 
+              RowBox[{"GAdotAInt", "[", 
                RowBox[{"#1", ",", "#2"}], "]"}]}]}], "&"}], 
            RowBox[{"{", 
             RowBox[{"Length", "[", 
-             RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", "True"}
+             RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", 
+           "True"},
+          {"GAIntdotGAIntInt", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"GAInt", "[", 
+               RowBox[{"#1", ",", "#2"}], "]"}], "\[Transpose]"}], ".", 
+             RowBox[{"GAInt", "[", 
+              RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Length", "[", 
+              RowBox[{"A", "[", "tInit", "]"}], "]"}], ",", 
+             RowBox[{"Length", "[", 
+              RowBox[{"A", "[", "tInit", "]"}], "]"}]}], "}"}], "False", 
+           "True"},
+          {"constCorrectionInt", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"A", "[", "#1", "]"}], "-", 
+               RowBox[{
+                FractionBox["1", "2"], 
+                RowBox[{"GAdotAInt", "[", 
+                 RowBox[{"#1", ",", "#2"}], "]"}]}]}], ")"}], ".", 
+             RowBox[{"GAdotAInt", "[", 
+              RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], 
+           RowBox[{"{", "}"}], "False", "True"}
          },
          GridBoxAlignment->{"Columns" -> {{Left}}}], ")"}], ",", 
        RowBox[{"{", "1", "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
@@ -3596,22 +3625,58 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
              RowBox[{"\[Tau]", "'"}]}], 
             RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}], ",", 
          RowBox[{
-          SubsuperscriptBox["\[Integral]", 
-           RowBox[{"t", "'"}], "t"], 
+          RowBox[{
+           SubsuperscriptBox["\[Integral]", 
+            RowBox[{"t", "'"}], "t"], 
+           RowBox[{
+            SubsuperscriptBox["\[Integral]", 
+             RowBox[{"t", "'"}], "\[Tau]"], 
+            RowBox[{
+             RowBox[{
+              SubscriptBox["\[PartialD]", "j"], 
+              SubscriptBox["A", "k"]}], 
+             RowBox[{"(", 
+              RowBox[{"\[Tau]", "'"}], ")"}], 
+             SubscriptBox["A", "k"], 
+             RowBox[{"(", 
+              RowBox[{"\[Tau]", "'"}], ")"}], 
+             RowBox[{"\[DifferentialD]", 
+              RowBox[{"\[Tau]", "'"}]}]}]}]}], "+", 
           RowBox[{
            SubscriptBox["A", "k"], 
+           RowBox[{"(", "\[Tau]", ")"}], 
            RowBox[{
-            RowBox[{"(", "\[Tau]", ")"}], "\[CenterDot]", 
+            SubsuperscriptBox["\[Integral]", 
+             RowBox[{"t", "'"}], "\[Tau]"], 
+            RowBox[{
+             RowBox[{
+              SubscriptBox["\[PartialD]", "k"], 
+              SubscriptBox["A", "j"]}], 
+             RowBox[{"(", 
+              RowBox[{"\[Tau]", "'"}], ")"}], 
+             RowBox[{"\[DifferentialD]", 
+              RowBox[{"\[Tau]", "'"}]}]}]}]}], "-", 
+          RowBox[{
+           SubsuperscriptBox["\[Integral]", 
+            RowBox[{"t", "'"}], "\[Tau]"], 
+           RowBox[{
+            RowBox[{
+             SubscriptBox["\[PartialD]", "i"], 
+             SubscriptBox["A", "j"]}], 
+            RowBox[{"(", 
+             RowBox[{"\[Tau]", "'"}], ")"}], 
+            RowBox[{"\[DifferentialD]", 
+             RowBox[{"\[Tau]", "'"}]}], 
             RowBox[{
              SubsuperscriptBox["\[Integral]", 
               RowBox[{"t", "'"}], "\[Tau]"], 
              RowBox[{
               RowBox[{
-               SubscriptBox["\[PartialD]", "k"], 
-               SubscriptBox["A", "j"]}], 
+               SubscriptBox["\[PartialD]", "i"], 
+               SubscriptBox["A", "k"]}], 
               RowBox[{"(", 
                RowBox[{"\[Tau]", "'"}], ")"}], 
-              SubscriptBox["A", "j"], 
+              SubscriptBox["A", "k"], 
               RowBox[{"(", 
                RowBox[{"\[Tau]", "'"}], ")"}], 
               RowBox[{"\[DifferentialD]", 
@@ -3622,32 +3687,81 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
            RowBox[{"t", "'"}], "t"], 
           RowBox[{
            SubsuperscriptBox["\[Integral]", 
-            RowBox[{"t", "'"}], "\[Tau]"], 
+            SubscriptBox["t", "0"], "t"], 
            RowBox[{
+            RowBox[{
+             SubscriptBox["\[PartialD]", "i"], 
+             SubscriptBox["A", "j"]}], 
             RowBox[{"(", 
-             RowBox[{
-              RowBox[{
-               SubscriptBox["A", "k"], 
-               RowBox[{"(", 
-                RowBox[{"\[Tau]", "'"}], ")"}], 
-               RowBox[{
-                SubscriptBox["\[PartialD]", "j"], 
-                SubscriptBox["A", "k"]}], 
-               RowBox[{"(", 
-                RowBox[{"\[Tau]", "'"}], ")"}]}], "+", 
-              RowBox[{
-               SubscriptBox["A", "k"], 
-               RowBox[{"(", "\[Tau]", ")"}], 
-               RowBox[{
-                SubscriptBox["\[PartialD]", "k"], 
-                SubscriptBox["A", "j"]}], 
-               RowBox[{"(", 
-                RowBox[{"\[Tau]", "'"}], ")"}]}]}], ")"}], 
+             RowBox[{"\[Tau]", "'"}], ")"}], 
+            SubscriptBox["A", "j"], 
+            RowBox[{"(", 
+             RowBox[{"\[Tau]", "'"}], ")"}], 
             RowBox[{"\[DifferentialD]", 
              RowBox[{"\[Tau]", "'"}]}], 
-            RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}], "}"}], ";"}], 
+            RowBox[{
+             SubsuperscriptBox["\[Integral]", 
+              SubscriptBox["t", "0"], "t"], 
+             RowBox[{
+              RowBox[{
+               SubscriptBox["\[PartialD]", "i"], 
+               SubscriptBox["A", "k"]}], 
+              RowBox[{"(", 
+               RowBox[{"\[Tau]", "'"}], ")"}], 
+              SubscriptBox["A", "k"], 
+              RowBox[{"(", 
+               RowBox[{"\[Tau]", "'"}], ")"}], 
+              RowBox[{"\[DifferentialD]", 
+               RowBox[{"\[Tau]", "'"}]}], 
+              RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}]}], ",", 
+         RowBox[{
+          SubsuperscriptBox["\[Integral]", 
+           RowBox[{"t", "'"}], "t"], 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              SubscriptBox["A", "k"], 
+              RowBox[{"(", "\[Tau]", ")"}]}], "-", 
+             RowBox[{
+              FractionBox["1", "2"], 
+              RowBox[{
+               SubsuperscriptBox["\[Integral]", 
+                RowBox[{"t", "'"}], "\[Tau]"], 
+               RowBox[{
+                RowBox[{
+                 SubscriptBox["\[PartialD]", "k"], 
+                 SubscriptBox["A", "i"]}], 
+                RowBox[{"(", 
+                 RowBox[{"\[Tau]", "'"}], ")"}], 
+                SubscriptBox["A", "i"], 
+                RowBox[{"(", 
+                 RowBox[{"\[Tau]", "'"}], ")"}], 
+                RowBox[{"\[DifferentialD]", 
+                 RowBox[{"\[Tau]", "'"}]}]}]}]}]}], ")"}], "\[CenterDot]", 
+           RowBox[{
+            SubsuperscriptBox["\[Integral]", 
+             RowBox[{"t", "'"}], "\[Tau]"], 
+            RowBox[{
+             RowBox[{
+              SubscriptBox["\[PartialD]", "k"], 
+              SubscriptBox["A", "j"]}], 
+             RowBox[{"(", 
+              RowBox[{"\[Tau]", "'"}], ")"}], 
+             SubscriptBox["A", "j"], 
+             RowBox[{"(", 
+              RowBox[{"\[Tau]", "'"}], ")"}], 
+             RowBox[{"\[DifferentialD]", 
+              RowBox[{"\[Tau]", "'"}]}], 
+             RowBox[{"\[DifferentialD]", "\[Tau]"}]}]}]}]}]}], "}"}], ";"}], 
       "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"Return", "[", 
+        RowBox[{"constCorrectionInt", "[", 
+         RowBox[{"t", ",", "tt"}], "]"}], "]"}], ";"}], "*)"}], 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{"Displaced", " ", "momentum"}], "*)"}], "\[IndentingNewLine]", 
      RowBox[{
@@ -3968,7 +4082,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4357,7 +4471,7 @@ difference procedures.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 

@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 11 May 2016 15:48:30";
+$RBSFAtimestamp="Fri 13 May 2016 16:49:42";
 End[];
 
 
@@ -305,7 +305,9 @@ dipoleRec,dipoleIon,\[Kappa],
 A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
-AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt,
+AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,
+PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt,
+(*,bigPScorrectionInt,AdotGAdotAInt,*)
 simplifier,prefactor,integrand,dipoleList,
 TableCommand,SumCommand
 },
@@ -325,12 +327,12 @@ tFinal=(2\[Pi])/\[Omega] num;
 \[Delta]tint=If[OptionValue[IntegrationPointsPerCycle]===Automatic,\[Delta]t,(tFinal-tInit)/(num*OptionValue[IntegrationPointsPerCycle]+OptionValue[PointNumberCorrection])];
 
 tGate=OptionValue[nGate] (2\[Pi])/\[Omega];
-(*Check potential and potential gradient for correctness.*)
+(*(*Check potential and potential gradient for correctness.*)
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
-If[OptionValue[Verbose]!=3(*Turn off numerics check if quantum-orbits verbose option is in use.*),
+If[OptionValue[Verbose]\[NotEqual]3(*Turn off numerics check if quantum-orbits verbose option is in use.*),
 If[!And@@(NumberQ/@A[\[Omega]tRandom/\[Omega]]),Message[makeDipoleList::pot,OptionValue[VectorPotential],\[Omega]tRandom,A[\[Omega]tRandom]];Abort[]];
 If[!And@@(NumberQ/@Flatten[GA[\[Omega]tRandom/\[Omega]]]),Message[makeDipoleList::gradpot,OptionValue[VectorPotentialGradient],\[Omega]tRandom,GA[\[Omega]tRandom]];Abort[]];
-]];
+]];*)
 
 gate[\[Omega]\[Tau]_]:=OptionValue[Gate][\[Omega]\[Tau],OptionValue[nGate]];
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
@@ -401,8 +403,9 @@ Apply[setPreintegral,({
  {GAdotAInt, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
  {AdotGAInt, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False},
  {GAIntInt, GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
- {AdotGAdotAInt, A[#1].GAdotAInt[#1,#2]&, {}, False, True},
- {bigPScorrectionInt, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]&, {Length[A[tInit]]}, False, True}
+ {PScorrectionInt, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]-GAInt[#1,#2]\[Transpose].GAdotAInt[#1,#2]&, {Length[A[tInit]]}, False, True},
+ {GAIntdotGAIntInt, GAInt[#1,#2]\[Transpose].GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
+ {constCorrectionInt, (A[#1]-1/2 GAdotAInt[#1,#2]).GAdotAInt[#1,#2]&, {}, False, True}
 }),{1}];
 (*{\!\(
 \*SubsuperscriptBox[\(\[Integral]\), 
@@ -419,20 +422,45 @@ SubscriptBox[\(t\), \(0\)], \(t\)]\(A\((\[Tau])\)\[CenterDot]\[Del]A\((\[Tau])\)
 \*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
 \*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\[Del]A\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\),\!\(
 \*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)\[CenterDot]\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]
+\*SubscriptBox[\(\[PartialD]\), \(j\)]
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\)\)+Subscript[A, k](\[Tau])\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\(
+\*SubscriptBox[\(\[PartialD]\), \(k\)]
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\)\)-\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\(
+\*SubscriptBox[\(\[PartialD]\), \(i\)]
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]
+\*SubscriptBox[\(\[PartialD]\), \(i\)]
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
+\*SubsuperscriptBox[\(\[Integral]\), 
+SubscriptBox[\(t\), \(0\)], \(t\)]
+\*SubscriptBox[\(\[PartialD]\), \(i\)]
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\(
+\*SubsuperscriptBox[\(\[Integral]\), 
+SubscriptBox[\(t\), \(0\)], \(t\)]
+\*SubscriptBox[\(\[PartialD]\), \(i\)]
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\),\!\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(\((
+\*SubscriptBox[\(A\), \(k\)]\((\[Tau])\) - 
+\*FractionBox[\(1\), \(2\)]\(
+\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]
+\*SubscriptBox[\(\[PartialD]\), \(k\)]
+\*SubscriptBox[\(A\), \(i\)]\((\[Tau]')\)
+\*SubscriptBox[\(A\), \(i\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\))\)\[CenterDot]\(
 \*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]
 \*SubscriptBox[\(\[PartialD]\), \(k\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)
-\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\),\!\(
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(t\)]\(
-\*SubsuperscriptBox[\(\[Integral]\), \(t'\), \(\[Tau]\)]\((
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\)
-\*SubscriptBox[\(\[PartialD]\), \(j\)]
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau]')\) + 
-\*SubscriptBox[\(A\), \(k\)]\((\[Tau])\)
-\*SubscriptBox[\(\[PartialD]\), \(k\)]
-\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\))\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)};*)
+\*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\)};*)
 
+
+(*Return[constCorrectionInt[t,tt]];*)
 
 (*Displaced momentum*)
 pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
