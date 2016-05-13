@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 13 May 2016 16:49:42\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 13 May 2016 17:14:04\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2926,7 +2926,8 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
       "GAdotAInt", ",", "AdotGAInt", ",", "GAIntInt", ",", 
       "\[IndentingNewLine]", "PScorrectionInt", ",", "constCorrectionInt", 
-      ",", "GAIntdotGAIntInt", ",", "\[IndentingNewLine]", 
+      ",", "GAIntdotGAIntInt", ",", "QuadMatrix", ",", "\[IndentingNewLine]", 
+      
       RowBox[{"(*", 
        RowBox[{",", "bigPScorrectionInt", ",", "AdotGAdotAInt", ","}], "*)"}],
        "\[IndentingNewLine]", "simplifier", ",", "prefactor", ",", 
@@ -3776,6 +3777,26 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
         RowBox[{"t", ",", "tt"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
      RowBox[{"(*", 
+      RowBox[{
+      "Quadratic", " ", "coefficient", " ", "in", " ", "nondipole", " ", 
+       "action"}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"QuadMatrix", "[", 
+       RowBox[{"t_", ",", "tt_"}], "]"}], ":=", 
+      RowBox[{
+       FractionBox[
+        RowBox[{
+         RowBox[{"GAIntInt", "[", 
+          RowBox[{"t", ",", "tt"}], "]"}], "+", 
+         RowBox[{
+          RowBox[{"GAIntInt", "[", 
+           RowBox[{"t", ",", "tt"}], "]"}], "\[Transpose]"}]}], "2"], "-", 
+       RowBox[{
+        FractionBox["1", "2"], 
+        RowBox[{"GAIntdotGAIntInt", "[", 
+         RowBox[{"t", ",", "tt"}], "]"}]}]}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
       RowBox[{"Stationary", " ", "momentum", " ", "and", " ", "action"}], 
       "*)"}], "\[IndentingNewLine]", 
      RowBox[{
@@ -3798,20 +3819,14 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
            RowBox[{
             FractionBox["1", 
              RowBox[{"t", "-", "tt", "-", 
-              RowBox[{"\[ImaginaryI]", " ", "\[Epsilon]"}]}]], 
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"GAIntInt", "[", 
-               RowBox[{"t", ",", "tt"}], "]"}], "+", 
-              RowBox[{
-               RowBox[{"GAIntInt", "[", 
-                RowBox[{"t", ",", "tt"}], "]"}], "\[Transpose]"}]}], 
-             ")"}]}]}], "]"}], ".", 
+              RowBox[{"\[ImaginaryI]", " ", "\[Epsilon]"}]}]], "2", 
+            RowBox[{"QuadMatrix", "[", 
+             RowBox[{"t", ",", "tt"}], "]"}]}]}], "]"}], ".", 
          RowBox[{"(", 
           RowBox[{
            RowBox[{"AInt", "[", 
             RowBox[{"t", ",", "tt"}], "]"}], "-", 
-           RowBox[{"bigPScorrectionInt", "[", 
+           RowBox[{"PScorrectionInt", "[", 
             RowBox[{"t", ",", "tt"}], "]"}]}], ")"}]}]}]}]}], ";", 
      "\[IndentingNewLine]", 
      RowBox[{
@@ -3844,16 +3859,16 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
           RowBox[{
            RowBox[{"ps", "[", 
             RowBox[{"t", ",", "tt"}], "]"}], ".", 
-           RowBox[{"GAIntInt", "[", 
+           RowBox[{"QuadMatrix", "[", 
             RowBox[{"t", ",", "tt"}], "]"}], ".", 
            RowBox[{"ps", "[", 
             RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
           RowBox[{
            RowBox[{"ps", "[", 
             RowBox[{"t", ",", "tt"}], "]"}], ".", 
-           RowBox[{"bigPScorrectionInt", "[", 
+           RowBox[{"PScorrectionInt", "[", 
             RowBox[{"t", ",", "tt"}], "]"}]}], "+", 
-          RowBox[{"AdotGAdotAInt", "[", 
+          RowBox[{"constCorrectionInt", "[", 
            RowBox[{"t", ",", "tt"}], "]"}]}], "\[IndentingNewLine]", ")"}]}], 
        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
@@ -3905,7 +3920,10 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
            RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "]"}], 
        RowBox[{"gate", "[", 
         RowBox[{"\[Omega]", " ", "\[Tau]"}], "]"}]}]}], ";", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Return", "[", 
+      RowBox[{"S", "[", 
+       RowBox[{"t", ",", "tt"}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{

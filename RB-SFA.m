@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 13 May 2016 16:49:42";
+$RBSFAtimestamp="Fri 13 May 2016 17:14:04";
 End[];
 
 
@@ -306,7 +306,7 @@ A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,
-PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt,
+PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt,QuadMatrix,
 (*,bigPScorrectionInt,AdotGAdotAInt,*)
 simplifier,prefactor,integrand,dipoleList,
 TableCommand,SumCommand
@@ -465,18 +465,21 @@ SubscriptBox[\(t\), \(0\)], \(t\)]
 (*Displaced momentum*)
 pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
 
+(*Quadratic coefficient in nondipole action*)
+QuadMatrix[t_,tt_]:=(GAIntInt[t,tt]+GAIntInt[t,tt]\[Transpose])/2-1/2 GAIntdotGAIntInt[t,tt];
+
 (*Stationary momentum and action*)
-ps[t_,tt_]:=ps[t,tt]=-(1/(t-tt-I \[Epsilon]))Inverse[IdentityMatrix[Length[A[tInit]]]-1/(t-tt-I \[Epsilon]) (GAIntInt[t,tt]+GAIntInt[t,tt]\[Transpose])].(AInt[t,tt]-bigPScorrectionInt[t,tt]);
+ps[t_,tt_]:=ps[t,tt]=-(1/(t-tt-I \[Epsilon]))Inverse[IdentityMatrix[Length[A[tInit]]]-1/(t-tt-I \[Epsilon]) 2QuadMatrix[t,tt]].(AInt[t,tt]-PScorrectionInt[t,tt]);
 S[t_,tt_]:=simplifier[
 1/2 (Total[ps[t,tt]^2]+\[Kappa]^2)(t-tt)+ps[t,tt].AInt[t,tt]+1/2 A2Int[t,tt]-(
-ps[t,tt].GAIntInt[t,tt].ps[t,tt]+ps[t,tt].bigPScorrectionInt[t,tt]+AdotGAdotAInt[t,tt]
+ps[t,tt].QuadMatrix[t,tt].ps[t,tt]+ps[t,tt].PScorrectionInt[t,tt]+constCorrectionInt[t,tt]
 )
 ];
 
 prefactor[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipoleRec[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]*dipoleIon[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]];
 integrand[t_,\[Tau]_]:=prefactor[t,\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
-
+Return[S[t,tt]];
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops. Verbose\[Rule]3 for quantum-orbit constructs.*)
 Which[
