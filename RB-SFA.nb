@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 13 May 2016 17:14:04\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 13 May 2016 17:16:24\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -3920,11 +3920,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
            RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "]"}], 
        RowBox[{"gate", "[", 
         RowBox[{"\[Omega]", " ", "\[Tau]"}], "]"}]}]}], ";", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{"Return", "[", 
-      RowBox[{"S", "[", 
-       RowBox[{"t", ",", "tt"}], "]"}], "]"}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{
        RowBox[{"Debugging", " ", 

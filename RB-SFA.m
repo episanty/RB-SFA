@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 13 May 2016 17:14:04";
+$RBSFAtimestamp="Fri 13 May 2016 17:16:24";
 End[];
 
 
@@ -479,7 +479,6 @@ ps[t,tt].QuadMatrix[t,tt].ps[t,tt]+ps[t,tt].PScorrectionInt[t,tt]+constCorrectio
 prefactor[t_,\[Tau]_]:=I ((2\[Pi])/(\[Epsilon]+I \[Tau]))^(3/2) dipoleRec[pi[ps[t,t-\[Tau]],t,t-\[Tau]],\[Kappa]]*dipoleIon[pi[ps[t,t-\[Tau]],t-\[Tau],t-\[Tau]],\[Kappa]].F[t-\[Tau]];
 integrand[t_,\[Tau]_]:=prefactor[t,\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[Tau]];
 
-Return[S[t,tt]];
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops. Verbose\[Rule]3 for quantum-orbit constructs.*)
 Which[
