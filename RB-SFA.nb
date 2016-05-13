@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 13 May 2016 17:33:11\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 13 May 2016 18:43:47\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2825,11 +2825,18 @@ to use to simplify the intermediate and final analytical results.\>\""}],
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{
-    RowBox[{"CheckNumericFields", "::", "usage"}], "=", 
-    "\"\<CheckNumericFields is an option for makeDipoleList which specifies \
+   RowBox[{"CheckNumericFields", "::", "usage"}], "=", 
+   "\"\<CheckNumericFields is an option for makeDipoleList which specifies \
 whether to check for numeric values of A[t] and GA[t] for numeric t.\>\""}], 
-   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"QuadraticActionTerms", "::", "usage"}], "=", 
+    "\"\<QuadraticActionTerms is an option for makeDipoleList which specifies \
+whether to use quadratic terms in \[Del]\!\(\*SuperscriptBox[\(A\), \(2\)]\) \
+in the action.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+
  RowBox[{
   RowBox[{
    RowBox[{"Protect", "[", 
@@ -2839,9 +2846,9 @@ whether to check for numeric values of A[t] and GA[t] for numeric t.\>\""}],
      "nGate", ",", "IonizationPotential", ",", "Target", ",", 
      "\[Epsilon]Correction", ",", "PointNumberCorrection", ",", 
      "DipoleTransitionMatrixElement", ",", "IntegrationPointsPerCycle", ",", 
-     "RunInParallel", ",", "Simplifier"}], "]"}], ";"}], 
-  "\[IndentingNewLine]", "\[IndentingNewLine]", 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+     "RunInParallel", ",", "Simplifier", ",", "CheckNumericFields", ",", 
+     "QuadraticActionTerms"}], "]"}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -2877,8 +2884,9 @@ whether to check for numeric values of A[t] and GA[t] for numeric t.\>\""}],
       RowBox[{"RunInParallel", "\[Rule]", "Automatic"}], ",", 
       RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}], ",", 
       "\[IndentingNewLine]", 
-      RowBox[{"Simplifier", "\[Rule]", "Identity"}]}], "\[IndentingNewLine]", 
-     "}"}]}]}], ";"}], "\[IndentingNewLine]", 
+      RowBox[{"Simplifier", "\[Rule]", "Identity"}], ",", 
+      RowBox[{"QuadraticActionTerms", "\[Rule]", "True"}]}], 
+     "\[IndentingNewLine]", "}"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"makeDipoleList", "::", "gate"}], "=", 
@@ -2933,11 +2941,11 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
       "\[IndentingNewLine]", "AInt", ",", "A2Int", ",", "GAInt", ",", 
       "GAdotAInt", ",", "AdotGAInt", ",", "GAIntInt", ",", 
       "\[IndentingNewLine]", "PScorrectionInt", ",", "constCorrectionInt", 
-      ",", "GAIntdotGAIntInt", ",", "QuadMatrix", ",", "\[IndentingNewLine]", 
-      "simplifier", ",", "prefactor", ",", "integrand", ",", "dipoleList", 
-      ",", "\[IndentingNewLine]", "TableCommand", ",", "SumCommand"}], 
-     "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
-    "\[IndentingNewLine]", 
+      ",", "GAIntdotGAIntInt", ",", "QuadMatrix", ",", "q", ",", 
+      "\[IndentingNewLine]", "simplifier", ",", "prefactor", ",", "integrand",
+       ",", "dipoleList", ",", "\[IndentingNewLine]", "TableCommand", ",", 
+      "SumCommand"}], "\[IndentingNewLine]", "}"}], ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{
       RowBox[{"A", "[", "t_", "]"}], "=", 
@@ -3259,9 +3267,15 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
                    "\[Kappa]\[Kappa]"}], "]"}], "]"}], "\[IndentingNewLine]", 
                "]"}]}], "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}], 
         ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"simplifier", "=", 
       RowBox[{"OptionValue", "[", "Simplifier", "]"}]}], ";", 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"q", "=", 
+      RowBox[{"Boole", "[", 
+       RowBox[{"TrueQ", "[", 
+        RowBox[{"OptionValue", "[", "QuadraticActionTerms", "]"}], "]"}], 
+       "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"setPreintegral", "[", 
        RowBox[{
@@ -3522,24 +3536,26 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
               RowBox[{"A", "[", "#1", "]"}], ".", 
               RowBox[{"GAInt", "[", 
                RowBox[{"#1", ",", "#2"}], "]"}]}], "-", 
-             RowBox[{
+             RowBox[{"q", " ", 
               RowBox[{
-               RowBox[{"GAInt", "[", 
-                RowBox[{"#1", ",", "#2"}], "]"}], "\[Transpose]"}], ".", 
-              RowBox[{"GAdotAInt", "[", 
-               RowBox[{"#1", ",", "#2"}], "]"}]}]}], "&"}], 
+               RowBox[{
+                RowBox[{"GAInt", "[", 
+                 RowBox[{"#1", ",", "#2"}], "]"}], "\[Transpose]"}], ".", 
+               RowBox[{"GAdotAInt", "[", 
+                RowBox[{"#1", ",", "#2"}], "]"}]}]}]}], "&"}], 
            RowBox[{"{", 
             RowBox[{"Length", "[", 
              RowBox[{"A", "[", "tInit", "]"}], "]"}], "}"}], "False", 
            "True"},
           {"GAIntdotGAIntInt", 
            RowBox[{
-            RowBox[{
+            RowBox[{"q", " ", 
              RowBox[{
+              RowBox[{
+               RowBox[{"GAInt", "[", 
+                RowBox[{"#1", ",", "#2"}], "]"}], "\[Transpose]"}], ".", 
               RowBox[{"GAInt", "[", 
-               RowBox[{"#1", ",", "#2"}], "]"}], "\[Transpose]"}], ".", 
-             RowBox[{"GAInt", "[", 
-              RowBox[{"#1", ",", "#2"}], "]"}]}], "&"}], 
+               RowBox[{"#1", ",", "#2"}], "]"}]}]}], "&"}], 
            RowBox[{"{", 
             RowBox[{
              RowBox[{"Length", "[", 
@@ -3554,7 +3570,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
               RowBox[{
                RowBox[{"A", "[", "#1", "]"}], "-", 
                RowBox[{
-                FractionBox["1", "2"], 
+                FractionBox["q", "2"], 
                 RowBox[{"GAdotAInt", "[", 
                  RowBox[{"#1", ",", "#2"}], "]"}]}]}], ")"}], ".", 
              RowBox[{"GAdotAInt", "[", 

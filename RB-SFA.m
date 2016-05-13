@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 13 May 2016 17:33:11";
+$RBSFAtimestamp="Fri 13 May 2016 18:43:47";
 End[];
 
 
@@ -274,8 +274,9 @@ IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for mak
 RunInParallel::usage="RunInParallel is an option for makeDipoleList which controls whether each RB-SFA instance is parallelized. It accepts False as the (Automatic) option, True, to parallelize each instance, or a pair of functions {TableCommand, SumCommand} to use for the iteration and summing, which could be e.g. {Inactive[ParallelTable], Inactive[Sum]}.";
 Simplifier::usage="Simplifier is an option for makeDipoleList which specifies a function to use to simplify the intermediate and final analytical results.";
 CheckNumericFields::usage="CheckNumericFields is an option for makeDipoleList which specifies whether to check for numeric values of A[t] and GA[t] for numeric t.";
+QuadraticActionTerms::usage="QuadraticActionTerms is an option for makeDipoleList which specifies whether to use quadratic terms in \[Del]\!\(\*SuperscriptBox[\(A\), \(2\)]\) in the action.";
 
-Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel,Simplifier];
+Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel,Simplifier,CheckNumericFields,QuadraticActionTerms];
 
 
 
@@ -287,7 +288,7 @@ Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
 PointNumberCorrection->0,Verbose->0,CheckNumericFields->True,
 RunInParallel->Automatic,IntegrationPointsPerCycle->Automatic,
-Simplifier->Identity
+Simplifier->Identity,QuadraticActionTerms->True
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
 makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as A[`2`] returns `3` and should return a list of numbers.";
@@ -306,7 +307,7 @@ A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,
-PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt,QuadMatrix,
+PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt,QuadMatrix,q,
 simplifier,prefactor,integrand,dipoleList,
 TableCommand,SumCommand
 },
@@ -359,8 +360,10 @@ Conjugate[OptionValue[DipoleTransitionMatrixElement][{p1,p2,p3}[[1;;dim]],\[Kapp
 ]];
 ];
 ];
-simplifier=OptionValue[Simplifier];
 
+
+simplifier=OptionValue[Simplifier];
+q=Boole[TrueQ[OptionValue[QuadraticActionTerms]]];
 
 setPreintegral[integralVariable_,preintegrand_,dimensions_,integrateWithoutGradient_,parametric_]:=Which[
 OptionValue[VectorPotentialGradient]=!=None||TrueQ[integrateWithoutGradient],(*Vector potential gradient specified, or integral variable does not depend on it, so integrate*)
@@ -402,9 +405,9 @@ Apply[setPreintegral,({
  {GAdotAInt, GA[#1].A[#1]&, {Length[A[tInit]]}, False, False},
  {AdotGAInt, A[#1].GA[#1]&, {Length[A[tInit]]}, False, False},
  {GAIntInt, GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
- {PScorrectionInt, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]-GAInt[#1,#2]\[Transpose].GAdotAInt[#1,#2]&, {Length[A[tInit]]}, False, True},
- {GAIntdotGAIntInt, GAInt[#1,#2]\[Transpose].GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
- {constCorrectionInt, (A[#1]-1/2 GAdotAInt[#1,#2]).GAdotAInt[#1,#2]&, {}, False, True}
+ {PScorrectionInt, GAdotAInt[#1,#2]+A[#1].GAInt[#1,#2]-q GAInt[#1,#2]\[Transpose].GAdotAInt[#1,#2]&, {Length[A[tInit]]}, False, True},
+ {GAIntdotGAIntInt, q GAInt[#1,#2]\[Transpose].GAInt[#1,#2]&, {Length[A[tInit]],Length[A[tInit]]}, False, True},
+ {constCorrectionInt, (A[#1]-q/2 GAdotAInt[#1,#2]).GAdotAInt[#1,#2]&, {}, False, True}
 }),{1}];
 (*{\!\(
 \*SubsuperscriptBox[\(\[Integral]\), 
