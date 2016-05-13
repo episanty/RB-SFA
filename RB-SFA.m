@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 13 May 2016 17:16:24";
+$RBSFAtimestamp="Fri 13 May 2016 17:33:11";
 End[];
 
 
@@ -273,7 +273,7 @@ PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleL
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
 RunInParallel::usage="RunInParallel is an option for makeDipoleList which controls whether each RB-SFA instance is parallelized. It accepts False as the (Automatic) option, True, to parallelize each instance, or a pair of functions {TableCommand, SumCommand} to use for the iteration and summing, which could be e.g. {Inactive[ParallelTable], Inactive[Sum]}.";
 Simplifier::usage="Simplifier is an option for makeDipoleList which specifies a function to use to simplify the intermediate and final analytical results.";
-
+CheckNumericFields::usage="CheckNumericFields is an option for makeDipoleList which specifies whether to check for numeric values of A[t] and GA[t] for numeric t.";
 
 Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel,Simplifier];
 
@@ -285,7 +285,7 @@ VectorPotential->Automatic,FieldParameters->{},VectorPotentialGradient->None,
 Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
-PointNumberCorrection->0,Verbose->0,
+PointNumberCorrection->0,Verbose->0,CheckNumericFields->True,
 RunInParallel->Automatic,IntegrationPointsPerCycle->Automatic,
 Simplifier->Identity
 };
@@ -307,7 +307,6 @@ gate,tGate,setPreintegral,
 tInit,tFinal,\[Delta]t,\[Delta]tint,\[Epsilon]=OptionValue[\[Epsilon]Correction],
 AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,
 PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt,QuadMatrix,
-(*,bigPScorrectionInt,AdotGAdotAInt,*)
 simplifier,prefactor,integrand,dipoleList,
 TableCommand,SumCommand
 },
@@ -327,12 +326,12 @@ tFinal=(2\[Pi])/\[Omega] num;
 \[Delta]tint=If[OptionValue[IntegrationPointsPerCycle]===Automatic,\[Delta]t,(tFinal-tInit)/(num*OptionValue[IntegrationPointsPerCycle]+OptionValue[PointNumberCorrection])];
 
 tGate=OptionValue[nGate] (2\[Pi])/\[Omega];
-(*(*Check potential and potential gradient for correctness.*)
+(*Check potential and potential gradient for correctness.*)
+If[TrueQ[OptionValue[CheckNumericFields]],
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
-If[OptionValue[Verbose]\[NotEqual]3(*Turn off numerics check if quantum-orbits verbose option is in use.*),
 If[!And@@(NumberQ/@A[\[Omega]tRandom/\[Omega]]),Message[makeDipoleList::pot,OptionValue[VectorPotential],\[Omega]tRandom,A[\[Omega]tRandom]];Abort[]];
 If[!And@@(NumberQ/@Flatten[GA[\[Omega]tRandom/\[Omega]]]),Message[makeDipoleList::gradpot,OptionValue[VectorPotentialGradient],\[Omega]tRandom,GA[\[Omega]tRandom]];Abort[]];
-]];*)
+]];
 
 gate[\[Omega]\[Tau]_]:=OptionValue[Gate][\[Omega]\[Tau],OptionValue[nGate]];
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
@@ -482,9 +481,9 @@ integrand[t_,\[Tau]_]:=prefactor[t,\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[T
 
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops. Verbose\[Rule]3 for quantum-orbit constructs.*)
 Which[
-OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,bigPScorrectionInt,AdotGAdotAInt},
+OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt},
 OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
-{A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t],AInt[t,tt],A2Int[t],A2Int[t,tt],GAInt[t],GAInt[t,tt],GAdotAInt[t],GAdotAInt[t,tt],AdotGAInt[t],AdotGAInt[t,tt],GAIntInt[t],GAIntInt[t,tt],bigPScorrectionInt[t],bigPScorrectionInt[t,tt],AdotGAdotAInt[t],AdotGAdotAInt[t,tt],integrand[t,\[Tau]]}]],
+{A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t,tt],A2Int[t,tt],GAInt[t,tt],GAdotAInt[t,tt],AdotGAInt[t,tt],GAIntInt[t,tt],PScorrectionInt[t,tt],constCorrectionInt[t,tt],GAIntdotGAIntInt[t,tt],QuadMatrix[t,tt],integrand[t,\[Tau]]}]],
 OptionValue[Verbose]==3,
 Return[{
 Function[{Global`t,Global`tt},Evaluate[prefactor[Global`t,Global`t-Global`tt]]],Function[{Global`t,Global`tt},Evaluate[S[Global`t,Global`tt]]]
