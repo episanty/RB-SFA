@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 13 May 2016 18:43:47";
+$RBSFAtimestamp="Tue 17 May 2016 16:56:53";
 End[];
 
 
@@ -301,7 +301,7 @@ makeDipoleList::runpar="Wrong RunInParallel option `1`.";
 
 makeDipoleList[OptionsPattern[]]:=Block[
 {
-num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValue[CarrierFrequency],
+num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega],
 dipoleRec,dipoleIon,\[Kappa],
 A,F,GA,pi,ps,S,
 gate,tGate,setPreintegral,
@@ -319,13 +319,13 @@ TrueQ[OptionValue[VectorPotentialGradient]==None],        Table[0,{Length[A[tIni
 OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
 ];
 
+\[Omega]=OptionValue[CarrierFrequency];
 tInit=0;
 tFinal=(2\[Pi])/\[Omega] num;
 (*looping timestep*)
 \[Delta]t=(tFinal-tInit)/(num*npp+OptionValue[PointNumberCorrection]);
 (*integration timestep*)
 \[Delta]tint=If[OptionValue[IntegrationPointsPerCycle]===Automatic,\[Delta]t,(tFinal-tInit)/(num*OptionValue[IntegrationPointsPerCycle]+OptionValue[PointNumberCorrection])];
-
 tGate=OptionValue[nGate] (2\[Pi])/\[Omega];
 (*Check potential and potential gradient for correctness.*)
 If[TrueQ[OptionValue[CheckNumericFields]],
