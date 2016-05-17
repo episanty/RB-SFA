@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 17:02:47\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 21:39:17\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -3047,6 +3047,18 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
       "Check", " ", "potential", " ", "and", " ", "potential", " ", 
        "gradient", " ", "for", " ", 
        RowBox[{"correctness", "."}]}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"To", " ", 
+         RowBox[{"do", ":", " ", 
+          RowBox[{
+          "change", " ", "logic", " ", "conditions", " ", "to", " ", 
+           "constructions", " ", "on", " ", 
+           RowBox[{"VectorQ", "[", 
+            RowBox[{"#", ",", "NumberQ"}], "]"}]}]}]}], "&"}], " ", "and", 
+       " ", 
+       RowBox[{"MatrixQ", "."}]}], "*)"}], "\[IndentingNewLine]", 
      RowBox[{"If", "[", 
       RowBox[{
        RowBox[{"TrueQ", "[", 
@@ -4510,7 +4522,7 @@ difference procedures.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

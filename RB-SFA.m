@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Tue 17 May 2016 17:02:47";
+$RBSFAtimestamp="Tue 17 May 2016 21:39:17";
 End[];
 
 
@@ -330,6 +330,7 @@ tFinal=(2\[Pi])/\[Omega] num;
 \[Delta]tint=If[OptionValue[IntegrationPointsPerCycle]===Automatic,\[Delta]t,(tFinal-tInit)/(num*OptionValue[IntegrationPointsPerCycle]+OptionValue[PointNumberCorrection])];
 tGate=OptionValue[nGate] (2\[Pi])/\[Omega];
 (*Check potential and potential gradient for correctness.*)
+(*To do: change logic conditions to constructions on VectorQ[#,NumberQ]& and MatrixQ.*)
 If[TrueQ[OptionValue[CheckNumericFields]],
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
 If[!And@@(NumberQ/@A[\[Omega]tRandom/\[Omega]]),Message[makeDipoleList::pot,OptionValue[VectorPotential],\[Omega]tRandom,A[\[Omega]tRandom]];Abort[]];
