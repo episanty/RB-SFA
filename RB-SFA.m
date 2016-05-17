@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Tue 17 May 2016 16:56:53";
+$RBSFAtimestamp="Tue 17 May 2016 17:02:47";
 End[];
 
 
@@ -295,6 +295,7 @@ makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1
 makeDipoleList::gradpot="The vector potential GA provided as VectorPotentialGradient\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as GA[`2`] returns `3` and should return a square matrix of numbers. Alternatively, use VectorPotentialGradient\[Rule]None.";
 makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analytic\" and \"Numeric\".";
 makeDipoleList::runpar="Wrong RunInParallel option `1`.";
+makeDipoleList::carrfreq="Non-numeric option CarrierFrequency `1`.";
 
 
 
@@ -320,6 +321,7 @@ OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
 ];
 
 \[Omega]=OptionValue[CarrierFrequency];
+If[!NumberQ[\[Omega]]&&TrueQ[OptionValue[CheckNumericFields]],Message[makeDipoleList::carrfreq,\[Omega]];Abort[]];
 tInit=0;
 tFinal=(2\[Pi])/\[Omega] num;
 (*looping timestep*)

@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 16:56:53\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 17:02:47\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -2913,10 +2913,15 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
 \\\"Numeric\\\".\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
+   RowBox[{"makeDipoleList", "::", "runpar"}], "=", 
+   "\"\<Wrong RunInParallel option `1`.\>\""}], ";"}], "\[IndentingNewLine]", 
+
+ RowBox[{
+  RowBox[{
    RowBox[{
-    RowBox[{"makeDipoleList", "::", "runpar"}], "=", 
-    "\"\<Wrong RunInParallel option `1`.\>\""}], ";"}], "\[IndentingNewLine]",
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"makeDipoleList", "::", "carrfreq"}], "=", 
+    "\"\<Non-numeric option CarrierFrequency `1`.\>\""}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"makeDipoleList", "[", 
@@ -2987,6 +2992,20 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
      RowBox[{"\[Omega]", "=", 
       RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}]}], ";", 
      "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"NumberQ", "[", "\[Omega]", "]"}]}], "&&", 
+        RowBox[{"TrueQ", "[", 
+         RowBox[{"OptionValue", "[", "CheckNumericFields", "]"}], "]"}]}], 
+       ",", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"makeDipoleList", "::", "carrfreq"}], ",", "\[Omega]"}], 
+         "]"}], ";", 
+        RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
      RowBox[{"tInit", "=", "0"}], ";", "\[IndentingNewLine]", 
      RowBox[{"tFinal", "=", 
       RowBox[{
