@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 23:08:54\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 23:09:40\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -4522,6 +4522,400 @@ difference procedures.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["GetSaddlesFromSeeds", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GetSaddlesFromSeeds", "::", "usage"}], "=", 
+    "\"\<GetSaddlesFromSeeds[{{\!\(\*SubscriptBox[\(t\), \
+\(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},{\!\(\*SubscriptBox[\(t\), \
+\(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(2\)]\)},\[Ellipsis]},\[CapitalOmega],S] finds a list of solutions \
+{t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \
+\[CapitalOmega] for action S, using the given {\!\(\*SubscriptBox[\(t\), \
+\(i\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i\)]\)} as seeds for the process.\n\
+\nGetSaddlesFromSeeds[\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\)\
+, \(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \
+\(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(11\)]\)},{\!\(\*SubscriptBox[\(t\), \
+\(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(12\)]\)},\[Ellipsis]},\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\)\
+\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \
+\(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(21\)]\)},{\!\(\*SubscriptBox[\(t\), \
+\(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)},\[Ellipsis]},\[Ellipsis]\
+\[RightAssociation],\[CapitalOmega],S] finds solutions of the HHG temporal \
+saddle-point equations, using the seeds list from the \!\(\*SubscriptBox[\(\
+\[CapitalOmega]\), \(i\)]\) that's closest to \[CapitalOmega], or as \
+specified by the value of KeyChooserFunction.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SeedsChooserFunction", "::", "usage"}], "=", 
+   "\"\<SeedsChooserFunction is an option for GetSaddlesFromSeeds that \
+specifies a function f (set by default to Nearest) that, when used as f[{\!\(\
+\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\),\!\(\*SubscriptBox[\(\
+\[CapitalOmega]\), \(2\)]\),\[Ellipsis]},\[CapitalOmega]], should return the \
+indices {\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\),\!\(\*SubscriptBox[\
+\(\[CapitalOmega]\), \(j\)]\),\[Ellipsis]} corresponding to the seed sets {{{\
+\!\(\*SubscriptBox[\(t\), \(i1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
+\(i1\)]\)},\[Ellipsis]},{{\!\(\*SubscriptBox[\(t\), \
+\(j1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(j1\)]\)},\[Ellipsis]}} to be used \
+to solve the HHG saddle-point equations.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"RecalculateRoots", "::", "usage"}], "=", 
+    "\"\<RecalculateRoots is an option for GetSaddlesFromSeeds that specifies \
+whether to re-solve the saddle-point equations if the given harmonic energy \
+\[CapitalOmega] is among the set of keys of the given seeds association. The \
+default is False, which is appropriate for S being the same action used to \
+find the seeds, in which case setting RecalculateRoots\[RightArrow]True will \
+produce multiple FindRoot errors. If using a different action than used to \
+find the seeds, set to True.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetSaddlesFromSeeds", "::", "error"}], "=", 
+   "\"\<Errors encountered for harmonic energy \[CapitalOmega]=`1`.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GetSaddlesFromSeeds", "::", "norecalc"}], "=", 
+    "\"\<Skipping re-calculation of roots at harmonic energy `1` since it is \
+already in the key set of the given seeds association. To run the calculation \
+for this case set RecalculateRoots to True.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "GetSaddlesFromSeeds", "]"}], "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"RecalculateRoots", "\[Rule]", "False"}], ",", 
+       RowBox[{"SeedsChooserFunction", "\[Rule]", "Nearest"}]}], "}"}], ",", 
+     RowBox[{"Options", "[", "GetSaddlePoints", "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Protect", "[", 
+    RowBox[{"SeedsChooserFunction", ",", "RecalculateRoots"}], "]"}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetSaddlesFromSeeds", "[", 
+    RowBox[{"seedsSpec_", ",", "\[CapitalOmega]Range_List", ",", "S_", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Association", "[", 
+    RowBox[{"ParallelTable", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"\[CapitalOmega]", "\[Rule]", 
+       RowBox[{"GetSaddlesFromSeeds", "[", 
+        RowBox[{
+        "seedsSpec", ",", "\[CapitalOmega]", ",", "S", ",", "options"}], 
+        "]"}]}], "\[IndentingNewLine]", ",", 
+      RowBox[{"{", 
+       RowBox[{"\[CapitalOmega]", ",", 
+        RowBox[{"Sort", "[", "\[CapitalOmega]Range", "]"}]}], "}"}]}], "]"}], 
+    "]"}]}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetSaddlesFromSeeds", "[", 
+    RowBox[{
+    "seedsAssociation_Association", ",", "\[CapitalOmega]_", ",", "S_", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"With", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"keys", "=", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "SeedsChooserFunction", "]"}], "[", 
+        RowBox[{
+         RowBox[{"Keys", "[", "seedsAssociation", "]"}], ",", 
+         "\[CapitalOmega]"}], "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"MemberQ", "[", 
+          RowBox[{"keys", ",", "\[CapitalOmega]"}], "]"}], "&&", 
+         RowBox[{"TrueQ", "[", 
+          RowBox[{"!", 
+           RowBox[{"OptionValue", "[", "RecalculateRoots", "]"}]}], "]"}]}], 
+        ",", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"GetSaddlesFromSeeds", "::", "norecalc"}], ",", 
+           "\[CapitalOmega]"}], "]"}], ";", 
+         RowBox[{"Return", "[", 
+          RowBox[{"seedsAssociation", "[", "\[CapitalOmega]", "]"}], 
+          "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"GetSaddlesFromSeeds", "[", 
+       RowBox[{
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{"Values", "[", 
+           RowBox[{"seedsAssociation", "\[LeftDoubleBracket]", 
+            RowBox[{"Key", "/@", "keys"}], "\[RightDoubleBracket]"}], "]"}], 
+          ",", "1"}], "]"}], ",", "\[CapitalOmega]", ",", "S", ",", 
+        "options"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GetSaddlesFromSeeds", "[", 
+   RowBox[{"seedsList_List", ",", 
+    RowBox[{"\[CapitalOmega]_", "?", "NumberQ"}], ",", "S_", ",", 
+    RowBox[{"options", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+  RowBox[{"Block", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"equations", ",", "roots", ",", 
+      RowBox[{"t", "=", 
+       RowBox[{"Symbol", "[", "\"\<t\>\"", "]"}]}], ",", 
+      RowBox[{"tt", "=", 
+       RowBox[{"Symbol", "[", "\"\<tt\>\"", "]"}]}], ",", 
+      RowBox[{"\[Tau]", "=", 
+       RowBox[{"Symbol", "[", "\"\<\[Tau]\>\"", "]"}]}], ",", "indVars", ",", 
+      "depVar", ",", "depVarRule", ",", "fullSeedVars", ",", "tolerances"}], 
+     "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"indVars", "=", 
+      RowBox[{
+       RowBox[{"OptionValue", "[", "IndependentVariables", "]"}], "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<RecombinationTime\>\"", "\[Rule]", "\"\<t\>\""}], ",", 
+         RowBox[{"\"\<ExcursionTime\>\"", "\[Rule]", "\"\<\[Tau]\>\""}], ",", 
+         
+         RowBox[{"\"\<IonizationTime\>\"", "\[Rule]", "\"\<tt\>\""}]}], 
+        "}"}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"depVar", "=", 
+      RowBox[{"First", "[", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"\"\<t\>\"", ",", "\"\<\[Tau]\>\"", ",", "\"\<tt\>\""}], 
+          "}"}], ",", 
+         RowBox[{"Alternatives", "@@", "indVars"}]}], "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"depVarRule", "=", 
+      RowBox[{"depVar", "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"\"\<tt\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"tt", "\[Rule]", 
+            RowBox[{"t", "-", "\[Tau]"}]}], "}"}]}], ",", 
+         RowBox[{"\"\<t\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"t", "\[Rule]", 
+            RowBox[{"tt", "+", "\[Tau]"}]}], "}"}]}], ",", 
+         RowBox[{"\"\<\[Tau]\>\"", "\[Rule]", 
+          RowBox[{"{", 
+           RowBox[{"\[Tau]", "\[Rule]", 
+            RowBox[{"t", "-", "tt"}]}], "}"}]}]}], "}"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"fullSeedVars", "[", "seed_", "]"}], ":=", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\"\<t\>\"", "\[Rule]", 
+         RowBox[{
+         "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+        ",", 
+        RowBox[{"\"\<\[Tau]\>\"", "\[Rule]", 
+         RowBox[{
+         "seed", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+        ",", 
+        RowBox[{"\"\<tt\>\"", "\[Rule]", 
+         RowBox[{
+          RowBox[{
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
+          RowBox[{
+          "seed", "\[LeftDoubleBracket]", "2", 
+           "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"equations", "=", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"D", "[", 
+           RowBox[{
+            RowBox[{"S", "[", 
+             RowBox[{"t", ",", "tt"}], "]"}], ",", "t"}], "]"}], "\[Equal]", 
+          "\[CapitalOmega]"}], ",", 
+         RowBox[{
+          RowBox[{"D", "[", 
+           RowBox[{
+            RowBox[{"S", "[", 
+             RowBox[{"t", ",", "tt"}], "]"}], ",", "tt"}], "]"}], "\[Equal]", 
+          "0"}]}], "}"}], "/.", "depVarRule"}]}], ";", "\[IndentingNewLine]", 
+     
+     RowBox[{"tolerances", "=", 
+      RowBox[{"Which", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"ListQ", "[", 
+         RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
+        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
+        "\[IndentingNewLine]", "True", ",", 
+        RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Which", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"NumberQ", "[", 
+             RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
+            RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
+            "\[IndentingNewLine]", "True", ",", 
+            RowBox[{"10", "^", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{"NumberQ", "[", 
+                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}], 
+               ",", " ", 
+               RowBox[{"2", "-", 
+                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
+               
+               RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
+           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}], 
+         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     
+     RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Select", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Check", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"roots", "=", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"t", ",", "\[Tau]"}], "}"}], "/.", "depVarRule"}],
+                   ")"}], "/.", 
+                 RowBox[{"(", "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"FindRoot", "[", "\[IndentingNewLine]", 
+                    RowBox[{"equations", "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Symbol", "[", "#", "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"fullSeedVars", "[", "seed", "]"}], 
+                    "\[LeftDoubleBracket]", "#", "\[RightDoubleBracket]"}]}], 
+                    "}"}], "&"}], "/@", "indVars"}], "\[IndentingNewLine]", 
+                    ",", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"{", "options", "}"}], ",", 
+                    RowBox[{"Options", "[", "FindRoot", "]"}]}], "]"}]}], 
+                    "]"}]}], "\[IndentingNewLine]", "]"}], 
+                   "\[IndentingNewLine]", "/.", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", "}"}], "\[Rule]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"t", ",", "\[Tau]"}], "}"}], "/.", "depVarRule"}],
+                     ")"}], "\[Rule]", 
+                    RowBox[{"{", "}"}]}], ")"}]}], "}"}]}], ")"}]}]}], 
+               "\[IndentingNewLine]", ",", 
+               RowBox[{
+                RowBox[{"Message", "[", 
+                 RowBox[{
+                  RowBox[{"GetSaddlesFromSeeds", "::", "error"}], ",", 
+                  "\[CapitalOmega]"}], "]"}], ";", "roots"}]}], 
+              "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+             RowBox[{"{", 
+              RowBox[{"seed", ",", "seedsList"}], "}"}]}], "]"}], 
+           "\[IndentingNewLine]", ",", 
+           RowBox[{"Function", "[", 
+            RowBox[{"timesPair", ",", 
+             RowBox[{
+              RowBox[{"OptionValue", "[", "SelectionFunction", "]"}], "[", 
+              RowBox[{
+               RowBox[{
+               "timesPair", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}], ",", 
+               RowBox[{
+               "timesPair", "\[LeftDoubleBracket]", "2", 
+                "\[RightDoubleBracket]"}], ",", "S", ",", "\[CapitalOmega]"}],
+               "]"}]}], "]"}]}], "\[IndentingNewLine]", "]"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"Function", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"timesPair1", ",", "timesPair2"}], "}"}], ",", "    ", 
+           RowBox[{"And", "@@", 
+            RowBox[{"Thread", "[", 
+             RowBox[{
+              RowBox[{"Abs", "[", 
+               RowBox[{"timesPair1", "-", "timesPair2"}], "]"}], "<", 
+              "tolerances"}], "]"}]}]}], "     ", "]"}]}], 
+        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+       RowBox[{"If", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"ListQ", "[", 
+          RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Table", "[", 
+          RowBox[{
+           RowBox[{"Function", "[", 
+            RowBox[{"timesPair", ",", 
+             RowBox[{"f", "[", 
+              RowBox[{
+               RowBox[{
+               "timesPair", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}], ",", 
+               RowBox[{
+               "timesPair", "\[LeftDoubleBracket]", "2", 
+                "\[RightDoubleBracket]"}], ",", "S", ",", "\[CapitalOmega]"}],
+               "]"}]}], "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"f", ",", 
+             RowBox[{"OptionValue", "[", "SortingFunction", "]"}]}], "}"}]}], 
+          "]"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"Function", "[", 
+          RowBox[{"timesPair", ",", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "[", 
+            RowBox[{
+             RowBox[{
+             "timesPair", "\[LeftDoubleBracket]", "1", 
+              "\[RightDoubleBracket]"}], ",", 
+             RowBox[{
+             "timesPair", "\[LeftDoubleBracket]", "2", 
+              "\[RightDoubleBracket]"}], ",", "S", ",", "\[CapitalOmega]"}], 
+            "]"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input"]
 }, Open  ]],
 
 Cell[CellGroupData[{
