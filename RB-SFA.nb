@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 21:39:17\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 23:08:54\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -4133,7 +4133,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4207,8 +4207,8 @@ difference procedures.\>\""}], ";"}],
   RowBox[{
    RowBox[{
     RowBox[{"GetSaddlePoints", "::", "error"}], "=", 
-    "\"\<Errors encountered for frequency \[CapitalOmega]=`1`.\>\""}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+    "\"\<Errors encountered for harmonic energy \[CapitalOmega]=`1`.\>\""}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
