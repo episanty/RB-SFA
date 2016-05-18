@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Tue 17 May 2016 23:09:40";
+$RBSFAtimestamp="Wed 18 May 2016 12:13:17";
 End[];
 
 
@@ -583,6 +583,78 @@ GetSaddlePoints[\[CapitalOmega]Range_List,S_,timeRanges_,options:OptionsPattern[
 \[CapitalOmega]->GetSaddlePoints[\[CapitalOmega],S,timeRanges,options]
 ,{\[CapitalOmega],Sort[\[CapitalOmega]Range]}]]
 
+End[];
+
+
+GetSaddlesFromSeeds::usage="GetSaddlesFromSeeds[{{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]},\[CapitalOmega],S] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, using the given {\!\(\*SubscriptBox[\(t\), \(i\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i\)]\)} as seeds for the process.
+
+GetSaddlesFromSeeds[\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]},\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(21\)]\)},{\!\(\*SubscriptBox[\(t\), \(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)},\[Ellipsis]},\[Ellipsis]\[RightAssociation],\[CapitalOmega],S] finds solutions of the HHG temporal saddle-point equations, using the seeds list from the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\) that's closest to \[CapitalOmega], or as specified by the value of KeyChooserFunction.
+
+GetSaddlesFromSeeds[seeds,{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\),\[Ellipsis]},S] iterates over the given set of harmonic energies.";
+
+SeedsChooserFunction::usage="SeedsChooserFunction is an option for GetSaddlesFromSeeds that specifies a function f (set by default to Nearest) that, when used as f[{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\),\[Ellipsis]},\[CapitalOmega]], should return the indices {\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(j\)]\),\[Ellipsis]} corresponding to the seed sets {{{\!\(\*SubscriptBox[\(t\), \(i1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i1\)]\)},\[Ellipsis]},{{\!\(\*SubscriptBox[\(t\), \(j1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(j1\)]\)},\[Ellipsis]}} to be used to solve the HHG saddle-point equations.";
+RecalculateRoots::usage="RecalculateRoots is an option for GetSaddlesFromSeeds that specifies whether to re-solve the saddle-point equations if the given harmonic energy \[CapitalOmega] is among the set of keys of the given seeds association. The default is False, which is appropriate for S being the same action used to find the seeds, in which case setting RecalculateRoots\[RightArrow]True will produce multiple FindRoot errors. If using a different action than used to find the seeds, set to True.";
+
+GetSaddlesFromSeeds::error="Errors encountered for harmonic energy \[CapitalOmega]=`1`.";
+GetSaddlesFromSeeds::norecalc="Skipping re-calculation of roots at harmonic energy `1` since it is already in the key set of the given seeds association. To run the calculation for this case set RecalculateRoots to True.";
+
+Begin["`Private`"];
+Options[GetSaddlesFromSeeds]=Join[{RecalculateRoots->False,SeedsChooserFunction->Nearest},Options[GetSaddlePoints]];
+Protect[SeedsChooserFunction,RecalculateRoots];
+
+
+GetSaddlesFromSeeds[seedsSpec_,\[CapitalOmega]Range_List,S_,options:OptionsPattern[]]:=Association[ParallelTable[
+\[CapitalOmega]->GetSaddlesFromSeeds[seedsSpec,\[CapitalOmega],S,options]
+,{\[CapitalOmega],Sort[\[CapitalOmega]Range]}]]
+
+GetSaddlesFromSeeds[seedsAssociation_Association,\[CapitalOmega]_,S_,options:OptionsPattern[]]:=With[{keys=OptionValue[SeedsChooserFunction][Keys[seedsAssociation],\[CapitalOmega]]},
+If[MemberQ[keys,\[CapitalOmega]]&&TrueQ[!OptionValue[RecalculateRoots]],Message[GetSaddlesFromSeeds::norecalc,\[CapitalOmega]];Return[seedsAssociation[\[CapitalOmega]]]];
+GetSaddlesFromSeeds[Flatten[Values[seedsAssociation[[Key/@keys]]],1],\[CapitalOmega],S,options]
+]
+
+
+GetSaddlesFromSeeds[seedsList_List,\[CapitalOmega]_?NumberQ,S_,options:OptionsPattern[]]:=Block[
+{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,fullSeedVars,tolerances},
+indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
+depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
+depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
+fullSeedVars[seed_]:=<|"t"->seed[[1]],"\[Tau]"->seed[[2]],"tt"->seed[[1]]-seed[[2]]|>;
+equations={D[S[t,tt],t]==\[CapitalOmega],D[S[t,tt],tt]==0}/.depVarRule;
+tolerances=Which[
+ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,ConstantArray[
+Which[
+NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
+]
+,2]];
+
+SortBy[
+DeleteDuplicates[
+Select[
+Table[
+Check[
+roots=({t,\[Tau]}/.depVarRule)/.(
+FindRoot[
+equations
+,{Symbol[#],fullSeedVars[seed][[#]]}&/@indVars
+,Evaluate[Sequence@@FilterRules[{options},Options[FindRoot]]]
+]
+/.{{}->(({t,\[Tau]}/.depVarRule)->{})})
+,Message[GetSaddlesFromSeeds::error,\[CapitalOmega]];roots
+]
+,{seed,seedsList}]
+,Function[timesPair,OptionValue[SelectionFunction][timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]]
+]
+,Function[{timesPair1,timesPair2},    And@@Thread[Abs[timesPair1-timesPair2]<tolerances]     ]
+]
+,If[
+ListQ[OptionValue[SortingFunction]],
+Table[Function[timesPair,f[timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]],{f,OptionValue[SortingFunction]}],
+Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S,\[CapitalOmega]]]
+]
+]
+]
 End[];
 
 

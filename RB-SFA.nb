@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 17 May 2016 23:09:40\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 18 May 2016 12:13:17\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -4553,7 +4553,10 @@ Cell[BoxData[{
 \[RightAssociation],\[CapitalOmega],S] finds solutions of the HHG temporal \
 saddle-point equations, using the seeds list from the \!\(\*SubscriptBox[\(\
 \[CapitalOmega]\), \(i\)]\) that's closest to \[CapitalOmega], or as \
-specified by the value of KeyChooserFunction.\>\""}], ";"}], 
+specified by the value of KeyChooserFunction.\n\n\
+GetSaddlesFromSeeds[seeds,{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \
+\(1\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\),\[Ellipsis]},S] \
+iterates over the given set of harmonic energies.\>\""}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -4744,7 +4747,8 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
+           
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
@@ -4915,7 +4919,8 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
    "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"End", "[", "]"}], ";"}]}], "Input"]
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
 }, Open  ]],
 
 Cell[CellGroupData[{
