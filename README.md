@@ -15,7 +15,7 @@ This code is dual-licensed under the GPL and CC-BY-SA licenses. If you use this 
 
 >    E. Pisanty. RB-SFA: High Harmonic Generation in the Strong Field Approximation via Mathematica. https://github.com/episanty/RB-SFA (2016).
 
-This software consists of the Mathematica notebook `RB-SFA.nb`, which contains the code and its documentation, a corresponding auto-generated package file `RB-SFA.m`, which provides the package functions to other notebooks, and a `Usage and Examples.nb` notebook which explains how to install and use the code, and documents the calculations used in the original publication. PDF printouts of both notebooks are also provided.
+This software consists of the Mathematica notebook `RB-SFA.nb`, which contains the code and its documentation, a corresponding auto-generated package file `RB-SFA.m`, which provides the package functions to other notebooks, and a `Usage and Examples.nb` notebook which explains how to install and use the code, and documents the calculations used in the original publication. PDF printouts of both notebooks are also provided. The quantum orbit capabilities depend on the additional package EPToolbox, which is available [here](https://github.com/episanty/EPToolbox).
 
 The author thanks Luke Chipperfield for crucial assistance in writing this program.
 
