@@ -1111,7 +1111,7 @@ RB-SFA package.\>\""}], ";"}], "\[IndentingNewLine]",
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"$RBSFAversion", ":=", 
-   RowBox[{"\"\<RB-SFA v2.1.0, \>\"", "<>", "$RBSFAtimestamp"}]}], 
+   RowBox[{"\"\<RB-SFA v2.1.1, \>\"", "<>", "$RBSFAtimestamp"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 6 Jun 2016 15:08:29\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 6 Jun 2016 15:33:54\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
