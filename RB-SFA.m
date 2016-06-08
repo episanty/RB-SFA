@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 6 Jun 2016 15:33:54";
+$RBSFAtimestamp="Wed 8 Jun 2016 15:00:40";
 End[];
 
 
@@ -268,7 +268,7 @@ nGate::usage="nGate is an option for makeDipole list which specifies the total n
 IonizationPotential::usage="IonizationPotential is an option for makeDipoleList which specifies the ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\) of the target.";
 Target::usage="Target is an option for makeDipoleList which specifies chemical species producing the HHG emission, pulling the ionization potential from the Wolfram ElementData curated data set.";
 DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which secifies a function f to use as the dipole transition matrix element, or a pair of functions {\!\(\*SubscriptBox[\(f\), \(ion\)]\),\!\(\*SubscriptBox[\(f\), \(rec\)]\)} to be used separately for the ionization and recombination dipoels, to be used in the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[\(I\), \(p\)]\)]\)].";
-\[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \[Epsilon])\), \(3/2\)]]\).";
+\[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\\\[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
 RunInParallel::usage="RunInParallel is an option for makeDipoleList which controls whether each RB-SFA instance is parallelized. It accepts False as the (Automatic) option, True, to parallelize each instance, or a pair of functions {TableCommand, SumCommand} to use for the iteration and summing, which could be e.g. {Inactive[ParallelTable], Inactive[Sum]}.";
@@ -401,6 +401,7 @@ innerVariable[##][0,tt]==0
 integralVariable[t_]=ConstantArray[0,dimensions];
 integralVariable[t_,tt_]=ConstantArray[0,dimensions];
 ];
+
 Apply[setPreintegral,({
  {AInt, A[#1]&, {Length[A[tInit]]}, True, False},
  {A2Int, A[#1].A[#1]&, {}, True, False},
@@ -465,8 +466,6 @@ SubscriptBox[\(t\), \(0\)], \(t\)]
 \*SubscriptBox[\(A\), \(j\)]\((\[Tau]')\)\[DifferentialD]\[Tau]'\[DifferentialD]\[Tau]\)\)\)};*)
 
 
-(*Return[constCorrectionInt[t,tt]];*)
-
 (*Displaced momentum*)
 pi[p_,t_,tt_]:=p+A[t]-GAInt[t,tt].p-GAdotAInt[t,tt];
 
@@ -488,11 +487,11 @@ integrand[t_,\[Tau]_]:=prefactor[t,\[Tau]]Exp[-I S[t,t-\[Tau]]]gate[\[Omega] \[T
 (*Debugging constructs. Verbose\[Rule]1 prints information about the internal functions. Verbose\[Rule]2 returns all the relevant internal functions and stops. Verbose\[Rule]3 for quantum-orbit constructs.*)
 Which[
 OptionValue[Verbose]==1,Information/@{A,GA,ps,pi,S,AInt,A2Int,GAInt,GAdotAInt,AdotGAInt,GAIntInt,PScorrectionInt,constCorrectionInt,GAIntdotGAIntInt},
-OptionValue[Verbose]==2,Return[With[{t=Global`t,tt=Global`tt,p=Global`t,\[Tau]=Global`\[Tau]},
+OptionValue[Verbose]==2,Return[With[{t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],p={Symbol["p1"],Symbol["p2"],Symbol["p3"]}[[1;;Length[A[\[Omega] tInit]]]]},
 {A[t],GA[t],ps[t,tt],pi[p,t,tt],S[t,tt],AInt[t,tt],A2Int[t,tt],GAInt[t,tt],GAdotAInt[t,tt],AdotGAInt[t,tt],GAIntInt[t,tt],PScorrectionInt[t,tt],constCorrectionInt[t,tt],GAIntdotGAIntInt[t,tt],QuadMatrix[t,tt],integrand[t,\[Tau]]}]],
 OptionValue[Verbose]==3,
 Return[{
-Function[{Global`t,Global`tt},Evaluate[prefactor[Global`t,Global`t-Global`tt]]],Function[{Global`t,Global`tt},Evaluate[S[Global`t,Global`tt]]]
+Function[Evaluate[prefactor[#1,#1-#2]]],Function[Evaluate[S[#1,#2]]]
 }]
 ];
 
@@ -504,9 +503,9 @@ True,TableCommand=OptionValue[RunInParallel][[1]];SumCommand=OptionValue[RunInPa
 ];
 
 (*Numerical integration loop*)
-dipoleList=TableCommand[
+dipoleList=Table[
 OptionValue[ReportingFunction][
-\[Delta]tint SumCommand[(
+\[Delta]tint Sum[(
 integrand[t,\[Tau]]
 ),{\[Tau],0,If[OptionValue[Preintegrals]=="Analytic",tGate,Min[t-tInit,tGate]],\[Delta]tint}]
 ]

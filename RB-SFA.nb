@@ -762,7 +762,7 @@ Ultrafast Dynamics and Spectroscopy, pp. 201\[Dash]256 (Wiley-VCH, Weinheim, \
   ButtonNote->"http://arxiv.org/abs/1304.2413"],
  "."
 }], "Text"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 6 Jun 2016 15:33:54\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 8 Jun 2016 15:00:40\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1326,7 +1326,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1789,7 +1789,7 @@ Automatic.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2530,7 +2530,7 @@ DipoleList, separating the two circular polarizations.\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2792,7 +2792,7 @@ f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[\(I\), \
    RowBox[{"\[Epsilon]Correction", "::", "usage"}], "=", 
    "\"\<\[Epsilon]Correction is an option for makeDipoleList which specifies \
 the regularization correction \[Epsilon], i.e. as used in the factor \
-\!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\ \
+\!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\\\
 \[Epsilon])\), \(3/2\)]]\).\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -3506,6 +3506,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
           RowBox[{"ConstantArray", "[", 
            RowBox[{"0", ",", "dimensions"}], "]"}]}], ";"}]}], 
        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
      RowBox[{"Apply", "[", 
       RowBox[{"setPreintegral", ",", 
        RowBox[{"(", GridBox[{
@@ -3799,12 +3800,6 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
       "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
      RowBox[{"(*", 
-      RowBox[{
-       RowBox[{"Return", "[", 
-        RowBox[{"constCorrectionInt", "[", 
-         RowBox[{"t", ",", "tt"}], "]"}], "]"}], ";"}], "*)"}], 
-     "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     RowBox[{"(*", 
       RowBox[{"Displaced", " ", "momentum"}], "*)"}], "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"pi", "[", 
@@ -4001,10 +3996,25 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
          RowBox[{
           RowBox[{"{", 
            RowBox[{
-            RowBox[{"t", "=", "Global`t"}], ",", 
-            RowBox[{"tt", "=", "Global`tt"}], ",", 
-            RowBox[{"p", "=", "Global`t"}], ",", 
-            RowBox[{"\[Tau]", "=", "Global`\[Tau]"}]}], "}"}], ",", 
+            RowBox[{"t", "=", 
+             RowBox[{"Symbol", "[", "\"\<t\>\"", "]"}]}], ",", 
+            RowBox[{"tt", "=", 
+             RowBox[{"Symbol", "[", "\"\<tt\>\"", "]"}]}], ",", 
+            RowBox[{"\[Tau]", "=", 
+             RowBox[{"Symbol", "[", "\"\<\[Tau]\>\"", "]"}]}], ",", 
+            RowBox[{"p", "=", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Symbol", "[", "\"\<p1\>\"", "]"}], ",", 
+                RowBox[{"Symbol", "[", "\"\<p2\>\"", "]"}], ",", 
+                RowBox[{"Symbol", "[", "\"\<p3\>\"", "]"}]}], "}"}], 
+              "\[LeftDoubleBracket]", 
+              RowBox[{"1", ";;", 
+               RowBox[{"Length", "[", 
+                RowBox[{"A", "[", 
+                 RowBox[{"\[Omega]", " ", "tInit"}], "]"}], "]"}]}], 
+              "\[RightDoubleBracket]"}]}]}], "}"}], ",", 
           "\[IndentingNewLine]", 
           RowBox[{"{", 
            RowBox[{
@@ -4046,23 +4056,16 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
         RowBox[{"{", "\[IndentingNewLine]", 
          RowBox[{
           RowBox[{"Function", "[", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"Global`t", ",", "Global`tt"}], "}"}], ",", 
-            RowBox[{"Evaluate", "[", 
-             RowBox[{"prefactor", "[", 
-              RowBox[{"Global`t", ",", 
-               RowBox[{"Global`t", "-", "Global`tt"}]}], "]"}], "]"}]}], 
-           "]"}], ",", 
+           RowBox[{"Evaluate", "[", 
+            RowBox[{"prefactor", "[", 
+             RowBox[{"#1", ",", 
+              RowBox[{"#1", "-", "#2"}]}], "]"}], "]"}], "]"}], ",", 
           RowBox[{"Function", "[", 
-           RowBox[{
-            RowBox[{"{", 
-             RowBox[{"Global`t", ",", "Global`tt"}], "}"}], ",", 
-            RowBox[{"Evaluate", "[", 
-             RowBox[{"S", "[", 
-              RowBox[{"Global`t", ",", "Global`tt"}], "]"}], "]"}]}], "]"}]}],
-          "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", "]"}],
-      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"Evaluate", "[", 
+            RowBox[{"S", "[", 
+             RowBox[{"#1", ",", "#2"}], "]"}], "]"}], "]"}]}], 
+         "\[IndentingNewLine]", "}"}], "]"}]}], "\[IndentingNewLine]", "]"}], 
+     ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"(*", 
       RowBox[{"Single", "-", 
        RowBox[{"run", " ", "parallelization"}]}], "*)"}], 
@@ -4101,13 +4104,13 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
       RowBox[{"Numerical", " ", "integration", " ", "loop"}], "*)"}], 
      "\[IndentingNewLine]", 
      RowBox[{"dipoleList", "=", 
-      RowBox[{"TableCommand", "[", "\[IndentingNewLine]", 
+      RowBox[{"Table", "[", "\[IndentingNewLine]", 
        RowBox[{
         RowBox[{
          RowBox[{"OptionValue", "[", "ReportingFunction", "]"}], "[", 
          "\[IndentingNewLine]", 
          RowBox[{"\[Delta]tint", " ", 
-          RowBox[{"SumCommand", "[", 
+          RowBox[{"Sum", "[", 
            RowBox[{
             RowBox[{"(", "\[IndentingNewLine]", 
              RowBox[{"integrand", "[", 
@@ -4133,7 +4136,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4747,8 +4750,7 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
-           
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
@@ -5932,7 +5934,7 @@ the saddle-point approximation for this set.\>\""}], ";"}],
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
 }, Closed]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
