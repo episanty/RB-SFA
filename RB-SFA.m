@@ -19,9 +19,11 @@
 
 
 
+(* ::Input::Initialization:: *)
 BeginPackage["RBSFA`",{"EPToolbox`"}];
 
 
+(* ::Input::Initialization:: *)
 $RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";
 $RBSFAtimestamp::usage="$RBSFAtimestamp prints the timestamp of the current version of the RB-SFA package.";
 Begin["`Private`"];
@@ -29,6 +31,7 @@ $RBSFAversion:="RB-SFA v2.1.1, "<>$RBSFAtimestamp;
 End[];
 
 
+(* ::Input::Initialization:: *)
 RBSFAversion::usage="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
 RBSFAversion::dprc="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
 Begin["`Private`"];
@@ -36,16 +39,19 @@ RBSFAversion[]:=(Message[RBSFAversion::dprc];$RBSFAversion);
 End[];
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 8 Jun 2016 15:00:40";
+$RBSFAtimestamp="Sat 3 Sep 2016 00:41:54";
 End[];
 
 
+(* ::Input::Initialization:: *)
 $RBSFAdirectory::usage="$RBSFAdirectory is the directory where the current RB-SFA package instance is located.";
 $RBSFAcommit::usage="$RBSFAcommit returns the git commit log at the location of the RB-SFA package if there is one.";
 $RBSFAcommit::OS="$RBSFAcommit has only been tested on Linux.";
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 With[{softLinkTestString=StringSplit[StringJoin[ReadList["! ls -la "<>StringReplace[$InputFileName,{" "->"\\ "}],String]]," -> "]},
 If[Length[softLinkTestString]>1,(*Testing in case $InputFileName is a soft link to the actual directory.*)
@@ -57,6 +63,7 @@ StringJoin[Riffle[ReadList["!cd "<>$RBSFAdirectory<>" && git log -1",String],{"\
 End[];
 
 
+(* ::Input::Initialization:: *)
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
 hydrogenicDTMERegularized::usage="hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point solutions are singular."
 Begin["`Private`"];
@@ -67,6 +74,7 @@ hydrogenicDTMERegularized[p_?NumberQ,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)
 End[];
 
 
+(* ::Input::Initialization:: *)
 gaussianDTME::usage="gaussianDTME[p,\[Kappa]] returns the dipole transition matrix element for a gaussian state of characteristic size 1/\[Kappa].";
 Begin["`Private`"];
 gaussianDTME[p_List,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(Total[p^2]/(2\[Kappa]^2))]
@@ -74,27 +82,32 @@ gaussianDTME[p_?NumberQ,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(p^
 End[];
 
 
+(* ::Input::Initialization:: *)
 flatTopEnvelope::usage="flatTopEnvelope[\[Omega],num,nRamp] returns a Function object representing a flat-top envelope at carrier frequency \[Omega] lasting a total of num cycles and with linear ramps nRamp cycles long.";
 Begin["`Private`"];
 flatTopEnvelope[\[Omega]_,num_,nRamp_]:=Function[t,Piecewise[{{0,t<0},{Sin[(\[Omega] t)/(4nRamp)]^2,0<=t<(2 \[Pi])/\[Omega] nRamp},{1,(2 \[Pi])/\[Omega] nRamp<=t<(2 \[Pi])/\[Omega] (num-nRamp)},{Sin[(\[Omega] ((2 \[Pi])/\[Omega] num-t))/(4nRamp)]^2,(2 \[Pi])/\[Omega] (num-nRamp)<=t<(2 \[Pi])/\[Omega] num},{0,(2 \[Pi])/\[Omega] num<=t}}]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 cosPowerFlatTop::usage="cosPowerFlatTop[\[Omega],num,power] returns a Function object representing a smooth flat-top envelope of the form 1-Cos(\[Omega] t/2 num\!\(\*SuperscriptBox[\()\), \(power\)]\)";
 Begin["`Private`"];
 cosPowerFlatTop[\[Omega]_,num_,power_]:=Function[t,1-Cos[(\[Omega] t)/(2num)]^power]
 End[];
 
 
+(* ::Input::Initialization:: *)
 PointsPerCycle::usage="PointsPerCycle is a sampling option which specifies the number of sampling points per cycle to be used in integrations.";
 TotalCycles::usage="TotalCycles is a sampling option which specifies the total number of periods to be integrated over.";
 CarrierFrequency::usage="CarrierFrequency is a sampling option which specifies the carrier frequency to be used.";
 Protect[PointsPerCycle,TotalCycles,CarrierFrequency];
 
 
-standardOptions={PointsPerCycle->90,TotalCycles->1,CarrierFrequency->0.057};
+(* ::Input::Initialization:: *)
+standardOptions={PointsPerCycle->90,TotalCycles->1,CarrierFrequency->0.057,IntegrationPointsPerCycle->Automatic};
 
 
+(* ::Input::Initialization:: *)
 harmonicOrderAxis::usage="harmonicOrderAxis[opt\[Rule]value] returns a list of frequencies which can be used as a frequency axis for Fourier transforms, scaled in units of harmonic order, for the provided field duration and sampling options.";
 TargetLength::usage="TargetLength is an option for harmonicOrderAxis which specifies the total length required of the resulting list.";
 LengthCorrection::usage="LengthCorrection is an option for harmonicOrderAxis which allows for manual correction of the length of the resulting list.";
@@ -113,6 +126,7 @@ Message[harmonicOrderAxis::target,OptionValue["TargetLength"]];Abort[]
 End[];
 
 
+(* ::Input::Initialization:: *)
 frequencyAxis::usage="frequencyAxis[opt\[Rule]value] returns a list of frequencies which can be used as a frequency axis for Fourier transforms, in atomic units of frequency, for the provided field duration and sampling options.";
 Begin["`Private`"];
 Options[frequencyAxis]=Options[harmonicOrderAxis];
@@ -120,6 +134,7 @@ frequencyAxis[options:OptionsPattern[]]:=OptionValue[CarrierFrequency]harmonicOr
 End[];
 
 
+(* ::Input::Initialization:: *)
 timeAxis::usage="timeAxis[opt\[Rule]value] returns a list of times which can be used as a time axis ";
 TimeScale::usage="TimeScale is an option for timeAxis which specifies the units the list should use: AtomicUnits by default, or LaserPeriods if required.";
 AtomicUnits::usage="AtomicUnits is a value for the option TimeScale of timeAxis which specifies that the times should be in atomic units of time.";
@@ -141,6 +156,7 @@ Message[timeAxis::scale,OptionValue[TimeScale]];Abort[]
 End[];
 
 
+(* ::Input::Initialization:: *)
 getSpectrum::usage="getSpectrum[DipoleList] returns the power spectrum of DipoleList.";
 Polarization::usage="Polarization is an option for getSpectrum which specifies a polarization vector along which to polarize the dipole list. The default, Polarization\[Rule]False, specifies an unpolarized spectrum.";
 ComplexPart::usage="ComplexPart is an option for getSpectrum which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
@@ -196,6 +212,7 @@ Re[differentiatedList[[All,i]]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 spectrumPlotter::usage="spectrumPlotter[spectrum] plots the given spectrum with an appropriate axis in a \!\(\*SubscriptBox[\(log\), \(10\)]\) scale.";
 FrequencyAxis::usage="FrequencyAxis is an option for spectrumPlotter which specifies the axis to use.";
 Protect[FrequencyAxis];
@@ -222,6 +239,7 @@ Log[10,spectrum]
 End[];
 
 
+(* ::Input::Initialization:: *)
 biColorSpectrum::usage="biColorSpectrum[DipoleList] produces a two-colour spectrum of DipoleList, separating the two circular polarizations.";
 Begin["`Private`"];
 Options[biColorSpectrum]=Join[{PlotRange->All},Options[Show],Options[spectrumPlotter],DeleteCases[Options[getSpectrum],Polarization->False]];
@@ -239,6 +257,7 @@ PlotStyle->Blue,Sequence@@FilterRules[{options},Options[spectrumPlotter]]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 SineSquaredGate::usage="SineSquaredGate[nGateRamp] specifies an integration gate with a sine-squared ramp, such that SineSquaredGate[nGateRamp][\[Omega]t,nGate] has nGate flat periods and nGateRamp ramp periods.";
 LinearRampGate::usage="LinearRampGate[nGateRamp] specifies an integration gate with a linear ramp, such that SineSquaredGate[nGateRamp][\[Omega]t,nGate] has nGate flat periods and nGateRamp ramp periods.";
 Begin["`Private`"];
@@ -247,6 +266,7 @@ LinearRampGate[nGateRamp_][\[Omega]\[Tau]_,nGate_]:=Piecewise[{{1,\[Omega]\[Tau]
 End[];
 
 
+(* ::Input::Initialization:: *)
 getIonizationPotential::usage="getIonizationPotential[Target] returns the ionization potential of an atomic target, e.g. \"Hydrogen\", in atomic units.\[IndentingNewLine]
 getIonizationPotential[Target,q] returns the ionization potential of the q-th ion of the specified Target, in atomic units.\[IndentingNewLine]
 getIonizationPotential[{Target,q}] returns the ionization potential of the q-th ion of the specified Target, in atomic units.";
@@ -256,6 +276,7 @@ getIonizationPotential[{Target_,Charge_:0}]:=getIonizationPotential[Target,Charg
 End[];
 
 
+(* ::Input::Initialization:: *)
 makeDipoleList::usage="makeDipoleList[VectorPotential\[Rule]A] calculates the dipole response to the vector potential A.";
 
 VectorPotential::usage="VectorPotential is an option for makeDipole list which specifies the field's vector potential. Usage should be VectorPotential\[Rule]A, where A[t]//.pars must yield a list of numbers for numeric t and parameters indicated by FieldParameters\[Rule]pars.";
@@ -268,7 +289,7 @@ nGate::usage="nGate is an option for makeDipole list which specifies the total n
 IonizationPotential::usage="IonizationPotential is an option for makeDipoleList which specifies the ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\) of the target.";
 Target::usage="Target is an option for makeDipoleList which specifies chemical species producing the HHG emission, pulling the ionization potential from the Wolfram ElementData curated data set.";
 DipoleTransitionMatrixElement::usage="DipoleTransitionMatrixElement is an option for makeDipoleList which secifies a function f to use as the dipole transition matrix element, or a pair of functions {\!\(\*SubscriptBox[\(f\), \(ion\)]\),\!\(\*SubscriptBox[\(f\), \(rec\)]\)} to be used separately for the ionization and recombination dipoels, to be used in the form f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[\(I\), \(p\)]\)]\)].";
-\[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\\\[Epsilon])\), \(3/2\)]]\).";
+\[Epsilon]Correction::usage="\[Epsilon]Correction is an option for makeDipoleList which specifies the regularization correction \[Epsilon], i.e. as used in the factor \!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\[Epsilon])\), \(3/2\)]]\).";
 PointNumberCorrection::usage="PointNumberCorrection is an option for makeDipoleList and timeAxis which specifies an extra number of points to be integrated over, which is useful to prevent Indeterminate errors when a Piecewise envelope is being differentiated at the boundaries.";
 IntegrationPointsPerCycle::usage="IntegrationPointsPerCycle is an option for makeDipoleList which controls the number of points per cycle to use for the integration. Set to Automatic, to follow PointsPerCycle, or to an integer.";
 RunInParallel::usage="RunInParallel is an option for makeDipoleList which controls whether each RB-SFA instance is parallelized. It accepts False as the (Automatic) option, True, to parallelize each instance, or a pair of functions {TableCommand, SumCommand} to use for the iteration and summing, which could be e.g. {Inactive[ParallelTable], Inactive[Sum]}.";
@@ -287,7 +308,7 @@ Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
 PointNumberCorrection->0,Verbose->0,CheckNumericFields->True,
-RunInParallel->Automatic,IntegrationPointsPerCycle->Automatic,
+RunInParallel->Automatic,
 Simplifier->Identity,QuadraticActionTerms->True
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
@@ -517,6 +538,7 @@ dipoleList
 End[];
 
 
+(* ::Input::Initialization:: *)
 GetSaddlePoints::usage="GetSaddlePoints[\[CapitalOmega],S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where both ranges should be the lower-left and upper-right corners of rectangles in the complex plane.
 
 GetSaddlePoints[\[CapitalOmega]Range,S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds solutions of the HHG temporal saddle-point equations for a range of harmonic energies \[CapitalOmega]Range, and returns an Association with each harmonic energy \[CapitalOmega] indexing a list of saddle-point solution pairs {t,\[Tau]}.
@@ -585,6 +607,7 @@ GetSaddlePoints[\[CapitalOmega]Range_List,S_,timeRanges_,options:OptionsPattern[
 End[];
 
 
+(* ::Input::Initialization:: *)
 GetSaddlesFromSeeds::usage="GetSaddlesFromSeeds[{{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]},\[CapitalOmega],S] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, using the given {\!\(\*SubscriptBox[\(t\), \(i\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i\)]\)} as seeds for the process.
 
 GetSaddlesFromSeeds[\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]},\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(21\)]\)},{\!\(\*SubscriptBox[\(t\), \(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)},\[Ellipsis]},\[Ellipsis]\[RightAssociation],\[CapitalOmega],S] finds solutions of the HHG temporal saddle-point equations, using the seeds list from the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\) that's closest to \[CapitalOmega], or as specified by the value of KeyChooserFunction.
@@ -657,6 +680,7 @@ Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S,
 End[];
 
 
+(* ::Input::Initialization:: *)
 ClassifyQuantumOrbits::usage="ClassifyQuantumOrbits[saddlePoints,f] sorts an indexed set of saddle points of the form \[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]}\[Ellipsis]\[RightAssociation] using a function f, which should turn f[t,\[Tau],\[CapitalOmega]] into an appropriate label, and returns an association of the form \[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(1\)]\)\[RightArrow]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{t,\[Tau]},2\[RightArrow]{t,\[Tau]},\[Ellipsis]\[RightAssociation],\[Ellipsis]\[RightAssociation],\[Ellipsis]\[RightAssociation].
 
 ClassifyQuantumOrbits[saddlePoints,f,sortFunction] uses the function sortFunction to sort the sets of saddle points {{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]} for each label and harmonic energy.
@@ -687,6 +711,7 @@ GroupBy[classifierFunction@@#&][Flatten/@Transpose[{#1,ConstantArray[#2[[{1},1]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 ClearAll[ReperiodSaddles]
 ReperiodSaddles::usage="ReperiodSaddles[{{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]},f] readjusts the assigned cycle of the saddle points {\!\(\*SubscriptBox[\(t\), \(i\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i\)]\)}, returning the list {{\!\(\*SubscriptBox[\(t\), \(1\)]\)+f[\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)],\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},\[Ellipsis]}.
 
@@ -702,12 +727,14 @@ ReperiodSaddles[association_,f_]:=Apply[f,association,{Depth[association]-2}]
 End[];
 
 
+(* ::Input::Initialization:: *)
 HessianRoot::usage="HessianRoot[S,t,\[Tau]] calculates the Hessian root \!\(\*SqrtBox[FractionBox[SuperscriptBox[\((2  \[Pi])\), \(2\)], \(\*SuperscriptBox[\(\[ImaginaryI]\), \(2\)] Det[\*SubsuperscriptBox[\(\[PartialD]\), \({t, tt}\), \(2\)]S]\)]]\).";
 Begin["`Private`"];
 HessianRoot[S_,t_,\[Tau]_]:=Sqrt[(2\[Pi])/(I Derivative[0,2][S][t,t-\[Tau]])] Sqrt[(2\[Pi] Derivative[0,2][S][t,t-\[Tau]])/(I( Derivative[2,0][S][t,t-\[Tau]]Derivative[0,2][S][t,t-\[Tau]]-Derivative[1,1][S][t,t-\[Tau]]^2))]
 End[];
 
 
+(* ::Input::Initialization:: *)
 FindStokesTransitions::usage="FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)}\[RightAssociation],\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(21\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)}\[RightAssociation],\[Ellipsis]\[RightAssociation]] finds the set {{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(S\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\)},n} of the Stokes and anti-Stokes transition energies for the given set of saddle points, where Re(S) changes sign after the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(S\)]\) and Im(S) changes sign after the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\), and n is the index of the member of the pair that should be chosen after the transition (taken as the member with a positive imaginary part of the action at the largest \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\) in the given keys).
 
 FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(1\)]\)\[RightArrow]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[Ellipsis]\[RightAssociation]\[RightAssociation]] finds the Stokes transitions for the given set of saddle-point curve pairs, and returns them labeled with the \!\(\*SubscriptBox[\(label\), \(i\)]\).";
@@ -760,6 +787,7 @@ Sign[Last[actionList][[2]]]/.{1->2,-1->1}
 End[];
 
 
+(* ::Input::Initialization:: *)
 SPAdipole::usage="SPAdipole[S,prefactor,\[CapitalOmega],{t,\[Tau]}] returns the saddle-point approximation amplitude corresponding to action S[t,t-\[Tau]]-\[CapitalOmega]t and the given prefactor.
 
 SPAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation]] returns the total harmonic-dipole contribution in the saddle-point approximation from the specified saddle points.
@@ -791,6 +819,7 @@ SPAdipole[S,prefactor,\[CapitalOmega],KeySelect[times,#==transition[[3]]&],optio
 End[];
 
 
+(* ::Input::Initialization:: *)
 UAdipole::usage="UAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation],transition] returns the total harmonic-dipole contribution in the uniform approximation from the specified saddle points, taking the given Stokes transition set as a reference.";
 UAdipole::saddleno="UAdipole called with `1` time pairs at \[CapitalOmega]=`2`. Reverting to the saddle-point approximation for this set.";
 UAdipole::invldtrns="UAdipole called with invalid Stokes transition set `1`. Reverting to the saddle-point approximation for this set.";
@@ -818,7 +847,9 @@ Sqrt[6\[Pi] Sm]Exp[-I Ss+I \[Pi]/4]((A1-I A2)/2 AiryAi[-z]/Sqrt[z]+I (A1+I A2)/2
 End[];
 
 
+(* ::Input::Initialization:: *)
 EndPackage[];
 
 
+(* ::Input::Initialization:: *)
 DistributeDefinitions["RBSFA`"];

@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 8 Jun 2016 15:00:40\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 3 Sep 2016 00:41:54\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1650,8 +1650,9 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"PointsPerCycle", "\[Rule]", "90"}], ",", 
      RowBox[{"TotalCycles", "\[Rule]", "1"}], ",", 
-     RowBox[{"CarrierFrequency", "\[Rule]", "0.057"}]}], "}"}]}], 
-  ";"}]], "Input",
+     RowBox[{"CarrierFrequency", "\[Rule]", "0.057"}], ",", 
+     RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}]}], "}"}]}],
+   ";"}]], "Input",
  InitializationCell->True],
 
 Cell[TextData[{
@@ -1664,7 +1665,7 @@ least twice the highest harmonic of interest. The total duration is ",
  "CarrierFrequency",
  " is the frequency of the fundamental laser, in atomic units."
 }], "Text"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2315,7 +2316,7 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2792,8 +2793,8 @@ f[p,\[Kappa]]=f[p,\!\(\*SqrtBox[\(2 \*SubscriptBox[\(I\), \
    RowBox[{"\[Epsilon]Correction", "::", "usage"}], "=", 
    "\"\<\[Epsilon]Correction is an option for makeDipoleList which specifies \
 the regularization correction \[Epsilon], i.e. as used in the factor \
-\!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \[ImaginaryI]\\\\\
-\[Epsilon])\), \(3/2\)]]\).\>\""}], ";"}], "\[IndentingNewLine]", 
+\!\(\*FractionBox[\(1\), SuperscriptBox[\((t - tt + \
+\[ImaginaryI]\[Epsilon])\), \(3/2\)]]\).\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"PointNumberCorrection", "::", "usage"}], "=", 
@@ -2882,7 +2883,6 @@ in the action.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]",
       RowBox[{"CheckNumericFields", "\[Rule]", "True"}], ",", 
       "\[IndentingNewLine]", 
       RowBox[{"RunInParallel", "\[Rule]", "Automatic"}], ",", 
-      RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}], ",", 
       "\[IndentingNewLine]", 
       RowBox[{"Simplifier", "\[Rule]", "Identity"}], ",", 
       RowBox[{"QuadraticActionTerms", "\[Rule]", "True"}]}], 
@@ -4750,7 +4750,8 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
+           
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
@@ -6012,7 +6013,7 @@ PrivateNotebookOptions->{"FileOutlineCache"->False},
 ShowSelection->True,
 TrackCellChangeTimes->False,
 Background->None,
-FrontEndVersion->"10.4 for Linux x86 (64-bit) (February 25, 2016)",
+FrontEndVersion->"11.0 for Linux x86 (64-bit) (July 28, 2016)",
 StyleDefinitions->Notebook[{
    Cell[
     StyleData[StyleDefinitions -> "Default.nb"]], 
@@ -6022,7 +6023,7 @@ StyleDefinitions->Notebook[{
     FontVariations -> {
      "Outline" -> False, "Shadow" -> False, "StrikeThrough" -> False, 
       "Underline" -> False}]}, Visible -> False, FrontEndVersion -> 
-  "10.4 for Linux x86 (64-bit) (February 25, 2016)", StyleDefinitions -> 
+  "11.0 for Linux x86 (64-bit) (July 28, 2016)", StyleDefinitions -> 
   "PrivateStylesheetFormatting.nb"]
 ]
 
