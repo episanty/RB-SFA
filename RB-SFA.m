@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Sat 3 Sep 2016 00:41:54";
+$RBSFAtimestamp="Tue 11 Oct 2016 20:14:10";
 End[];
 
 
@@ -694,11 +694,11 @@ Options[ClassifyQuantumOrbits]={DiscardedLabels->{}};
 Protect[DiscardedLabels];
 
 ClassifyQuantumOrbits[saddlePointList_,classifierFunction_,sortingFunction_:Sort,OptionsPattern[]]:=Map[
+Composition[
 Association,
-MapIndexed[
-(#2[[-1]]->#1&),(*index after sorting each pair*)
-Map[
-sortingFunction,
+MapIndexed[#2[[1]]->#1&],
+sortingFunction
+],
 Delete[DeleteMissing[
 Query[Transpose][
 MapIndexed[
@@ -706,7 +706,7 @@ GroupBy[classifierFunction@@#&][Flatten/@Transpose[{#1,ConstantArray[#2[[{1},1]]
 ,saddlePointList][[All,All,All,{1,2}]]
 ]
 ,2],List/@OptionValue[DiscardedLabels]]
-,{2}],{3}],{2}]
+,{2}]
 
 End[];
 

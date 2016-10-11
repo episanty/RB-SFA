@@ -1225,7 +1225,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 3 Sep 2016 00:41:54\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 11 Oct 2016 20:14:10\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1326,7 +1326,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1665,7 +1665,7 @@ least twice the highest harmonic of interest. The total duration is ",
  "CarrierFrequency",
  " is the frequency of the fundamental laser, in atomic units."
 }], "Text"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1790,7 +1790,7 @@ Automatic.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2316,7 +2316,7 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -2531,7 +2531,7 @@ DipoleList, separating the two circular polarizations.\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4136,7 +4136,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4985,66 +4985,59 @@ specifies a list of labels to discard from the final output.\>\""}], ";"}],
      RowBox[{"sortingFunction_:", "Sort"}], ",", 
      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
    RowBox[{"Map", "[", "\[IndentingNewLine]", 
-    RowBox[{"Association", ",", "\[IndentingNewLine]", 
-     RowBox[{"MapIndexed", "[", "\[IndentingNewLine]", 
-      RowBox[{
-       RowBox[{"(", 
+    RowBox[{
+     RowBox[{"Composition", "[", "\[IndentingNewLine]", 
+      RowBox[{"Association", ",", "\[IndentingNewLine]", 
+       RowBox[{"MapIndexed", "[", 
         RowBox[{
          RowBox[{
-          RowBox[{"#2", "\[LeftDoubleBracket]", 
-           RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], "\[Rule]", "#1"}], 
-         "&"}], ")"}], ",", 
-       RowBox[{"(*", 
-        RowBox[{
-        "index", " ", "after", " ", "sorting", " ", "each", " ", "pair"}], 
-        "*)"}], "\[IndentingNewLine]", 
-       RowBox[{"Map", "[", "\[IndentingNewLine]", 
-        RowBox[{"sortingFunction", ",", "\[IndentingNewLine]", 
-         RowBox[{"Delete", "[", 
           RowBox[{
-           RowBox[{"DeleteMissing", "[", "\[IndentingNewLine]", 
+          "#2", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+          "\[Rule]", "#1"}], "&"}], "]"}], ",", "\[IndentingNewLine]", 
+       "sortingFunction"}], "\[IndentingNewLine]", "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Delete", "[", 
+      RowBox[{
+       RowBox[{"DeleteMissing", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Query", "[", "Transpose", "]"}], "[", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"MapIndexed", "[", "\[IndentingNewLine]", 
             RowBox[{
              RowBox[{
-              RowBox[{"Query", "[", "Transpose", "]"}], "[", 
-              "\[IndentingNewLine]", 
               RowBox[{
-               RowBox[{"MapIndexed", "[", "\[IndentingNewLine]", 
+               RowBox[{"GroupBy", "[", 
                 RowBox[{
-                 RowBox[{
-                  RowBox[{
-                   RowBox[{"GroupBy", "[", 
-                    RowBox[{
-                    RowBox[{"classifierFunction", "@@", "#"}], "&"}], "]"}], 
-                   "[", 
-                   RowBox[{"Flatten", "/@", 
-                    RowBox[{"Transpose", "[", 
-                    RowBox[{"{", 
-                    RowBox[{"#1", ",", 
-                    RowBox[{"ConstantArray", "[", 
+                 RowBox[{"classifierFunction", "@@", "#"}], "&"}], "]"}], "[", 
+               RowBox[{"Flatten", "/@", 
+                RowBox[{"Transpose", "[", 
+                 RowBox[{"{", 
+                  RowBox[{"#1", ",", 
+                   RowBox[{"ConstantArray", "[", 
                     RowBox[{
                     RowBox[{"#2", "\[LeftDoubleBracket]", 
                     RowBox[{
                     RowBox[{"{", "1", "}"}], ",", "1"}], 
                     "\[RightDoubleBracket]"}], ",", 
                     RowBox[{"Length", "[", "#1", "]"}]}], "]"}]}], "}"}], 
-                    "]"}]}], "]"}], "&"}], "\[IndentingNewLine]", ",", 
-                 "saddlePointList"}], "]"}], "\[LeftDoubleBracket]", 
-               RowBox[{"All", ",", "All", ",", "All", ",", 
-                RowBox[{"{", 
-                 RowBox[{"1", ",", "2"}], "}"}]}], "\[RightDoubleBracket]"}], 
-              "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}],
-             "]"}], ",", 
-           RowBox[{"List", "/@", 
-            RowBox[{"OptionValue", "[", "DiscardedLabels", "]"}]}]}], "]"}], 
-         "\[IndentingNewLine]", ",", 
-         RowBox[{"{", "2", "}"}]}], "]"}], ",", 
-       RowBox[{"{", "3", "}"}]}], "]"}], ",", 
+                 "]"}]}], "]"}], "&"}], "\[IndentingNewLine]", ",", 
+             "saddlePointList"}], "]"}], "\[LeftDoubleBracket]", 
+           RowBox[{"All", ",", "All", ",", "All", ",", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", "2"}], "}"}]}], "\[RightDoubleBracket]"}], 
+          "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}], 
+        "]"}], ",", 
+       RowBox[{"List", "/@", 
+        RowBox[{"OptionValue", "[", "DiscardedLabels", "]"}]}]}], "]"}], 
+     "\[IndentingNewLine]", ",", 
      RowBox[{"{", "2", "}"}]}], "]"}]}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -5935,7 +5928,7 @@ the saddle-point approximation for this set.\>\""}], ";"}],
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
 }, Closed]]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -5976,8 +5969,8 @@ NotebookEventActions->{{"MenuCommand", "Save"} :> (NotebookWrite[
           DateString[], "\";\nEnd[];"]}]], "Input", InitializationCell -> 
       True, CellTags -> "version-timestamp"], None, AutoScroll -> False]; 
    NotebookSave[]), PassEventsDown -> True},
-WindowSize->{1861, 1176},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowSize->{1861, 1056},
+WindowMargins->{{Automatic, 0}, {0, Automatic}},
 PrintingCopies->1,
 PrintingStartingPageNumber->1,
 PrintingPageRange->{Automatic, Automatic},
