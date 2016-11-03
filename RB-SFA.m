@@ -27,7 +27,7 @@ BeginPackage["RBSFA`",{"EPToolbox`"}];
 $RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";
 $RBSFAtimestamp::usage="$RBSFAtimestamp prints the timestamp of the current version of the RB-SFA package.";
 Begin["`Private`"];
-$RBSFAversion:="RB-SFA v2.1.1, "<>$RBSFAtimestamp;
+$RBSFAversion:="RB-SFA v2.1.2, "<>$RBSFAtimestamp;
 End[];
 
 
@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Tue 11 Oct 2016 20:14:10";
+$RBSFAtimestamp="Thu 3 Nov 2016 15:44:57";
 End[];
 
 
