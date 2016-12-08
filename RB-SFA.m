@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 9 Dec 2016 00:05:03";
+$RBSFAtimestamp="Fri 9 Dec 2016 00:06:04";
 End[];
 
 
@@ -90,6 +90,18 @@ ConstantArray[Private`x_,{}]:=Private`x;
 Protect[ConstantArray];
 ]];
 ];
+
+
+(* ::Input::Initialization:: *)
+If[
+Context[ReIm]=!="System`",
+ReIm::usage="\!\(\*RowBox[{\"ReIm\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}]\) gives the list \!\(\*RowBox[{\"{\", RowBox[{RowBox[{\"Re\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}], \",\", RowBox[{\"Im\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}]}], \"}\"}]\) of the number \!\(\*StyleBox[\"z\", \"TI\"]\).";
+Begin["`Private`"];
+ReIm[z_]:={Re[z],Im[z]};
+SetAttributes[ReIm,Listable];
+Protect[ReIm];
+End[];
+]
 
 
 (* ::Input::Initialization:: *)

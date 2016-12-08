@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 9 Dec 2016 00:05:03\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 9 Dec 2016 00:06:04\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -446,6 +446,45 @@ Cell[BoxData[{
          RowBox[{"Protect", "[", "ConstantArray", "]"}], ";"}]}], 
        "\[IndentingNewLine]", "]"}], "]"}], ";"}], "\[IndentingNewLine]", 
     "]"}]}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["ReIm", "Subsubsection"],
+
+Cell["\<\
+This adds the definition of ReIm for those versions (<10.1) that don\
+\[CloseCurlyQuote]t have it.\
+\>", "Text"],
+
+Cell[BoxData[
+ RowBox[{"If", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Context", "[", "ReIm", "]"}], "=!=", "\"\<System`\>\""}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ReIm", "::", "usage"}], "=", 
+     "\"\<\\!\\(\\*RowBox[{\\\"ReIm\\\", \\\"[\\\", StyleBox[\\\"z\\\", \
+\\\"TI\\\"], \\\"]\\\"}]\\) gives the list \\!\\(\\*RowBox[{\\\"{\\\", \
+RowBox[{RowBox[{\\\"Re\\\", \\\"[\\\", StyleBox[\\\"z\\\", \\\"TI\\\"], \\\"]\
+\\\"}], \\\",\\\", RowBox[{\\\"Im\\\", \\\"[\\\", StyleBox[\\\"z\\\", \
+\\\"TI\\\"], \\\"]\\\"}]}], \\\"}\\\"}]\\) of the number \\!\\(\\*StyleBox[\\\
+\"z\\\", \\\"TI\\\"]\\).\>\""}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ReIm", "[", "z_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Re", "[", "z", "]"}], ",", 
+       RowBox[{"Im", "[", "z", "]"}]}], "}"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"SetAttributes", "[", 
+     RowBox[{"ReIm", ",", "Listable"}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Protect", "[", "ReIm", "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"End", "[", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]], "Input",
  InitializationCell->True]
 }, Open  ]]
 }, Open  ]],
