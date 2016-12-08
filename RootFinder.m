@@ -176,10 +176,16 @@ End[];
 
 (* ::Input::Initialization:: *)
 Parallelize;
-Parallel`Developer`$InitCode=Hold[
+If[Head[Parallel`Developer`$InitCode]=!=Hold,
+Parallel`Developer`$InitCode=Hold[]
+];
+Parallel`Developer`$InitCode=Join[
+Parallel`Developer`$InitCode,
+Hold[
 Unprotect[RandomComplex];
 RandomComplex[{Private`range1_List,Private`moreRanges___},Private`number_]:=Transpose[RandomComplex[#,Private`number]&/@{Private`range1,Private`moreRanges}];
 Protect[RandomComplex];
+]
 ];
 
 

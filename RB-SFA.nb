@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 8 Dec 2016 23:07:26\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 9 Dec 2016 00:05:03\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -377,20 +377,75 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Closed]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell["Calling dependencies", "Subsubsection"],
+Cell["Function redefinitions", "Subsection"],
+
+Cell[CellGroupData[{
+
+Cell["ConstantArray", "Subsubsection"],
+
+Cell[TextData[{
+ "This redefines ConstantArray to take the corner case of an empty dimensions \
+list, which returns an error code (and an unevaluated ",
+ StyleBox["ConstantArray", "Code"],
+ ") for Mathematica versions under 10.1.0 (cf. mma.se/q/133078)."
+}], "Text"],
 
 Cell[BoxData[
- RowBox[{"(*", 
-  RowBox[{"Needs", "[", 
-   RowBox[{"\"\<RootFinder`\>\"", ",", 
-    RowBox[{"FileNameJoin", "[", 
-     RowBox[{"{", 
-      RowBox[{"$RBSFAdirectory", ",", "\"\<RootFinder.m\>\""}], "}"}], 
-     "]"}]}], "]"}], "*)"}]], "Input",
+ RowBox[{
+  RowBox[{"Quiet", "[", 
+   RowBox[{"Check", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"ConstantArray", "[", 
+       RowBox[{"0", ",", 
+        RowBox[{"{", "}"}]}], "]"}], ";"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Unprotect", "[", "ConstantArray", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"Private`x_", ",", 
+         RowBox[{"{", "}"}]}], "]"}], ":=", "Private`x"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Protect", "[", "ConstantArray", "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}], "]"}], ";"}]], "Input",
+ InitializationCell->True],
+
+Cell["\<\
+
+Similarly, this needs to be put inside an initialization code for any \
+parallelized subkernels that may get launched later (cf. mm.se/q/131856).\
+\>", "Text"],
+
+Cell[BoxData[{
+ RowBox[{"Parallelize", ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Parallel`Developer`$InitCode", "=", 
+   RowBox[{"Hold", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Quiet", "[", 
+      RowBox[{"Check", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"ConstantArray", "[", 
+          RowBox[{"0", ",", 
+           RowBox[{"{", "}"}]}], "]"}], ";"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Unprotect", "[", "ConstantArray", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"Private`x_", ",", 
+            RowBox[{"{", "}"}]}], "]"}], ":=", "Private`x"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Protect", "[", "ConstantArray", "]"}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}], "]"}], ";"}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]}], "Input",
  InitializationCell->True]
 }, Open  ]]
 }, Open  ]],
@@ -552,7 +607,7 @@ for a gaussian state of characteristic size 1/\[Kappa].\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -5059,7 +5114,7 @@ NotebookEventActions->{{"MenuCommand", "Save"} :> (NotebookWrite[
       True, CellTags -> "version-timestamp"], None, AutoScroll -> False]; 
    NotebookSave[]), PassEventsDown -> True},
 WindowSize->{1436, 1126},
-WindowMargins->{{0, Automatic}, {22, Automatic}},
+WindowMargins->{{165, Automatic}, {19, Automatic}},
 PrintingCopies->1,
 PrintingStartingPageNumber->1,
 PrintingPageRange->{Automatic, Automatic},

@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 8 Dec 2016 23:07:26";
+$RBSFAtimestamp="Fri 9 Dec 2016 00:05:03";
 End[];
 
 
@@ -72,7 +72,24 @@ End[];
 
 
 (* ::Input::Initialization:: *)
-(*Needs["RootFinder`",FileNameJoin[{$RBSFAdirectory,"RootFinder.m"}]]*)
+Quiet[Check[
+ConstantArray[0,{}];,
+Unprotect[ConstantArray];
+ConstantArray[Private`x_,{}]:=Private`x;
+Protect[ConstantArray];
+]];
+
+
+(* ::Input::Initialization:: *)
+Parallelize;
+Parallel`Developer`$InitCode=Hold[
+Quiet[Check[
+ConstantArray[0,{}];,
+Unprotect[ConstantArray];
+ConstantArray[Private`x_,{}]:=Private`x;
+Protect[ConstantArray];
+]];
+];
 
 
 (* ::Input::Initialization:: *)
