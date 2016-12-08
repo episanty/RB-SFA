@@ -41,3 +41,9 @@ Cell[contents,CellTags->"Collapse-to-print"],otherCells
 },TempClosed]]
 }/.{Closed->Open,TempClosed->Closed}
 ];
+
+
+Export[
+FileNameJoin[{directory,"RootFinder.pdf"}],
+Import[FileNameJoin[{directory,"RootFinder.nb"}]]/.{Closed->Open}
+];
