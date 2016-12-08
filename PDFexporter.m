@@ -30,3 +30,14 @@ Cell[contents,CellTags->"Collapse-to-print"],otherCells
 },TempClosed]]
 }/.{Closed->Open,TempClosed->Closed}
 ];
+
+Export[
+FileNameJoin[{directory,"Quantum Orbits Usage.pdf"}],
+Import[FileNameJoin[{directory,"Quantum Orbits Usage.nb"}]]/.{
+Cell[CellGroupData[{
+Cell[contents__,CellTags->"Collapse-to-print"],otherCells___
+},Closed]]->Cell[CellGroupData[{
+Cell[contents,CellTags->"Collapse-to-print"],otherCells
+},TempClosed]]
+}/.{Closed->Open,TempClosed->Closed}
+];
