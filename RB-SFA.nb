@@ -116,9 +116,7 @@ Cell["Initialization", "Subsection"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"BeginPackage", "[", 
-   RowBox[{"\"\<RBSFA`\>\"", ",", 
-    RowBox[{"{", "\"\<EPToolbox`\>\"", "}"}]}], "]"}], ";"}]], "Input",
+  RowBox[{"BeginPackage", "[", "\"\<RBSFA`\>\"", "]"}], ";"}]], "Input",
  InitializationCell->True],
 
 Cell[CellGroupData[{
@@ -147,7 +145,7 @@ RB-SFA package.\>\""}], ";"}], "\[IndentingNewLine]",
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"$RBSFAversion", ":=", 
-   RowBox[{"\"\<RB-SFA v2.1.2, \>\"", "<>", "$RBSFAtimestamp"}]}], 
+   RowBox[{"\"\<RB-SFA v2.1.3, \>\"", "<>", "$RBSFAtimestamp"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -234,7 +232,7 @@ Cell[BoxData[
        RowBox[{"PassEventsDown", "\[Rule]", "True"}]}], "}"}]}]}], 
    "\[IndentingNewLine]", "]"}], ";"}]], "Input"],
 
-Cell["To reset this behaviour to normal, evaluatethe cell below", "Text"],
+Cell["To reset this behaviour to normal, evaluate the cell below", "Text"],
 
 Cell[BoxData[
  RowBox[{"SetOptions", "[", 
@@ -261,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 8 Dec 2016 22:06:00\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 8 Dec 2016 22:35:25\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -271,14 +269,76 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell["Git commit hash and message", "Subsubsection"],
+Cell["Directory", "Subsubsection"],
 
-Cell[BoxData[{
+Cell[BoxData[
  RowBox[{
   RowBox[{
    RowBox[{"$RBSFAdirectory", "::", "usage"}], "=", 
    "\"\<$RBSFAdirectory is the directory where the current RB-SFA package \
-instance is located.\>\""}], ";"}], "\[IndentingNewLine]", 
+instance is located.\>\""}], ";"}]], "Input",
+ InitializationCell->True],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"softLinkTestString", "=", 
+      RowBox[{"StringSplit", "[", 
+       RowBox[{
+        RowBox[{"StringJoin", "[", 
+         RowBox[{"ReadList", "[", 
+          RowBox[{
+           RowBox[{"\"\<! ls -la \>\"", "<>", 
+            RowBox[{"StringReplace", "[", 
+             RowBox[{"$InputFileName", ",", 
+              RowBox[{"{", 
+               RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], 
+             "]"}]}], ",", "String"}], "]"}], "]"}], ",", "\"\< -> \>\""}], 
+       "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "[", "softLinkTestString", "]"}], ">", "1"}], ",", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Testing", " ", "in", " ", "case", " ", "$InputFileName", " ", "is", 
+        " ", "a", " ", "soft", " ", "link", " ", "to", " ", "the", " ", 
+        "actual", " ", 
+        RowBox[{"directory", "."}]}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"$RBSFAdirectory", "=", 
+       RowBox[{"StringReplace", "[", 
+        RowBox[{
+         RowBox[{"DirectoryName", "[", 
+          RowBox[{
+          "softLinkTestString", "\[LeftDoubleBracket]", "2", 
+           "\[RightDoubleBracket]"}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], "]"}]}],
+       ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"$RBSFAdirectory", "=", 
+        RowBox[{"StringReplace", "[", 
+         RowBox[{
+          RowBox[{"DirectoryName", "[", "$InputFileName", "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], 
+         "]"}]}], ";"}]}], "\[IndentingNewLine]", "]"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Git commit hash and message", "Subsubsection"],
+
+Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"$RBSFAcommit", "::", "usage"}], "=", 
@@ -294,51 +354,6 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{"With", "[", 
-  RowBox[{
-   RowBox[{"{", 
-    RowBox[{"softLinkTestString", "=", 
-     RowBox[{"StringSplit", "[", 
-      RowBox[{
-       RowBox[{"StringJoin", "[", 
-        RowBox[{"ReadList", "[", 
-         RowBox[{
-          RowBox[{"\"\<! ls -la \>\"", "<>", 
-           RowBox[{"StringReplace", "[", 
-            RowBox[{"$InputFileName", ",", 
-             RowBox[{"{", 
-              RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], 
-            "]"}]}], ",", "String"}], "]"}], "]"}], ",", "\"\< -> \>\""}], 
-      "]"}]}], "}"}], ",", "\[IndentingNewLine]", 
-   RowBox[{"If", "[", 
-    RowBox[{
-     RowBox[{
-      RowBox[{"Length", "[", "softLinkTestString", "]"}], ">", "1"}], ",", 
-     RowBox[{"(*", 
-      RowBox[{
-      "Testing", " ", "in", " ", "case", " ", "$InputFileName", " ", "is", 
-       " ", "a", " ", "soft", " ", "link", " ", "to", " ", "the", " ", 
-       "actual", " ", 
-       RowBox[{"directory", "."}]}], "*)"}], "\[IndentingNewLine]", 
-     RowBox[{"$RBSFAdirectory", "=", 
-      RowBox[{"StringReplace", "[", 
-       RowBox[{
-        RowBox[{"DirectoryName", "[", 
-         RowBox[{
-         "softLinkTestString", "\[LeftDoubleBracket]", "2", 
-          "\[RightDoubleBracket]"}], "]"}], ",", 
-        RowBox[{"{", 
-         RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], "]"}]}], 
-     ",", "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"$RBSFAdirectory", "=", 
-       RowBox[{"StringReplace", "[", 
-        RowBox[{
-         RowBox[{"DirectoryName", "[", "$InputFileName", "]"}], ",", 
-         RowBox[{"{", 
-          RowBox[{"\"\< \>\"", "\[Rule]", "\"\<\\\\ \>\""}], "}"}]}], "]"}]}],
-       ";"}]}], "\[IndentingNewLine]", "]"}]}], 
-  "]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"$RBSFAcommit", ":=", 
    RowBox[{"(", 
@@ -362,7 +377,22 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Calling dependencies", "Subsubsection"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"Needs", "[", 
+   RowBox[{"\"\<RootFinder`\>\"", ",", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{"$RBSFAdirectory", ",", "\"\<RootFinder.m\>\""}], "}"}], 
+     "]"}]}], "]"}], "*)"}]], "Input",
+ InitializationCell->True]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -4072,7 +4102,7 @@ specifies a list of labels to discard from the final output.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -4988,8 +5018,32 @@ Cell[BoxData[
   RowBox[{"DistributeDefinitions", "[", "\"\<RBSFA`\>\"", "]"}], 
   ";"}]], "Input",
  InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Call dependency", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{"Needs", "[", 
+  RowBox[{"\"\<RootFinder`\>\"", ",", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{"$RBSFAdirectory", ",", "\"\<RootFinder.m\>\""}], "}"}], "]"}]}],
+   "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Called", " ", "*", "after", "*", " ", "the", " ", 
+     RowBox[{"EndPackage", "[", "]"}], " ", "call"}], ",", " ", 
+    RowBox[{
+    "so", " ", "that", " ", "the", " ", "contexts", " ", "RBSFA`", " ", "and",
+      " ", "RootFinder`", " ", "will", " ", "both", " ", "be", " ", 
+     "subcontexts", " ", "to", " ", 
+     RowBox[{"Global`", "."}]}]}], "*)"}]}]}], "Input",
+ InitializationCell->True]
 }, Open  ]]
-}, Closed]]
+}, Open  ]]
 }, Open  ]]
 }, Open  ]]
 },
@@ -5004,8 +5058,8 @@ NotebookEventActions->{{"MenuCommand", "Save"} :> (NotebookWrite[
           DateString[], "\";\nEnd[];"]}]], "Input", InitializationCell -> 
       True, CellTags -> "version-timestamp"], None, AutoScroll -> False]; 
    NotebookSave[]), PassEventsDown -> True},
-WindowSize->{1861, 1148},
-WindowMargins->{{0, Automatic}, {0, 28}},
+WindowSize->{1436, 1126},
+WindowMargins->{{0, Automatic}, {22, Automatic}},
 PrintingCopies->1,
 PrintingStartingPageNumber->1,
 PrintingPageRange->{Automatic, Automatic},

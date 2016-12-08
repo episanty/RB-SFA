@@ -20,14 +20,14 @@
 
 
 (* ::Input::Initialization:: *)
-BeginPackage["RBSFA`",{"EPToolbox`"}];
+BeginPackage["RBSFA`"];
 
 
 (* ::Input::Initialization:: *)
 $RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";
 $RBSFAtimestamp::usage="$RBSFAtimestamp prints the timestamp of the current version of the RB-SFA package.";
 Begin["`Private`"];
-$RBSFAversion:="RB-SFA v2.1.2, "<>$RBSFAtimestamp;
+$RBSFAversion:="RB-SFA v2.1.3, "<>$RBSFAtimestamp;
 End[];
 
 
@@ -41,14 +41,12 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 8 Dec 2016 22:06:00";
+$RBSFAtimestamp="Thu 8 Dec 2016 22:35:25";
 End[];
 
 
 (* ::Input::Initialization:: *)
 $RBSFAdirectory::usage="$RBSFAdirectory is the directory where the current RB-SFA package instance is located.";
-$RBSFAcommit::usage="$RBSFAcommit returns the git commit log at the location of the RB-SFA package if there is one.";
-$RBSFAcommit::OS="$RBSFAcommit has only been tested on Linux.";
 
 
 (* ::Input::Initialization:: *)
@@ -57,10 +55,24 @@ With[{softLinkTestString=StringSplit[StringJoin[ReadList["! ls -la "<>StringRepl
 If[Length[softLinkTestString]>1,(*Testing in case $InputFileName is a soft link to the actual directory.*)
 $RBSFAdirectory=StringReplace[DirectoryName[softLinkTestString[[2]]],{" "->"\\ "}],
 $RBSFAdirectory=StringReplace[DirectoryName[$InputFileName],{" "->"\\ "}];
-]]
+]];
+End[];
+
+
+(* ::Input::Initialization:: *)
+$RBSFAcommit::usage="$RBSFAcommit returns the git commit log at the location of the RB-SFA package if there is one.";
+$RBSFAcommit::OS="$RBSFAcommit has only been tested on Linux.";
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
 $RBSFAcommit:=(If[$OperatingSystem!="Unix",Message[$RBSFAcommit::OS]];
 StringJoin[Riffle[ReadList["!cd "<>$RBSFAdirectory<>" && git log -1",String],{"\n"}]]);
 End[];
+
+
+(* ::Input::Initialization:: *)
+(*Needs["RootFinder`",FileNameJoin[{$RBSFAdirectory,"RootFinder.m"}]]*)
 
 
 (* ::Input::Initialization:: *)
@@ -853,3 +865,8 @@ EndPackage[];
 
 (* ::Input::Initialization:: *)
 DistributeDefinitions["RBSFA`"];
+
+
+(* ::Input::Initialization:: *)
+Needs["RootFinder`",FileNameJoin[{$RBSFAdirectory,"RootFinder.m"}]]
+(*Called *after* the EndPackage[] call, so that the contexts RBSFA` and RootFinder` will both be subcontexts to Global`.*)
