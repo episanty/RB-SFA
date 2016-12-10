@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 10 Dec 2016 02:02:07\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 10 Dec 2016 02:14:41\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -503,7 +503,15 @@ Cell[BoxData[{
    "\"\<hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix \
 element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\
 \(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\
-\[Kappa]\), \(2\)]\).\>\""}], ";"}], "\[IndentingNewLine]", 
+\[Kappa]\), \(2\)]\).\n\nhydrogenicDTME[p,\[Kappa],{n,l,m}] returns the \
+dipole transition matrix element for an n,l,m hydrogenic state of \
+ground-state ionization potential \!\(\*SubscriptBox[\(I\), \
+\(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \
+\(2\)]\).\n\nhydrogenicDTME[p,\[Kappa],n,l,m] returns the dipole transition \
+matrix element for an n,l,m hydrogenic state of ground-state ionization \
+potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \
+\(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"hydrogenicDTMERegularized", "::", "usage"}], "=", 
@@ -514,7 +522,19 @@ matrix element for a 1s hydrogenic state of ionization potential \
 the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \
 \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \
 \(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point \
-solutions are singular.\>\""}], ";"}], "\[IndentingNewLine]", 
+solutions are singular.\n\nhydrogenicDTMERegularized[p,\[Kappa],{n,l,m}] \
+returns the dipole transition matrix element for an n,l,m hydrogenic state of \
+ground-state ionization potential \!\(\*SubscriptBox[\(I\), \
+\(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \
+\(2\)]\), regularized to remove factors of (\!\(\*SuperscriptBox[\(p\), \
+\(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)) from the denominator.\n\
+\nhydrogenicDTMERegularized[p,\[Kappa],n,l,m] returns the dipole transition \
+matrix element for an n,l,m hydrogenic state of ground-state ionization \
+potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \
+\(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove \
+factors of (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\
+\[Kappa]\), \(2\)]\)) from the denominator.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -582,7 +602,7 @@ solutions are singular.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -756,7 +776,8 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell["Arbitrary hydrogenic orbitals", "Subsubsection"],
+Cell["hydrogenic\[CapitalUpsilon] (momentum-space wavefunctions)", \
+"Subsubsection"],
 
 Cell[TextData[{
  "This implements the dipole transition matrix element from an arbitrary \
@@ -811,7 +832,7 @@ momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
        RowBox[{"hydrogenic\[CapitalUpsilon]", "[", 
         RowBox[{
         "n", ",", "l", ",", "m", ",", "\[Kappa]_", ",", "px_", ",", "py_", 
-         ",", "pz_"}], "]"}], ":=", 
+         ",", "pz_"}], "]"}], "=", 
        RowBox[{"Simplify", "[", "\[IndentingNewLine]", 
         RowBox[{
          RowBox[{"-", 
@@ -886,6 +907,8 @@ momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True],
 
+Cell["Regularized version, removing the ", "Text"],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -925,7 +948,7 @@ the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
        RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "[", 
         RowBox[{
         "n", ",", "l", ",", "m", ",", "\[Kappa]_", ",", "px_", ",", "py_", 
-         ",", "pz_"}], "]"}], ":=", 
+         ",", "pz_"}], "]"}], "=", 
        RowBox[{"Simplify", "[", 
         RowBox[{"Cancel", "[", "\[IndentingNewLine]", 
          RowBox[{
@@ -995,6 +1018,123 @@ the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
     RowBox[{
     "n", ",", "l", ",", "m", ",", "\[Kappa]", ",", "px", ",", "py", ",", 
      "pz"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["hydrogenicDTME for arbitrary states", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenicDTME", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"ppx_", ",", "ppy_", ",", "ppz_"}], "}"}], ",", 
+     "\[Kappa]\[Kappa]_", ",", "n_", ",", "l_", ",", "m_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Kappa]", ",", "px", ",", "py", ",", "pz"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"hydrogenicDTME", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"px_", ",", "py_", ",", "pz_"}], "}"}], ",", "\[Kappa]_", 
+         ",", "n", ",", "l", ",", "m"}], "]"}], "=", 
+       RowBox[{"Simplify", "[", 
+        RowBox[{"Grad", "[", 
+         RowBox[{
+          RowBox[{"hydrogenic\[CapitalUpsilon]", "[", 
+           RowBox[{
+           "n", ",", "l", ",", "m", ",", "\[Kappa]", ",", "px", ",", "py", 
+            ",", "pz"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"px", ",", "py", ",", "pz"}], "}"}]}], "]"}], "]"}]}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"hydrogenicDTME", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"ppx", ",", "ppy", ",", "ppz"}], "}"}], ",", 
+        "\[Kappa]\[Kappa]", ",", "n", ",", "l", ",", "m"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenicDTME", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"px_", ",", "py_", ",", "pz_"}], "}"}], ",", "\[Kappa]_", ",", 
+     RowBox[{"{", 
+      RowBox[{"n_", ",", "l_", ",", "m_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"hydrogenicDTME", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"px", ",", "py", ",", "pz"}], "}"}], ",", "\[Kappa]", ",", "n", 
+     ",", "l", ",", "m"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenicDTMERegularized", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"ppx_", ",", "ppy_", ",", "ppz_"}], "}"}], ",", 
+     "\[Kappa]\[Kappa]_", ",", "n_", ",", "l_", ",", "m_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Kappa]", ",", "px", ",", "py", ",", "pz"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"hydrogenicDTMERegularized", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"px_", ",", "py_", ",", "pz_"}], "}"}], ",", "\[Kappa]_", 
+         ",", "n", ",", "l", ",", "m"}], "]"}], "=", 
+       RowBox[{"Simplify", "[", 
+        RowBox[{"Grad", "[", 
+         RowBox[{
+          RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "[", 
+           RowBox[{
+           "n", ",", "l", ",", "m", ",", "\[Kappa]", ",", "px", ",", "py", 
+            ",", "pz"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"px", ",", "py", ",", "pz"}], "}"}]}], "]"}], "]"}]}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"hydrogenicDTMERegularized", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"ppx", ",", "ppy", ",", "ppz"}], "}"}], ",", 
+        "\[Kappa]\[Kappa]", ",", "n", ",", "l", ",", "m"}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenicDTMERegularized", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"px_", ",", "py_", ",", "pz_"}], "}"}], ",", "\[Kappa]_", ",", 
+     RowBox[{"{", 
+      RowBox[{"n_", ",", "l_", ",", "m_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"hydrogenicDTMERegularized", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"px", ",", "py", ",", "pz"}], "}"}], ",", "\[Kappa]", ",", "n", 
+     ",", "l", ",", "m"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]

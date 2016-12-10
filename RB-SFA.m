@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Sat 10 Dec 2016 02:02:07";
+$RBSFAtimestamp="Sat 10 Dec 2016 02:14:41";
 End[];
 
 
@@ -103,8 +103,16 @@ Protect[ReIm];
 
 
 (* ::Input::Initialization:: *)
-hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
-hydrogenicDTMERegularized::usage="hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point solutions are singular.";
+hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).
+
+hydrogenicDTME[p,\[Kappa],{n,l,m}] returns the dipole transition matrix element for an n,l,m hydrogenic state of ground-state ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).
+
+hydrogenicDTME[p,\[Kappa],n,l,m] returns the dipole transition matrix element for an n,l,m hydrogenic state of ground-state ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
+hydrogenicDTMERegularized::usage="hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point solutions are singular.
+
+hydrogenicDTMERegularized[p,\[Kappa],{n,l,m}] returns the dipole transition matrix element for an n,l,m hydrogenic state of ground-state ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove factors of (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)) from the denominator.
+
+hydrogenicDTMERegularized[p,\[Kappa],n,l,m] returns the dipole transition matrix element for an n,l,m hydrogenic state of ground-state ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove factors of (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)) from the denominator.";
 Begin["`Private`"];
 hydrogenicDTME[p_List,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Total[p^2]+\[Kappa]^2)^3
 hydrogenicDTME[p_?NumberQ,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(p^2+\[Kappa]^2)^3
@@ -136,7 +144,7 @@ hydrogenic\[CapitalUpsilon]::usage="hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],p
 hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.";
 Begin["`Private`"];
 hydrogenic\[CapitalUpsilon][n_,l_,m_,\[Kappa]\[Kappa]_,ppx_,ppy_,ppz_]:=Block[{\[Kappa],px,py,pz},
-hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa]_,px_,py_,pz_]:=Simplify[
+hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa]_,px_,py_,pz_]=Simplify[
 -SolidHarmonicS[l,m,px,py,pz] ((-I)^l \[Pi] 2^(2l+4) l!)/(2\[Pi] \[Kappa])^(3/2) Sqrt[(n (n-l-1)!)/(n+l)!] \[Kappa]^(l+4)/(px^2+py^2+pz^2+\[Kappa]^2)^(l+2) GegenbauerC[n-l-1,l+1,(px^2+py^2+pz^2-\[Kappa]^2)/(px^2+py^2+pz^2+\[Kappa]^2)]
 ];
 hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa]\[Kappa],ppx,ppy,ppz]
@@ -151,12 +159,32 @@ hydrogenic\[CapitalUpsilon]Regularized::usage="hydrogenic\[CapitalUpsilon]Regula
 hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\) in the denominator.";
 Begin["`Private`"];
 hydrogenic\[CapitalUpsilon]Regularized[n_,l_,m_,\[Kappa]\[Kappa]_,ppx_,ppy_,ppz_]:=Block[{\[Kappa],px,py,pz},
-hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa]_,px_,py_,pz_]:=Simplify[Cancel[
+hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa]_,px_,py_,pz_]=Simplify[Cancel[
 -SolidHarmonicS[l,m,px,py,pz] ((-I)^l \[Pi] 2^(2l+4) l!)/(2\[Pi] \[Kappa])^(3/2) Sqrt[(n (n-l-1)!)/(n+l)!] \[Kappa]^(l+4) (px^2+py^2+pz^2+\[Kappa]^2)^(n-l-1) GegenbauerC[n-l-1,l+1,(px^2+py^2+pz^2-\[Kappa]^2)/(px^2+py^2+pz^2+\[Kappa]^2)]
 ]];
 hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa]\[Kappa],ppx,ppy,ppz]
 ];
 hydrogenic\[CapitalUpsilon]Regularized[n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz];
+End[];
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
+hydrogenicDTME[{ppx_,ppy_,ppz_},\[Kappa]\[Kappa]_,n_,l_,m_]:=Block[{\[Kappa],px,py,pz},
+hydrogenicDTME[{px_,py_,pz_},\[Kappa]_,n,l,m]=Simplify[Grad[hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz],{px,py,pz}]];
+hydrogenicDTME[{ppx,ppy,ppz},\[Kappa]\[Kappa],n,l,m]
+];
+hydrogenicDTME[{px_,py_,pz_},\[Kappa]_,{n_,l_,m_}]:=hydrogenicDTME[{px,py,pz},\[Kappa],n,l,m];
+End[];
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
+hydrogenicDTMERegularized[{ppx_,ppy_,ppz_},\[Kappa]\[Kappa]_,n_,l_,m_]:=Block[{\[Kappa],px,py,pz},
+hydrogenicDTMERegularized[{px_,py_,pz_},\[Kappa]_,n,l,m]=Simplify[Grad[hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz],{px,py,pz}]];
+hydrogenicDTMERegularized[{ppx,ppy,ppz},\[Kappa]\[Kappa],n,l,m]
+];
+hydrogenicDTMERegularized[{px_,py_,pz_},\[Kappa]_,{n_,l_,m_}]:=hydrogenicDTMERegularized[{px,py,pz},\[Kappa],n,l,m];
 End[];
 
 
