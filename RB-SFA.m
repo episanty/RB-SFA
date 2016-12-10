@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Sat 10 Dec 2016 02:14:41";
+$RBSFAtimestamp="Sat 10 Dec 2016 02:27:31";
 End[];
 
 
@@ -387,6 +387,7 @@ makeDipoleList::usage="makeDipoleList[VectorPotential\[Rule]A] calculates the di
 
 VectorPotential::usage="VectorPotential is an option for makeDipole list which specifies the field's vector potential. Usage should be VectorPotential\[Rule]A, where A[t]//.pars must yield a list of numbers for numeric t and parameters indicated by FieldParameters\[Rule]pars.";
 VectorPotentialGradient::usage="VectorPotentialGradient is an option for makeDipole list which specifies the gradient of the field's vector potential. Usage should be VectorPotentialGradient\[Rule]GA, where GA[t]//.pars must yield a square matrix of the same dimension as the vector potential for numeric t and parameters indicated by FieldParameters\[Rule]pars. The indices must be such that GA[t]\[LeftDoubleBracket]i,j\[RightDoubleBracket] returns \!\(\*SubscriptBox[\(\[PartialD]\), \(i\)]\)\!\(\*SubscriptBox[\(A\), \(j\)]\)[t].";
+ElectricField::usage="ElectricField is an option for makeDipole list which specifies an electric field to use in the ionization matrix element, in case the time derivative of the vector potential is not desired. Usage should be ElectricField\[Rule]F, where F[t]//.pars must yield a list of numbers for numeric t and parameters indicated by FieldParameters\[Rule]pars.";
 FieldParameters::usage="FieldParameters is an option for makeDipole list which ";
 Preintegrals::usage="Preintegrals is an option for makeDipole list which specifies whether the preintegrals of the vector potential should be \"Analytic\" or \"Numeric\".";
 ReportingFunction::usage="ReportingFunction is an option for makeDipole list which specifies a function used to report the results, either internally (by the default, Identity) or to an external file.";
@@ -403,13 +404,13 @@ Simplifier::usage="Simplifier is an option for makeDipoleList which specifies a 
 CheckNumericFields::usage="CheckNumericFields is an option for makeDipoleList which specifies whether to check for numeric values of A[t] and GA[t] for numeric t.";
 QuadraticActionTerms::usage="QuadraticActionTerms is an option for makeDipoleList which specifies whether to use quadratic terms in \[Del]\!\(\*SuperscriptBox[\(A\), \(2\)]\) in the action.";
 
-Protect[VectorPotential,VectorPotentialGradient,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel,Simplifier,CheckNumericFields,QuadraticActionTerms];
+Protect[VectorPotential,VectorPotentialGradient,ElectricField,FieldParameters,Preintegrals,ReportingFunction,Gate,nGate,IonizationPotential,Target,\[Epsilon]Correction,PointNumberCorrection,DipoleTransitionMatrixElement,IntegrationPointsPerCycle,RunInParallel,Simplifier,CheckNumericFields,QuadraticActionTerms];
 
 
 
 Begin["`Private`"];
 Options[makeDipoleList]=standardOptions~Join~{
-VectorPotential->Automatic,FieldParameters->{},VectorPotentialGradient->None,
+VectorPotential->Automatic,FieldParameters->{},VectorPotentialGradient->None,ElectricField->Automatic,
 Preintegrals->"Analytic",ReportingFunction->Identity,
 Gate->SineSquaredGate[1/2],nGate->3/2,\[Epsilon]Correction->0.1,
 IonizationPotential->0.5,Target->Automatic,DipoleTransitionMatrixElement->hydrogenicDTME,
@@ -419,6 +420,7 @@ Simplifier->Identity,QuadraticActionTerms->True
 };
 makeDipoleList::gate="The integration gate g provided as Gate\[Rule]`1` is incorrect. Its usage as g[`2`,`3`] returns `4` and should return a number.";
 makeDipoleList::pot="The vector potential A provided as VectorPotential\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as A[`2`] returns `3` and should return a list of numbers.";
+makeDipoleList::efield="The electric field f provided as ElectricField\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as F[`2`] returns `3` and should return a list of numbers. Alternatively, use ElectricField\[Rule]Automatic.";
 makeDipoleList::gradpot="The vector potential GA provided as VectorPotentialGradient\[Rule]`1` is incorrect or is missing FieldParameters. Its usage as GA[`2`] returns `3` and should return a square matrix of numbers. Alternatively, use VectorPotentialGradient\[Rule]None.";
 makeDipoleList::preint="Wrong Preintegrals option `1`. Valid options are \"Analytic\" and \"Numeric\".";
 makeDipoleList::runpar="Wrong RunInParallel option `1`.";
@@ -441,7 +443,10 @@ TableCommand,SumCommand
 },
 
 A[t_]=OptionValue[VectorPotential][t]//.OptionValue[FieldParameters];
-F[t_]=-D[A[t],t];
+If[
+OptionValue[ElectricField]===Automatic,F[t_]=-D[A[t],t];,
+F[t_]=OptionValue[ElectricField][t]//.OptionValue[FieldParameters];
+];
 GA[t_]=If[
 TrueQ[OptionValue[VectorPotentialGradient]==None],        Table[0,{Length[A[tInit]]},{Length[A[tInit]]}],
 OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
@@ -462,6 +467,7 @@ If[TrueQ[OptionValue[CheckNumericFields]],
 With[{\[Omega]tRandom=RandomReal[{\[Omega] tInit,\[Omega] tFinal}]},
 If[!And@@(NumberQ/@A[\[Omega]tRandom/\[Omega]]),Message[makeDipoleList::pot,OptionValue[VectorPotential],\[Omega]tRandom,A[\[Omega]tRandom]];Abort[]];
 If[!And@@(NumberQ/@Flatten[GA[\[Omega]tRandom/\[Omega]]]),Message[makeDipoleList::gradpot,OptionValue[VectorPotentialGradient],\[Omega]tRandom,GA[\[Omega]tRandom]];Abort[]];
+If[!And@@(NumberQ/@F[\[Omega]tRandom/\[Omega]]),Message[makeDipoleList::efield,OptionValue[ElectricField],\[Omega]tRandom,F[\[Omega]tRandom]];Abort[]];
 ]];
 
 gate[\[Omega]\[Tau]_]:=OptionValue[Gate][\[Omega]\[Tau],OptionValue[nGate]];

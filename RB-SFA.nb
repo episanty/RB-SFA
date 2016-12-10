@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 10 Dec 2016 02:14:41\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 10 Dec 2016 02:27:31\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -602,7 +602,7 @@ factors of (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -772,7 +772,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1021,7 +1021,7 @@ the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1138,7 +1138,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2391,6 +2391,15 @@ that GA[t]\[LeftDoubleBracket]i,j\[RightDoubleBracket] returns \
 \(j\)]\)[t].\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
+   RowBox[{"ElectricField", "::", "usage"}], "=", 
+   "\"\<ElectricField is an option for makeDipole list which specifies an \
+electric field to use in the ionization matrix element, in case the time \
+derivative of the vector potential is not desired. Usage should be \
+ElectricField\[Rule]F, where F[t]//.pars must yield a list of numbers for \
+numeric t and parameters indicated by FieldParameters\[Rule]pars.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
    RowBox[{"FieldParameters", "::", "usage"}], "=", 
    "\"\<FieldParameters is an option for makeDipole list which \>\""}], 
   ";"}], "\[IndentingNewLine]", 
@@ -2495,10 +2504,10 @@ in the action.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]",
   RowBox[{
    RowBox[{"Protect", "[", 
     RowBox[{
-    "VectorPotential", ",", "VectorPotentialGradient", ",", "FieldParameters",
-      ",", "Preintegrals", ",", "ReportingFunction", ",", "Gate", ",", 
-     "nGate", ",", "IonizationPotential", ",", "Target", ",", 
-     "\[Epsilon]Correction", ",", "PointNumberCorrection", ",", 
+    "VectorPotential", ",", "VectorPotentialGradient", ",", "ElectricField", 
+     ",", "FieldParameters", ",", "Preintegrals", ",", "ReportingFunction", 
+     ",", "Gate", ",", "nGate", ",", "IonizationPotential", ",", "Target", 
+     ",", "\[Epsilon]Correction", ",", "PointNumberCorrection", ",", 
      "DipoleTransitionMatrixElement", ",", "IntegrationPointsPerCycle", ",", 
      "RunInParallel", ",", "Simplifier", ",", "CheckNumericFields", ",", 
      "QuadraticActionTerms"}], "]"}], ";"}], "\[IndentingNewLine]", 
@@ -2516,6 +2525,7 @@ in the action.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]",
       RowBox[{"FieldParameters", "\[Rule]", 
        RowBox[{"{", "}"}]}], ",", 
       RowBox[{"VectorPotentialGradient", "\[Rule]", "None"}], ",", 
+      RowBox[{"ElectricField", "\[Rule]", "Automatic"}], ",", 
       "\[IndentingNewLine]", 
       RowBox[{"Preintegrals", "\[Rule]", "\"\<Analytic\>\""}], ",", 
       RowBox[{"ReportingFunction", "\[Rule]", "Identity"}], ",", 
@@ -2552,6 +2562,13 @@ usage as g[`2`,`3`] returns `4` and should return a number.\>\""}],
    "\"\<The vector potential A provided as VectorPotential\[Rule]`1` is \
 incorrect or is missing FieldParameters. Its usage as A[`2`] returns `3` and \
 should return a list of numbers.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"makeDipoleList", "::", "efield"}], "=", 
+   "\"\<The electric field f provided as ElectricField\[Rule]`1` is incorrect \
+or is missing FieldParameters. Its usage as F[`2`] returns `3` and should \
+return a list of numbers. Alternatively, use ElectricField\[Rule]Automatic.\>\
+\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"makeDipoleList", "::", "gradpot"}], "=", 
@@ -2611,13 +2628,28 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
         "//.", 
        RowBox[{"OptionValue", "[", "FieldParameters", "]"}]}]}], ";", 
      "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{"F", "[", "t_", "]"}], "=", 
-      RowBox[{"-", 
-       RowBox[{"D", "[", 
+     RowBox[{"If", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"OptionValue", "[", "ElectricField", "]"}], "===", 
+        "Automatic"}], ",", 
+       RowBox[{
         RowBox[{
-         RowBox[{"A", "[", "t", "]"}], ",", "t"}], "]"}]}]}], ";", 
-     "\[IndentingNewLine]", 
+         RowBox[{"F", "[", "t_", "]"}], "=", 
+         RowBox[{"-", 
+          RowBox[{"D", "[", 
+           RowBox[{
+            RowBox[{"A", "[", "t", "]"}], ",", "t"}], "]"}]}]}], ";"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"F", "[", "t_", "]"}], "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "ElectricField", "]"}], "[", "t", 
+           "]"}], "//.", 
+          RowBox[{"OptionValue", "[", "FieldParameters", "]"}]}]}], ";"}]}], 
+      "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"GA", "[", "t_", "]"}], "=", 
       RowBox[{"If", "[", "\[IndentingNewLine]", 
@@ -2763,6 +2795,24 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
                RowBox[{"OptionValue", "[", "VectorPotentialGradient", "]"}], 
                ",", "\[Omega]tRandom", ",", 
                RowBox[{"GA", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
+             RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{"!", 
+             RowBox[{"And", "@@", 
+              RowBox[{"(", 
+               RowBox[{"NumberQ", "/@", 
+                RowBox[{"F", "[", 
+                 RowBox[{"\[Omega]tRandom", "/", "\[Omega]"}], "]"}]}], 
+               ")"}]}]}], ",", 
+            RowBox[{
+             RowBox[{"Message", "[", 
+              RowBox[{
+               RowBox[{"makeDipoleList", "::", "efield"}], ",", 
+               RowBox[{"OptionValue", "[", "ElectricField", "]"}], ",", 
+               "\[Omega]tRandom", ",", 
+               RowBox[{"F", "[", "\[Omega]tRandom", "]"}]}], "]"}], ";", 
              RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";"}]}], 
         "\[IndentingNewLine]", "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
@@ -4403,8 +4453,7 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
-           
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
