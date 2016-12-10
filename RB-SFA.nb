@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 10 Dec 2016 02:01:17\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Sat 10 Dec 2016 02:02:07\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -749,6 +749,252 @@ Cell[BoxData[{
        RowBox[{"Quotient", "[", 
         RowBox[{"\[Lambda]", ",", "2"}], "]"}]}], "}"}]}], 
     "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Arbitrary hydrogenic orbitals", "Subsubsection"],
+
+Cell[TextData[{
+ "This implements the dipole transition matrix element from an arbitrary \
+hydrogenic orbital ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"n", ",", "l", ",", "m"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ", where the ground-state ionization potential is given by ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["I", "p"], "=", 
+    RowBox[{
+     FractionBox["1", "2"], 
+     SuperscriptBox["\[Kappa]", "2"]}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ", as described in Luke Chipperfield\[CloseCurlyQuote]s PhD thesis (Imperial \
+College London, 2006, p. 52). This code uses partial memoization as in \
+mm.se/q/21782."
+}], "Text"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenic\[CapitalUpsilon]", "::", "usage"}], "=", 
+   "\"\<hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz] calculates the \
+momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
+\[RightAngleBracket] for a hydrogenic atom with ionization potential \
+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.\n\n\
+hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],{px,py,pz}] calculates the \
+momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
+\[RightAngleBracket] for a hydrogenic atom with ionization potential \
+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenic\[CapitalUpsilon]", "[", 
+    RowBox[{
+    "n_", ",", "l_", ",", "m_", ",", "\[Kappa]\[Kappa]_", ",", "ppx_", ",", 
+     "ppy_", ",", "ppz_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Kappa]", ",", "px", ",", "py", ",", "pz"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"hydrogenic\[CapitalUpsilon]", "[", 
+        RowBox[{
+        "n", ",", "l", ",", "m", ",", "\[Kappa]_", ",", "px_", ",", "py_", 
+         ",", "pz_"}], "]"}], ":=", 
+       RowBox[{"Simplify", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"-", 
+          RowBox[{"SolidHarmonicS", "[", 
+           RowBox[{"l", ",", "m", ",", "px", ",", "py", ",", "pz"}], "]"}]}], 
+         
+         FractionBox[
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"(", 
+             RowBox[{"-", "\[ImaginaryI]"}], ")"}], "l"], "\[Pi]", " ", 
+           SuperscriptBox["2", 
+            RowBox[{
+             RowBox[{"2", "l"}], "+", "4"}]], 
+           RowBox[{"l", "!"}]}], 
+          SuperscriptBox[
+           RowBox[{"(", 
+            RowBox[{"2", "\[Pi]", " ", "\[Kappa]"}], ")"}], 
+           RowBox[{"3", "/", "2"}]]], 
+         SqrtBox[
+          FractionBox[
+           RowBox[{"n", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"n", "-", "l", "-", "1"}], ")"}], "!"}]}], 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"n", "+", "l"}], ")"}], "!"}]]], 
+         FractionBox[
+          SuperscriptBox["\[Kappa]", 
+           RowBox[{"l", "+", "4"}]], 
+          SuperscriptBox[
+           RowBox[{"(", 
+            RowBox[{
+             SuperscriptBox["px", "2"], "+", 
+             SuperscriptBox["py", "2"], "+", 
+             SuperscriptBox["pz", "2"], "+", 
+             SuperscriptBox["\[Kappa]", "2"]}], ")"}], 
+           RowBox[{"l", "+", "2"}]]], 
+         RowBox[{"GegenbauerC", "[", 
+          RowBox[{
+           RowBox[{"n", "-", "l", "-", "1"}], ",", 
+           RowBox[{"l", "+", "1"}], ",", 
+           FractionBox[
+            RowBox[{
+             SuperscriptBox["px", "2"], "+", 
+             SuperscriptBox["py", "2"], "+", 
+             SuperscriptBox["pz", "2"], "-", 
+             SuperscriptBox["\[Kappa]", "2"]}], 
+            RowBox[{
+             SuperscriptBox["px", "2"], "+", 
+             SuperscriptBox["py", "2"], "+", 
+             SuperscriptBox["pz", "2"], "+", 
+             SuperscriptBox["\[Kappa]", "2"]}]]}], "]"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"hydrogenic\[CapitalUpsilon]", "[", 
+       RowBox[{
+       "n", ",", "l", ",", "m", ",", "\[Kappa]\[Kappa]", ",", "ppx", ",", 
+        "ppy", ",", "ppz"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenic\[CapitalUpsilon]", "[", 
+    RowBox[{"n_", ",", "l_", ",", "m_", ",", "\[Kappa]_", ",", 
+     RowBox[{"{", 
+      RowBox[{"px_", ",", "py_", ",", "pz_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"hydrogenic\[CapitalUpsilon]", "[", 
+    RowBox[{
+    "n", ",", "l", ",", "m", ",", "\[Kappa]", ",", "px", ",", "py", ",", 
+     "pz"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "::", "usage"}], "=", 
+   "\"\<hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz] \
+calculates the momentum-space wavefunction \[CapitalUpsilon](p)=\
+\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with \
+ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, \
+multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\
+\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any \
+factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\
+\[Kappa]\), \(2\)]\) in the denominator.\n\n\
+hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],{px,py,pz}] calculates \
+the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\
+\[RightAngleBracket] for a hydrogenic atom with ionization potential \
+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by \
+(\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \
+\(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \
+\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \
+\(2\)]\) in the denominator.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "[", 
+    RowBox[{
+    "n_", ",", "l_", ",", "m_", ",", "\[Kappa]\[Kappa]_", ",", "ppx_", ",", 
+     "ppy_", ",", "ppz_"}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Kappa]", ",", "px", ",", "py", ",", "pz"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "[", 
+        RowBox[{
+        "n", ",", "l", ",", "m", ",", "\[Kappa]_", ",", "px_", ",", "py_", 
+         ",", "pz_"}], "]"}], ":=", 
+       RowBox[{"Simplify", "[", 
+        RowBox[{"Cancel", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"-", 
+           RowBox[{"SolidHarmonicS", "[", 
+            RowBox[{"l", ",", "m", ",", "px", ",", "py", ",", "pz"}], "]"}]}], 
+          FractionBox[
+           RowBox[{
+            SuperscriptBox[
+             RowBox[{"(", 
+              RowBox[{"-", "\[ImaginaryI]"}], ")"}], "l"], "\[Pi]", " ", 
+            SuperscriptBox["2", 
+             RowBox[{
+              RowBox[{"2", "l"}], "+", "4"}]], 
+            RowBox[{"l", "!"}]}], 
+           SuperscriptBox[
+            RowBox[{"(", 
+             RowBox[{"2", "\[Pi]", " ", "\[Kappa]"}], ")"}], 
+            RowBox[{"3", "/", "2"}]]], 
+          SqrtBox[
+           FractionBox[
+            RowBox[{"n", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"n", "-", "l", "-", "1"}], ")"}], "!"}]}], 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"n", "+", "l"}], ")"}], "!"}]]], 
+          SuperscriptBox["\[Kappa]", 
+           RowBox[{"l", "+", "4"}]], 
+          SuperscriptBox[
+           RowBox[{"(", 
+            RowBox[{
+             SuperscriptBox["px", "2"], "+", 
+             SuperscriptBox["py", "2"], "+", 
+             SuperscriptBox["pz", "2"], "+", 
+             SuperscriptBox["\[Kappa]", "2"]}], ")"}], 
+           RowBox[{"n", "-", "l", "-", "1"}]], 
+          RowBox[{"GegenbauerC", "[", 
+           RowBox[{
+            RowBox[{"n", "-", "l", "-", "1"}], ",", 
+            RowBox[{"l", "+", "1"}], ",", 
+            FractionBox[
+             RowBox[{
+              SuperscriptBox["px", "2"], "+", 
+              SuperscriptBox["py", "2"], "+", 
+              SuperscriptBox["pz", "2"], "-", 
+              SuperscriptBox["\[Kappa]", "2"]}], 
+             RowBox[{
+              SuperscriptBox["px", "2"], "+", 
+              SuperscriptBox["py", "2"], "+", 
+              SuperscriptBox["pz", "2"], "+", 
+              SuperscriptBox["\[Kappa]", "2"]}]]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "[", 
+       RowBox[{
+       "n", ",", "l", ",", "m", ",", "\[Kappa]\[Kappa]", ",", "ppx", ",", 
+        "ppy", ",", "ppz"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "[", 
+    RowBox[{"n_", ",", "l_", ",", "m_", ",", "\[Kappa]_", ",", 
+     RowBox[{"{", 
+      RowBox[{"px_", ",", "py_", ",", "pz_"}], "}"}]}], "]"}], ":=", 
+   RowBox[{"hydrogenic\[CapitalUpsilon]Regularized", "[", 
+    RowBox[{
+    "n", ",", "l", ",", "m", ",", "\[Kappa]", ",", "px", ",", "py", ",", 
+     "pz"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
