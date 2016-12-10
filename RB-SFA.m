@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 9 Dec 2016 00:06:04";
+$RBSFAtimestamp="Sat 10 Dec 2016 02:01:17";
 End[];
 
 
@@ -96,17 +96,15 @@ Protect[ConstantArray];
 If[
 Context[ReIm]=!="System`",
 ReIm::usage="\!\(\*RowBox[{\"ReIm\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}]\) gives the list \!\(\*RowBox[{\"{\", RowBox[{RowBox[{\"Re\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}], \",\", RowBox[{\"Im\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}]}], \"}\"}]\) of the number \!\(\*StyleBox[\"z\", \"TI\"]\).";
-Begin["`Private`"];
-ReIm[z_]:={Re[z],Im[z]};
+ReIm[Private`z_]:={Re[Private`z],Im[Private`z]};
 SetAttributes[ReIm,Listable];
 Protect[ReIm];
-End[];
 ]
 
 
 (* ::Input::Initialization:: *)
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).";
-hydrogenicDTMERegularized::usage="hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point solutions are singular."
+hydrogenicDTMERegularized::usage="hydrogenicDTMERegularized[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\), regularized to remove the denominator of 1/(\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(3\)]\), where the saddle-point solutions are singular.";
 Begin["`Private`"];
 hydrogenicDTME[p_List,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(Total[p^2]+\[Kappa]^2)^3
 hydrogenicDTME[p_?NumberQ,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)/(p^2+\[Kappa]^2)^3
@@ -120,6 +118,15 @@ gaussianDTME::usage="gaussianDTME[p,\[Kappa]] returns the dipole transition matr
 Begin["`Private`"];
 gaussianDTME[p_List,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(Total[p^2]/(2\[Kappa]^2))]
 gaussianDTME[p_?NumberQ,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(p^2/(2\[Kappa]^2))]
+End[];
+
+
+(* ::Input::Initialization:: *)
+SolidHarmonicS::usage="SolidHarmonicS[l,m,x,y,z] calculates the solid harmonic \!\(\*SubscriptBox[\(S\), \(lm\)]\)(x,y,z)=\!\(\*SuperscriptBox[\(r\), \(l\)]\)\!\(\*SubscriptBox[\(Y\), \(lm\)]\)(x,y,z).";
+Begin["`Private`"];
+SolidHarmonicS[\[Lambda]_Integer,\[Mu]_Integer,x_,y_,z_]/;\[Lambda]>=Abs[\[Mu]]:=Sqrt[(2 \[Lambda]+1)/(4 \[Pi])] Sqrt[Gamma[\[Lambda]-Abs[\[Mu]]+1]/Gamma[\[Lambda]+Abs[\[Mu]]+1]] 2^-\[Lambda] (x+Sign[\[Mu]]I y)^Abs[\[Mu]] Sum[
+(-1)^(Abs[\[Mu]]+k) Binomial[\[Lambda],k] Binomial[2 \[Lambda]-2 k,\[Lambda]] Pochhammer[\[Lambda]-Abs[\[Mu]]-2 k+1,Abs[\[Mu]]] (x^2+y^2+z^2)^k z^(\[Lambda]-Abs[\[Mu]]-2 k)
+,{k,0,Quotient[\[Lambda],2]}]
 End[];
 
 
