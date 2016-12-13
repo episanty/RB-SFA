@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Sat 10 Dec 2016 02:27:31";
+$RBSFAtimestamp="Tue 13 Dec 2016 13:50:56";
 End[];
 
 
@@ -651,6 +651,172 @@ End[];
 
 
 (* ::Input::Initialization:: *)
+FindComplexRoots::usage="FindComplexRoots[e1==e2, {z, zmin, zmax}] attempts to find complex roots of the equation e1==e2 in the complex rectangle with corners zmin and zmax.
+
+FindComplexRoots[{e1==e2, e3==e4, \[Ellipsis]}, {z1, z1min, z1max}, {z2, z2min, z2max}, \[Ellipsis]] attempts to find complex roots of the given system of equations in the multidimensional complex rectangle with corners z1min, z1max, z2min, z2max, \[Ellipsis].";
+Seeds::usage="Seeds is an option for FindComplexRoots which determines how many initial seeds are used to attempt to find roots of the given equation.";
+SeedGenerator::usage="SeedGenerator is an option for FindComplexRoots which determines the function   used to generate the seeds for the internal FindRoot call. Its value can be RandomComplex, RandomNiederreiterComplexes, RandomSobolComplexes, DeterministicComplexGrid, or any function f such that f[{zmin, zmax}, n] returns n complex numbers in the rectancle with corners zmin and zmax.";
+
+Options[FindComplexRoots] = Join[Options[FindRoot], {Seeds -> 50, SeedGenerator -> RandomComplex, Tolerance -> Automatic, Verbose -> False}];
+SyntaxInformation[FindComplexRoots] = {"ArgumentsPattern" -> {_, {_, _, _}, OptionsPattern[]},    "LocalVariables" -> {"Table", {2, \[Infinity]}}};
+FindComplexRoots::seeds = "Value of option Seeds -> `1` is not a positive integer.";
+FindComplexRoots::tol = "Value of option Tolerance -> `1` is not Automatic or a number in [0,\[Infinity]).";
+$MessageGroups=Join[$MessageGroups,{"FindComplexRoots":>{FindRoot::lstol}}]
+
+Protect[Seeds];
+Protect[SeedGenerator];
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
+FindComplexRoots[equations_List,domainSpecifiers__, ops : OptionsPattern[]] := Block[{seeds,tolerances},
+If[! IntegerQ[Rationalize[OptionValue[Seeds]]] || OptionValue[Seeds]<=0,Message[FindComplexRoots::seeds, OptionValue[Seeds]]];If[! (OptionValue[Tolerance] === Automatic || OptionValue[Tolerance]>=0),Message[FindComplexRoots::tol, OptionValue[Seeds]]];
+
+seeds=OptionValue[SeedGenerator][{domainSpecifiers}[[All,{2,3}]],OptionValue[Seeds]];
+tolerances=Which[
+ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,ConstantArray[
+Which[
+NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
+]
+,Length[{domainSpecifiers}]]
+];
+
+If[OptionValue[Verbose],Hold[], Hold[FindRoot::lstol]] /. {
+Hold[messageSequence___] :> Quiet[
+DeleteDuplicates[
+Select[
+Check[
+FindRoot[
+equations
+,Evaluate[Sequence@@Table[{{domainSpecifiers}[[j,1]],#[[j]]},{j,Length[{domainSpecifiers}]}]]
+,Evaluate[Sequence @@ FilterRules[{ops}, Options[FindRoot]]]
+],
+##&[]
+]&/@seeds,
+Function[
+repList,
+ReplaceAll[
+Evaluate[And@@Table[
+And[
+Re[{domainSpecifiers}[[j,2]]]<=Re[{domainSpecifiers}[[j,1]]]<=Re[{domainSpecifiers}[[j,3]]],
+Im[{domainSpecifiers}[[j,2]]]<=Im[{domainSpecifiers}[[j,1]]]<=Im[{domainSpecifiers}[[j,3]]]
+]
+,{j,Length[{domainSpecifiers}]}]]
+,repList]
+]
+],
+Function[{repList1,repList2},
+And@@Table[
+Abs[({domainSpecifiers}[[j,1]]/.repList1)-({domainSpecifiers}[[j,1]]/.repList2)]<tolerances[[j]]
+,{j,Length[{domainSpecifiers}]}]
+]
+]
+, {messageSequence}]}
+]
+FindComplexRoots[e1_==e2_,{z_,zmin_,zmax_},ops:OptionsPattern[]]:=FindComplexRoots[{e1==e2},{z,zmin,zmax},ops]
+End[];
+
+
+(* ::Input::Initialization:: *)
+RandomSobolComplexes::usage="RandomSobolComplexes[{zmin, zmax}, n] generates a low-discrepancy Sobol sequence of n quasirandom complex numbers in the rectangle with corners zmin and zmax.
+
+RandomSobolComplexes[{{z1min,z1max},{z2min,z2max},\[Ellipsis]},n] generates a low-discrepancy Sobol sequence of n quasirandom complex numbers in the multi-dimensional rectangle with corners {z1min,z1max},{z2min,z2max},\[Ellipsis].";
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
+RandomSobolComplexes[pairsList__, number_] :=Map[
+Function[randomsList,
+pairsList[[All,1]]+Complex@@@Times[
+ReIm[pairsList[[All,2]]-pairsList[[All,1]]],
+randomsList
+]
+],
+BlockRandom[
+SeedRandom[Method->{"MKL",Method->{"Sobol", "Dimension" -> 2Length[pairsList]}}];
+SeedRandom[];
+RandomReal[{0, 1}, {number,Length[pairsList],2}]
+]
+]
+RandomSobolComplexes[{zmin_?NumericQ,zmax_?NumericQ},number_]:=RandomSobolComplexes[{{zmin,zmax}},number][[All,1]]
+End[];
+
+
+(* ::Input::Initialization:: *)
+RandomNiederreiterComplexes::usage="RandomNiederreiterComplexes[{zmin, zmax}, n] generates a low-discrepancy Niederreiter sequence of n quasirandom complex numbers in the rectangle with corners zmin and zmax.
+
+RandomNiederreiterComplexes[{{z1min,z1max},{z2min,z2max},\[Ellipsis]},n] generates a low-discrepancy Niederreiter sequence of n quasirandom complex numbers in the multi-dimensional rectangle with corners {z1min,z1max},{z2min,z2max},\[Ellipsis].";
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
+RandomNiederreiterComplexes[pairsList__, number_] :=Map[
+Function[randomsList,
+pairsList[[All,1]]+Complex@@@Times[
+ReIm[pairsList[[All,2]]-pairsList[[All,1]]],
+randomsList
+]
+],
+BlockRandom[
+SeedRandom[Method->{"MKL",Method->{"Niederreiter", "Dimension" -> 2Length[pairsList]}}];
+SeedRandom[];
+RandomReal[{0, 1}, {number,Length[pairsList],2}]
+]
+]
+RandomNiederreiterComplexes[{zmin_?NumericQ,zmax_?NumericQ},number_]:=RandomNiederreiterComplexes[{{zmin,zmax}},number][[All,1]]
+End[];
+
+
+(* ::Input::Initialization:: *)
+DeterministicComplexGrid::usage="DeterministicComplexGrid[{zmin, zmax}, n] generates a grid of about n equally spaced complex numbers in the rectangle with corners zmin and zmax.
+
+DeterministicComplexGrid[{{z1min,z1max},{z2min,z2max},\[Ellipsis]},n] generates a regular grid of about n equally spaced complex numbers in the multi-dimensional rectangle with corners {z1min,z1max},{z2min,z2max},\[Ellipsis].";
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
+DeterministicComplexGrid[pairsList_,number_]:=Block[{sep,separationsList,gridPointBasis,k},
+sep=NestWhile[0.99#&,Min[Flatten[ReIm[pairsList[[All,2]]-pairsList[[All,1]]]]],Times@@(Floor[Flatten[ReIm[pairsList[[All,2]]-pairsList[[All,1]]]],0.99#]/(0.99#))<=number&];
+separationsList=Round[Floor[Flatten[ReIm[pairsList[[All,2]]-pairsList[[All,1]]]],sep]/sep];
+gridPointBasis=MapThread[
+Function[{l,n},Range[l[[1]],l[[2]],(l[[2]]-l[[1]])/(n+1)][[2;;-2]]],
+{Flatten[Transpose[ReIm[pairsList],{1,3,2}],1],separationsList}
+];
+Flatten[Table[
+Table[k[2j-1]+I k[2j],{j,1,Length[pairsList]}],
+Evaluate[Sequence@@Table[{k[j],gridPointBasis[[j]]},{j,1,2Length[pairsList]}]]
+],Evaluate[Range[1,2Length[pairsList]]]]
+]
+DeterministicComplexGrid[{zmin_?NumericQ,zmax_?NumericQ},number_]:=DeterministicComplexGrid[{{zmin,zmax}},number][[All,1]]
+End[];
+
+
+(* ::Input::Initialization:: *)
+Begin["`Private`"];
+Unprotect[RandomComplex];
+RandomComplex[{range1_List,moreRanges___},number_]:=Transpose[RandomComplex[#,number]&/@{range1,moreRanges}]
+Protect[RandomComplex];
+End[];
+
+
+(* ::Input::Initialization:: *)
+Parallelize;
+If[Head[Parallel`Developer`$InitCode]=!=Hold,
+Parallel`Developer`$InitCode=Hold[]
+];
+Parallel`Developer`$InitCode=Join[
+Parallel`Developer`$InitCode,
+Hold[
+Unprotect[RandomComplex];
+RandomComplex[{Private`range1_List,Private`moreRanges___},Private`number_]:=Transpose[RandomComplex[#,Private`number]&/@{Private`range1,Private`moreRanges}];
+Protect[RandomComplex];
+]
+];
+
+
+(* ::Input::Initialization:: *)
 GetSaddlePoints::usage="GetSaddlePoints[\[CapitalOmega],S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where both ranges should be the lower-left and upper-right corners of rectangles in the complex plane.
 
 GetSaddlePoints[\[CapitalOmega]Range,S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds solutions of the HHG temporal saddle-point equations for a range of harmonic energies \[CapitalOmega]Range, and returns an Association with each harmonic energy \[CapitalOmega] indexing a list of saddle-point solution pairs {t,\[Tau]}.
@@ -965,8 +1131,3 @@ EndPackage[];
 
 (* ::Input::Initialization:: *)
 DistributeDefinitions["RBSFA`"];
-
-
-(* ::Input::Initialization:: *)
-Needs["RootFinder`",FileNameJoin[{$RBSFAdirectory,"RootFinder.m"}]]
-(*Called *after* the EndPackage[] call, so that the contexts RBSFA` and RootFinder` will both be subcontexts to Global`.*)

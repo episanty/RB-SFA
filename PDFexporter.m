@@ -31,6 +31,7 @@ Cell[contents,CellTags->"Collapse-to-print"],otherCells
 }/.{Closed->Open,TempClosed->Closed}
 ];
 
+
 Export[
 FileNameJoin[{directory,"Quantum Orbits Usage.pdf"}],
 Import[FileNameJoin[{directory,"Quantum Orbits Usage.nb"}]]/.{
@@ -40,10 +41,4 @@ Cell[contents__,CellTags->"Collapse-to-print"],otherCells___
 Cell[contents,CellTags->"Collapse-to-print"],otherCells
 },TempClosed]]
 }/.{Closed->Open,TempClosed->Closed}
-];
-
-
-Export[
-FileNameJoin[{directory,"RootFinder.pdf"}],
-Import[FileNameJoin[{directory,"RootFinder.nb"}]]/.{Closed->Open}
 ];
