@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 13 Dec 2016 13:50:56\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 14 Dec 2016 16:12:32\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -695,8 +695,8 @@ Cell[BoxData[{
    RowBox[{"SolidHarmonicS", "::", "usage"}], "=", 
    "\"\<SolidHarmonicS[l,m,x,y,z] calculates the solid harmonic \
 \!\(\*SubscriptBox[\(S\), \(lm\)]\)(x,y,z)=\!\(\*SuperscriptBox[\(r\), \(l\)]\
-\)\!\(\*SubscriptBox[\(Y\), \(lm\)]\)(x,y,z).\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
+\)\!\(\*SubscriptBox[\(Y\), \(lm\)]\)(x,y,z).\n\nSolidHarmonicS[l,m,{x,y,z}] \
+does the same.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -723,14 +723,20 @@ Cell[BoxData[{
       RowBox[{"\[Lambda]", "+", 
        RowBox[{"Abs", "[", "\[Mu]", "]"}], "+", "1"}], "]"}]], "]"}], " ", 
    SuperscriptBox["2", 
-    RowBox[{"-", "\[Lambda]"}]], " ", 
-   SuperscriptBox[
-    RowBox[{"(", 
-     RowBox[{"x", "+", 
-      RowBox[{
-       RowBox[{"Sign", "[", "\[Mu]", "]"}], "\[ImaginaryI]", " ", "y"}]}], 
-     ")"}], 
-    RowBox[{"Abs", "[", "\[Mu]", "]"}]], 
+    RowBox[{"-", "\[Lambda]"}]], " ", "\[Times]", "\[IndentingNewLine]", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Rationalize", "[", "\[Mu]", "]"}], "\[Equal]", "0"}], ",", "1",
+      ",", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       RowBox[{"x", "+", 
+        RowBox[{
+         RowBox[{"Sign", "[", "\[Mu]", "]"}], "\[ImaginaryI]", " ", "y"}]}], 
+       ")"}], 
+      RowBox[{"Abs", "[", "\[Mu]", "]"}]]}], "]"}], "\[Times]", 
+   "\[IndentingNewLine]", 
    RowBox[{"Sum", "[", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{
@@ -751,22 +757,47 @@ Cell[BoxData[{
         RowBox[{"\[Lambda]", "-", 
          RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
          RowBox[{"2", " ", "k"}], "+", "1"}], ",", 
-        RowBox[{"Abs", "[", "\[Mu]", "]"}]}], "]"}], " ", 
-      SuperscriptBox[
-       RowBox[{"(", 
+        RowBox[{"Abs", "[", "\[Mu]", "]"}]}], "]"}], " ", "\[Times]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
         RowBox[{
-         SuperscriptBox["x", "2"], "+", 
-         SuperscriptBox["y", "2"], "+", 
-         SuperscriptBox["z", "2"]}], ")"}], "k"], " ", 
-      SuperscriptBox["z", 
-       RowBox[{"\[Lambda]", "-", 
-        RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
-        RowBox[{"2", " ", "k"}]}]]}], "\[IndentingNewLine]", ",", 
+         RowBox[{"Rationalize", "[", "k", "]"}], "\[Equal]", "0"}], ",", "1", 
+        ",", 
+        SuperscriptBox[
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox["x", "2"], "+", 
+           SuperscriptBox["y", "2"], "+", 
+           SuperscriptBox["z", "2"]}], ")"}], "k"]}], "]"}], "\[Times]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Rationalize", "[", 
+          RowBox[{"\[Lambda]", "-", 
+           RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
+           RowBox[{"2", " ", "k"}]}], "]"}], "\[Equal]", "0"}], ",", "1", ",", 
+        SuperscriptBox["z", 
+         RowBox[{"\[Lambda]", "-", 
+          RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
+          RowBox[{"2", " ", "k"}]}]]}], "]"}]}], "\[IndentingNewLine]", ",", 
      RowBox[{"{", 
       RowBox[{"k", ",", "0", ",", 
        RowBox[{"Quotient", "[", 
         RowBox[{"\[Lambda]", ",", "2"}], "]"}]}], "}"}]}], 
     "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SolidHarmonicS", "[", 
+    RowBox[{"\[Lambda]_Integer", ",", "\[Mu]_Integer", ",", 
+     RowBox[{"{", 
+      RowBox[{"x_", ",", "y_", ",", "z_"}], "}"}]}], "]"}], "/;", 
+   RowBox[{"\[Lambda]", "\[GreaterEqual]", 
+    RowBox[{"Abs", "[", "\[Mu]", "]"}]}]}], ":=", 
+  RowBox[{"SolidHarmonicS", "[", 
+   RowBox[{"\[Lambda]", ",", "\[Mu]", ",", "x", ",", "y", ",", "z"}], 
+   "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
@@ -3835,7 +3866,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -5241,8 +5272,7 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
-           
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
@@ -5666,7 +5696,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
