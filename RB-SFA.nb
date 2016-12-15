@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 15 Dec 2016 16:18:25\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 15 Dec 2016 19:30:06\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -723,7 +723,15 @@ does the same.\>\""}], ";"}], "\[IndentingNewLine]",
       RowBox[{"\[Lambda]", "+", 
        RowBox[{"Abs", "[", "\[Mu]", "]"}], "+", "1"}], "]"}]], "]"}], " ", 
    SuperscriptBox["2", 
-    RowBox[{"-", "\[Lambda]"}]], " ", "\[Times]", "\[IndentingNewLine]", 
+    RowBox[{"-", "\[Lambda]"}]], " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{"-", "1"}], ")"}], 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"\[Mu]", "-", 
+       RowBox[{"Abs", "[", "\[Mu]", "]"}]}], ")"}], "/", "2"}]], "\[Times]", 
+   "\[IndentingNewLine]", 
    RowBox[{"If", "[", 
     RowBox[{
      RowBox[{
@@ -743,8 +751,7 @@ does the same.\>\""}], ";"}], "\[IndentingNewLine]",
       SuperscriptBox[
        RowBox[{"(", 
         RowBox[{"-", "1"}], ")"}], 
-       RowBox[{
-        RowBox[{"Abs", "[", "\[Mu]", "]"}], "+", "k"}]], " ", 
+       RowBox[{"\[Mu]", "+", "k"}]], " ", 
       RowBox[{"Binomial", "[", 
        RowBox[{"\[Lambda]", ",", "k"}], "]"}], " ", 
       RowBox[{"Binomial", "[", 
@@ -940,14 +947,12 @@ Cell[TextData[{
   FormBox[
    RowBox[{
     SuperscriptBox["p", "2"], "+", 
-    SuperscriptBox["\[Kappa]", "2"]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+    SuperscriptBox["\[Kappa]", "2"]}], TraditionalForm]]],
  " in the denominator, to eliminate poles at the saddle-point momentum ",
  Cell[BoxData[
   FormBox[
    RowBox[{"p", "=", 
-    RowBox[{"\[ImaginaryI]", " ", "\[Kappa]"}]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+    RowBox[{"\[ImaginaryI]", " ", "\[Kappa]"}]}], TraditionalForm]]],
  "."
 }], "Text"],
 
@@ -1098,8 +1103,7 @@ Cell[TextData[{
         RowBox[{
          StyleBox["p",
           FontWeight->"Bold"], "|", "n"}], " ", ",", "l", ",", "m"}], 
-       "\[RightAngleBracket]"}]}]}]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+       "\[RightAngleBracket]"}]}]}]}], TraditionalForm]]],
  ", which can be used in the form ",
  Cell[BoxData[
   FormBox[
@@ -1110,8 +1114,7 @@ Cell[TextData[{
      RowBox[{
       StyleBox["A",
        FontWeight->"Bold"], "(", 
-      RowBox[{"t", "'"}], ")"}]}], ")"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+      RowBox[{"t", "'"}], ")"}]}], ")"}], TraditionalForm]]],
  " as a replacement for the ionization dipole ",
  Cell[BoxData[
   FormBox[
@@ -1129,8 +1132,7 @@ Cell[TextData[{
     RowBox[{
      StyleBox["F",
       FontWeight->"Bold"], "(", 
-     RowBox[{"t", "'"}], ")"}]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+     RowBox[{"t", "'"}], ")"}]}], TraditionalForm]]],
  ", particularly for cases where the latter is singular but the former is \
 not. (For details cf. arXiv:1304.2413, appendix A.)"
 }], "Text"],
@@ -1252,14 +1254,12 @@ Cell[TextData[{
   FormBox[
    RowBox[{
     SuperscriptBox["p", "2"], "+", 
-    SuperscriptBox["\[Kappa]", "2"]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+    SuperscriptBox["\[Kappa]", "2"]}], TraditionalForm]]],
  " in the denominator, to eliminate poles at the saddle-point momentum ",
  Cell[BoxData[
   FormBox[
    RowBox[{"p", "=", 
-    RowBox[{"\[ImaginaryI]", " ", "\[Kappa]"}]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
+    RowBox[{"\[ImaginaryI]", " ", "\[Kappa]"}]}], TraditionalForm]]],
  "."
 }], "Text"],
 
@@ -4005,7 +4005,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 

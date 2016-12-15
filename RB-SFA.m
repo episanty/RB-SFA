@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 15 Dec 2016 16:18:25";
+$RBSFAtimestamp="Thu 15 Dec 2016 19:30:06";
 End[];
 
 
@@ -134,10 +134,10 @@ SolidHarmonicS::usage="SolidHarmonicS[l,m,x,y,z] calculates the solid harmonic \
 
 SolidHarmonicS[l,m,{x,y,z}] does the same.";
 Begin["`Private`"];
-SolidHarmonicS[\[Lambda]_Integer,\[Mu]_Integer,x_,y_,z_]/;\[Lambda]>=Abs[\[Mu]]:=Sqrt[(2 \[Lambda]+1)/(4 \[Pi])] Sqrt[Gamma[\[Lambda]-Abs[\[Mu]]+1]/Gamma[\[Lambda]+Abs[\[Mu]]+1]] 2^-\[Lambda] *
+SolidHarmonicS[\[Lambda]_Integer,\[Mu]_Integer,x_,y_,z_]/;\[Lambda]>=Abs[\[Mu]]:=Sqrt[(2 \[Lambda]+1)/(4 \[Pi])] Sqrt[Gamma[\[Lambda]-Abs[\[Mu]]+1]/Gamma[\[Lambda]+Abs[\[Mu]]+1]] 2^-\[Lambda] (-1)^((\[Mu]-Abs[\[Mu]])/2)*
 If[Rationalize[\[Mu]]==0,1,(x+Sign[\[Mu]]I y)^Abs[\[Mu]]]*
 Sum[
-(-1)^(Abs[\[Mu]]+k) Binomial[\[Lambda],k] Binomial[2 \[Lambda]-2 k,\[Lambda]] Pochhammer[\[Lambda]-Abs[\[Mu]]-2 k+1,Abs[\[Mu]]] *
+(-1)^(\[Mu]+k) Binomial[\[Lambda],k] Binomial[2 \[Lambda]-2 k,\[Lambda]] Pochhammer[\[Lambda]-Abs[\[Mu]]-2 k+1,Abs[\[Mu]]] *
 If[Rationalize[k]==0,1,(x^2+y^2+z^2)^k]*
 If[Rationalize[\[Lambda]-Abs[\[Mu]]-2 k]==0,1,z^(\[Lambda]-Abs[\[Mu]]-2 k)]
 ,{k,0,Quotient[\[Lambda],2]}]
