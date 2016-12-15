@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 15 Dec 2016 11:57:54";
+$RBSFAtimestamp="Thu 15 Dec 2016 16:18:25";
 End[];
 
 
@@ -146,32 +146,42 @@ End[];
 
 
 (* ::Input::Initialization:: *)
-hydrogenic\[CapitalUpsilon]::usage="hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz] calculates the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.
+hydrogenic\[CapitalPsi]::usage="hydrogenic\[CapitalPsi][n,l,m,\[Kappa],px,py,pz] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.
 
-hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.";
+hydrogenic\[CapitalPsi][n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.";
 Begin["`Private`"];
-hydrogenic\[CapitalUpsilon][n_,l_,m_,\[Kappa]\[Kappa]_,ppx_,ppy_,ppz_]:=Block[{\[Kappa],px,py,pz},
-hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa]_,px_,py_,pz_]=Simplify[
+hydrogenic\[CapitalPsi][n_,l_,m_,\[Kappa]\[Kappa]_,ppx_,ppy_,ppz_]:=Block[{\[Kappa],px,py,pz},
+hydrogenic\[CapitalPsi][n,l,m,\[Kappa]_,px_,py_,pz_]=Simplify[
 -SolidHarmonicS[l,m,px,py,pz] ((-I)^l \[Pi] 2^(2l+4) l!)/(2\[Pi] \[Kappa])^(3/2) Sqrt[(n (n-l-1)!)/(n+l)!] \[Kappa]^(l+4)/(px^2+py^2+pz^2+\[Kappa]^2)^(l+2) GegenbauerC[n-l-1,l+1,(px^2+py^2+pz^2-\[Kappa]^2)/(px^2+py^2+pz^2+\[Kappa]^2)]
 ];
-hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa]\[Kappa],ppx,ppy,ppz]
+hydrogenic\[CapitalPsi][n,l,m,\[Kappa]\[Kappa],ppx,ppy,ppz]
 ];
-hydrogenic\[CapitalUpsilon][n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz];
+hydrogenic\[CapitalPsi][n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[CapitalPsi][n,l,m,\[Kappa],px,py,pz];
 End[];
 
 
 (* ::Input::Initialization:: *)
-hydrogenic\[CapitalUpsilon]Regularized::usage="hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz] calculates the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\) in the denominator.
+hydrogenic\[CapitalPsi]Regularized::usage="hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\) in the denominator.
 
-hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalUpsilon](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\) in the denominator.";
+hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\) in the denominator.";
 Begin["`Private`"];
-hydrogenic\[CapitalUpsilon]Regularized[n_,l_,m_,\[Kappa]\[Kappa]_,ppx_,ppy_,ppz_]:=Block[{\[Kappa],px,py,pz},
-hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa]_,px_,py_,pz_]=Simplify[Cancel[
+hydrogenic\[CapitalPsi]Regularized[n_,l_,m_,\[Kappa]\[Kappa]_,ppx_,ppy_,ppz_]:=Block[{\[Kappa],px,py,pz},
+hydrogenic\[CapitalPsi]Regularized[n,l,m,\[Kappa]_,px_,py_,pz_]=Simplify[Cancel[
 -SolidHarmonicS[l,m,px,py,pz] ((-I)^l \[Pi] 2^(2l+4) l!)/(2\[Pi] \[Kappa])^(3/2) Sqrt[(n (n-l-1)!)/(n+l)!] \[Kappa]^(l+4) (px^2+py^2+pz^2+\[Kappa]^2)^(n-l-1) GegenbauerC[n-l-1,l+1,(px^2+py^2+pz^2-\[Kappa]^2)/(px^2+py^2+pz^2+\[Kappa]^2)]
 ]];
-hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa]\[Kappa],ppx,ppy,ppz]
+hydrogenic\[CapitalPsi]Regularized[n,l,m,\[Kappa]\[Kappa],ppx,ppy,ppz]
 ];
-hydrogenic\[CapitalUpsilon]Regularized[n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz];
+hydrogenic\[CapitalPsi]Regularized[n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[CapitalPsi]Regularized[n,l,m,\[Kappa],px,py,pz];
+End[];
+
+
+(* ::Input::Initialization:: *)
+hydrogenic\[CapitalUpsilon]::usage="hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz] calculates the Upsilon function \[CapitalUpsilon](p)=(\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SubscriptBox[\(I\), \(p\)]\))\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.
+
+hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],{px,py,pz}] calculates the Upsilon function \[CapitalUpsilon](p)=(\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SubscriptBox[\(I\), \(p\)]\))\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.";
+Begin["`Private`"];
+hydrogenic\[CapitalUpsilon][n_,l_,m_,\[Kappa]_,px_,py_,pz_]:=1/2 (px^2+py^2+pz^2+\[Kappa]^2)hydrogenic\[CapitalPsi][n,l,m,\[Kappa],px,py,pz];
+hydrogenic\[CapitalUpsilon][n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz];
 End[];
 
 
@@ -187,10 +197,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-hydrogenicDTMERegularized[{ppx_,ppy_,ppz_},\[Kappa]\[Kappa]_,n_,l_,m_]:=Block[{\[Kappa],px,py,pz},
-hydrogenicDTMERegularized[{px_,py_,pz_},\[Kappa]_,n,l,m]=Simplify[Grad[hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz],{px,py,pz}]];
-hydrogenicDTMERegularized[{ppx,ppy,ppz},\[Kappa]\[Kappa],n,l,m]
-];
+hydrogenicDTMERegularized[{px_,py_,pz_},\[Kappa]_,n_,l_,m_]:=(px^2+py^2+pz^2+\[Kappa]^2)^(n+1) hydrogenicDTME[{px,py,pz},\[Kappa],n,l,m];
 hydrogenicDTMERegularized[{px_,py_,pz_},\[Kappa]_,{n_,l_,m_}]:=hydrogenicDTMERegularized[{px,py,pz},\[Kappa],n,l,m];
 End[];
 
