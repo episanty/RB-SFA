@@ -41,7 +41,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 14 Dec 2016 16:12:32";
+$RBSFAtimestamp="Thu 15 Dec 2016 11:57:54";
 End[];
 
 
@@ -1073,7 +1073,7 @@ End[];
 
 
 (* ::Input::Initialization:: *)
-SPAdipole::usage="SPAdipole[S,prefactor,\[CapitalOmega],{t,\[Tau]}] returns the saddle-point approximation amplitude corresponding to action S[t,t-\[Tau]]-\[CapitalOmega]t and the given prefactor.
+SPAdipole::usage="SPAdipole[S,prefactor,\[CapitalOmega],{t,\[Tau]}] returns the saddle-point approximation amplitude corresponding to action S[t,t-\[Tau]]-\[CapitalOmega]t and the given prefactor[t,t-\[Tau]].
 
 SPAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation]] returns the total harmonic-dipole contribution in the saddle-point approximation from the specified saddle points.
 
@@ -1105,7 +1105,7 @@ End[];
 
 
 (* ::Input::Initialization:: *)
-UAdipole::usage="UAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation],transition] returns the total harmonic-dipole contribution in the uniform approximation from the specified saddle points, taking the given Stokes transition set as a reference.";
+UAdipole::usage="UAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation],transition] returns the total harmonic-dipole contribution in the uniform approximation from the specified saddle points, using the action S[t,t-\[Tau]]-\[CapitalOmega]t and prefactor[t,t-\[Tau]], and taking the given Stokes transition set as a reference.";
 UAdipole::saddleno="UAdipole called with `1` time pairs at \[CapitalOmega]=`2`. Reverting to the saddle-point approximation for this set.";
 UAdipole::invldtrns="UAdipole called with invalid Stokes transition set `1`. Reverting to the saddle-point approximation for this set.";
 

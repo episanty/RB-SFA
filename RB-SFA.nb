@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 14 Dec 2016 16:12:32\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 15 Dec 2016 11:57:54\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -5696,7 +5696,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -6051,10 +6051,10 @@ Cell[BoxData[{
    RowBox[{"SPAdipole", "::", "usage"}], "=", 
    "\"\<SPAdipole[S,prefactor,\[CapitalOmega],{t,\[Tau]}] returns the \
 saddle-point approximation amplitude corresponding to action S[t,t-\[Tau]]-\
-\[CapitalOmega]t and the given prefactor.\n\nSPAdipole[S,prefactor,\
-\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
-\(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \
-\(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
+\[CapitalOmega]t and the given prefactor[t,t-\[Tau]].\n\n\
+SPAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*\
+SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\
+\[RightArrow]{\!\(\*SubscriptBox[\(t\), \
 \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\
 \[RightAssociation]] returns the total harmonic-dipole contribution in the \
 saddle-point approximation from the specified saddle points.\n\n\
@@ -6229,7 +6229,8 @@ Cell[BoxData[{
 \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\
 \[RightAssociation],transition] returns the total harmonic-dipole \
 contribution in the uniform approximation from the specified saddle points, \
-taking the given Stokes transition set as a reference.\>\""}], 
+using the action S[t,t-\[Tau]]-\[CapitalOmega]t and prefactor[t,t-\[Tau]], \
+and taking the given Stokes transition set as a reference.\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
