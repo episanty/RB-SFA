@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 25 Jan 2017 14:29:30";
+$RBSFAtimestamp="Wed 25 Jan 2017 14:30:27";
 End[];
 
 
@@ -89,6 +89,15 @@ ReIm[Private`z_]:={Re[Private`z],Im[Private`z]};
 SetAttributes[ReIm,Listable];
 Protect[ReIm];
 ]
+
+
+AssociationTranspose::usage="";
+Begin["`Private`"];
+AssociationTranspose[association_]:=GroupBy[
+Join@@Thread/@Normal//@association,
+{First@*Last,First}
+][[All,All,1,2,2]]
+End[];
 
 
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).

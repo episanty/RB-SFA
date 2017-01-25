@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 14:29:30\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 14:30:27\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -485,7 +485,66 @@ RowBox[{RowBox[{\\\"Re\\\", \\\"[\\\", StyleBox[\\\"z\\\", \\\"TI\\\"], \\\"]\
     RowBox[{"Protect", "[", "ReIm", "]"}], ";"}]}], "\[IndentingNewLine]", 
   "]"}]], "Input",
  InitializationCell->True]
-}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["AssociationTranspose", "Subsubsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"AssociationTranspose", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"AssociationTranspose", "[", "association_", "]"}], ":=", 
+  RowBox[{
+   RowBox[{"GroupBy", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Join", "@@", 
+      RowBox[{"Thread", "/@", 
+       RowBox[{"Normal", "//@", "association"}]}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"First", "@*", "Last"}], ",", "First"}], "}"}]}], 
+    "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]", 
+   RowBox[{"All", ",", "All", ",", "1", ",", "2", ",", "2"}], 
+   "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True],
+
+Cell[TextData[{
+ "The above function is taken from \
+http://mathematica.stackexchange.com/a/86526 by \
+http://mathematica.stackexchange.com/users/121/mr-wizard. ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " 10.1 and higher, it can be replaced by a ",
+ StyleBox["Query[Transpose]", "Code"],
+ " construct as below, but ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " 10.0, despite having most of the ",
+ StyleBox["Association", "Code"],
+ " code, is unable to transpose ragged associations using that construct."
+}], "Text"],
+
+Cell[BoxData[
+ RowBox[{"(*", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"AssociationTranspose", "[", "association_", "]"}], ":=", 
+   RowBox[{"DeleteMissing", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Query", "[", "Transpose", "]"}], "[", "\[IndentingNewLine]", 
+      "association", "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",",
+      "2"}], "]"}]}], "\[IndentingNewLine]", "*)"}]], "Input"]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
