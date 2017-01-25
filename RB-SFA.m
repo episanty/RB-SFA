@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 25 Jan 2017 14:31:59";
+$RBSFAtimestamp="Wed 25 Jan 2017 18:39:28";
 End[];
 
 
@@ -91,12 +91,16 @@ Protect[ReIm];
 ]
 
 
-AssociationTranspose::usage="";
+AssociationTranspose::usage="AssociationTranspose[association] transposes the given two-level association of associations.";
+AssociationTranspose::wrngshp="Input `1` is the wrong shape; it must be an association all of whose Values are valid associations.";
 Begin["`Private`"];
-AssociationTranspose[association_]:=GroupBy[
+AssociationTranspose[association_?(
+And@@(AssociationQ/@Join[{#},Values[#]])&
+)]:=GroupBy[
 Join@@Thread/@Normal//@association,
 {First@*Last,First}
-][[All,All,1,2,2]]
+][[All,All,1,2,2]];
+AssociationTranspose[association__]:="Doesn't display; cf. mm.se/q/29321 for details"/;Message[AssociationTranspose::wrngshp,association]
 End[];
 
 
