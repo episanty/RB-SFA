@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 14:31:59\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 18:40:33\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -491,29 +491,57 @@ Cell[CellGroupData[{
 
 Cell["AssociationTranspose", "Subsubsection"],
 
+Cell[BoxData[
+ RowBox[{"ClearAll", "[", "AssociationTranspose", "]"}]], "Input"],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"AssociationTranspose", "::", "usage"}], "=", "\"\<\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
+   RowBox[{"AssociationTranspose", "::", "usage"}], "=", 
+   "\"\<AssociationTranspose[association] transposes the given two-level \
+association of associations.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"AssociationTranspose", "::", "wrngshp"}], "=", 
+   "\"\<Input `1` is the wrong shape; it must be an association all of whose \
+Values are valid associations.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"AssociationTranspose", "[", "association_", "]"}], ":=", 
   RowBox[{
-   RowBox[{"GroupBy", "[", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"Join", "@@", 
-      RowBox[{"Thread", "/@", 
-       RowBox[{"Normal", "//@", "association"}]}]}], ",", 
-     "\[IndentingNewLine]", 
-     RowBox[{"{", 
+   RowBox[{"AssociationTranspose", "[", 
+    RowBox[{"association_", "?", 
+     RowBox[{"(", "\[IndentingNewLine]", 
       RowBox[{
-       RowBox[{"First", "@*", "Last"}], ",", "First"}], "}"}]}], 
-    "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]", 
-   RowBox[{"All", ",", "All", ",", "1", ",", "2", ",", "2"}], 
-   "\[RightDoubleBracket]"}]}], "\[IndentingNewLine]", 
+       RowBox[{"And", "@@", 
+        RowBox[{"(", 
+         RowBox[{"AssociationQ", "/@", 
+          RowBox[{"Join", "[", 
+           RowBox[{
+            RowBox[{"{", "#", "}"}], ",", 
+            RowBox[{"Values", "[", "#", "]"}]}], "]"}]}], ")"}]}], "&"}], 
+      "\[IndentingNewLine]", ")"}]}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"GroupBy", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Join", "@@", 
+       RowBox[{"Thread", "/@", 
+        RowBox[{"Normal", "//@", "association"}]}]}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"First", "@*", "Last"}], ",", "First"}], "}"}]}], 
+     "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]", 
+    RowBox[{"All", ",", "All", ",", "1", ",", "2", ",", "2"}], 
+    "\[RightDoubleBracket]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"AssociationTranspose", "[", "association__", "]"}], ":=", 
+  RowBox[{"\"\<Doesn't display; cf. mm.se/q/29321 for details\>\"", "/;", 
+   RowBox[{"Message", "[", 
+    RowBox[{
+     RowBox[{"AssociationTranspose", "::", "wrngshp"}], ",", "association"}], 
+    "]"}]}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True],
@@ -544,7 +572,82 @@ Cell[BoxData[
       RowBox[{"Query", "[", "Transpose", "]"}], "[", "\[IndentingNewLine]", 
       "association", "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",",
       "2"}], "]"}]}], "\[IndentingNewLine]", "*)"}]], "Input"]
-}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["KeyValueMap", "Subsubsection"],
+
+Cell[TextData[{
+ "This exists in ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " 10.1 and later, but it\[CloseCurlyQuote]s nice to have it on version 10.0 \
+so this is a back-port for versions that do not have it."
+}], "Text"],
+
+Cell[BoxData[
+ RowBox[{"If", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"$VersionNumber", "<", "10.1"}], ",", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"KeyValueMap", "::", "usage"}], "=", 
+     "\"\<\\!\\(\\*RowBox[{\\\"KeyValueMap\\\", \\\"[\\\", \
+RowBox[{StyleBox[\\\"f\\\",\\\"TI\\\"], \\\",\\\", RowBox[{\\\"\
+\[LeftAssociation]\\\",RowBox[{RowBox[{SubscriptBox[StyleBox[\\\"key\\\", \
+\\\"TI\\\"], StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\"\[Rule]\\\", \
+SubscriptBox[StyleBox[\\\"val\\\", \\\"TI\\\"], StyleBox[\\\"1\\\", \
+\\\"TR\\\"]]}], \\\",\\\", RowBox[{SubscriptBox[StyleBox[\\\"key\\\", \
+\\\"TI\\\"], StyleBox[\\\"2\\\", \\\"TR\\\"]], \\\"\[Rule]\\\", \
+SubscriptBox[StyleBox[\\\"val\\\", \\\"TI\\\"], StyleBox[\\\"2\\\", \
+\\\"TR\\\"]]}], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \\\"TR\\\"]}], \\\"\
+\[RightAssociation]\\\"}]}], \\\"]\\\"}]\\) gives the list \
+\\!\\(\\*RowBox[{\\\"{\\\", RowBox[{RowBox[{StyleBox[\\\"f\\\", \\\"TI\\\"], \
+\\\"[\\\", RowBox[{SubscriptBox[StyleBox[\\\"key\\\", \\\"TI\\\"], \
+StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\",\\\", \
+SubscriptBox[StyleBox[\\\"val\\\", \\\"TI\\\"], StyleBox[\\\"1\\\", \
+\\\"TR\\\"]]}], \\\"]\\\"}], \\\",\\\", RowBox[{StyleBox[\\\"f\\\", \
+\\\"TI\\\"], \\\"[\\\", RowBox[{SubscriptBox[StyleBox[\\\"key\\\", \
+\\\"TI\\\"], StyleBox[\\\"2\\\", \\\"TR\\\"]], \\\",\\\", \
+SubscriptBox[StyleBox[\\\"val\\\", \\\"TI\\\"], StyleBox[\\\"2\\\", \
+\\\"TR\\\"]]}], \\\"]\\\"}], \\\",\\\", StyleBox[\\\"\[Ellipsis]\\\", \
+\\\"TR\\\"]}], \\\"}\\\"}]\\). (Note: function backported from v10.1+.)\n\n\
+\\!\\(\\*RowBox[{\\\"KeyValueMap\\\", \\\"[\\\", StyleBox[\\\"f\\\", \\\"TI\\\
+\"], \\\"]\\\"}]\\) represents an operator form of KeyValueMap that can be \
+applied to an expression.\>\""}], ";", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"KeyValueMap", "::", "invak"}], "=", 
+     "\"\<The argument `1` is not a valid association\>\""}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"KeyValueMap", "[", 
+      RowBox[{"f_", ",", 
+       RowBox[{"assoc_", "?", "AssociationQ"}]}], "]"}], ":=", 
+     RowBox[{"Map", "[", 
+      RowBox[{
+       RowBox[{"Apply", "[", "f", "]"}], ",", 
+       RowBox[{"Normal", "[", "assoc", "]"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"KeyValueMap", "[", "f_", "]"}], "[", 
+      RowBox[{"assoc_", "?", "AssociationQ"}], "]"}], ":=", 
+     RowBox[{"KeyValueMap", "[", 
+      RowBox[{"f", ",", "assoc"}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"KeyValueMap", "[", 
+      RowBox[{"f_", ",", "assoc__"}], "]"}], ":=", 
+     RowBox[{"\"\<Doesn't display; cf. mm.se/q/29321 for details\>\"", "/;", 
+      RowBox[{"Message", "[", 
+       RowBox[{
+        RowBox[{"KeyValueMap", "::", "invak"}], ",", "assoc"}], "]"}]}]}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"End", "[", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ InitializationCell->True]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -5470,8 +5573,7 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
-           
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
@@ -5752,7 +5854,7 @@ specifies a list of labels to discard from the final output.\>\""}], ";"}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 

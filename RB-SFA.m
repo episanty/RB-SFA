@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 25 Jan 2017 18:39:28";
+$RBSFAtimestamp="Wed 25 Jan 2017 18:40:33";
 End[];
 
 
@@ -102,6 +102,21 @@ Join@@Thread/@Normal//@association,
 ][[All,All,1,2,2]];
 AssociationTranspose[association__]:="Doesn't display; cf. mm.se/q/29321 for details"/;Message[AssociationTranspose::wrngshp,association]
 End[];
+
+
+If[
+$VersionNumber<10.1,
+KeyValueMap::usage="\!\(\*RowBox[{\"KeyValueMap\", \"[\", RowBox[{StyleBox[\"f\",\"TI\"], \",\", RowBox[{\"\[LeftAssociation]\",RowBox[{RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"1\", \"TR\"]], \"\[Rule]\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"1\", \"TR\"]]}], \",\", RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"2\", \"TR\"]], \"\[Rule]\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"2\", \"TR\"]]}], \",\", StyleBox[\"\[Ellipsis]\", \"TR\"]}], \"\[RightAssociation]\"}]}], \"]\"}]\) gives the list \!\(\*RowBox[{\"{\", RowBox[{RowBox[{StyleBox[\"f\", \"TI\"], \"[\", RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"1\", \"TR\"]], \",\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"1\", \"TR\"]]}], \"]\"}], \",\", RowBox[{StyleBox[\"f\", \"TI\"], \"[\", RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"2\", \"TR\"]], \",\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"2\", \"TR\"]]}], \"]\"}], \",\", StyleBox[\"\[Ellipsis]\", \"TR\"]}], \"}\"}]\). (Note: function backported from v10.1+.)
+
+\!\(\*RowBox[{\"KeyValueMap\", \"[\", StyleBox[\"f\", \"TI\"], \"]\"}]\) represents an operator form of KeyValueMap that can be applied to an expression.";
+KeyValueMap::invak="The argument `1` is not a valid association";
+
+Begin["`Private`"];
+KeyValueMap[f_,assoc_?AssociationQ]:=Map[Apply[f],Normal[assoc]];
+KeyValueMap[f_][assoc_?AssociationQ]:=KeyValueMap[f,assoc];
+KeyValueMap[f_,assoc__]:="Doesn't display; cf. mm.se/q/29321 for details"/;Message[KeyValueMap::invak,assoc];
+End[];
+]
 
 
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).
