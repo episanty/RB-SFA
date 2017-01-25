@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 18:40:33\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 20:17:34\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -1619,21 +1619,64 @@ periods to be integrated over.\>\""}], ";"}], "\[IndentingNewLine]",
    "\"\<CarrierFrequency is a sampling option which specifies the carrier \
 frequency to be used.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
+  RowBox[{
+   RowBox[{"CarrierFrequency", "::", "default"}], "=", 
+   "\"\<Warning: no CarrierFrequency was specified, using \[Omega]=`1` a.u. \
+as the default.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"$DefaultCarrierFrequency", "::", "usage"}], "=", 
+    "\"\<Default CarrierFrequency to use when no explicit option is \
+indicated.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
   RowBox[{"Protect", "[", 
    RowBox[{"PointsPerCycle", ",", "TotalCycles", ",", "CarrierFrequency"}], 
    "]"}], ";"}]}], "Input",
  InitializationCell->True],
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
   RowBox[{"standardOptions", "=", 
    RowBox[{"{", 
     RowBox[{
      RowBox[{"PointsPerCycle", "\[Rule]", "90"}], ",", 
      RowBox[{"TotalCycles", "\[Rule]", "1"}], ",", 
-     RowBox[{"CarrierFrequency", "\[Rule]", "0.057"}], ",", 
+     RowBox[{"CarrierFrequency", "\[Rule]", "Automatic"}], ",", 
      RowBox[{"IntegrationPointsPerCycle", "\[Rule]", "Automatic"}]}], "}"}]}],
-   ";"}]], "Input",
+   ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"$DefaultCarrierFrequency", "=", "0.057"}], ";"}]}], "Input",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetCarrierFrequency", "::", "usage"}], "=", 
+     "\"\<GetCarrierFrequency[OptionValue[CarrierFrequency]] returns \
+OptionValue[CarrierFrequency], unless it's set to Automatic, in which case it \
+returns $DefaultCarrierFrequency and issues a warning.\n\n\
+GetCarrierFrequency[\[Omega]] works for any input.\>\""}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"GetCarrierFrequency", "[", "optionvalue_", "]"}], ":=", 
+    RowBox[{"If", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"optionvalue", "===", "Automatic"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Message", "[", 
+        RowBox[{
+         RowBox[{"CarrierFrequency", "::", "default"}], ",", 
+         "$DefaultCarrierFrequency"}], "]"}], ";", 
+       "$DefaultCarrierFrequency"}], ",", "\[IndentingNewLine]", 
+      "optionvalue"}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   
+   RowBox[{"End", "[", "]"}], "\[IndentingNewLine]"}]}]], "Input",
  InitializationCell->True],
 
 Cell[TextData[{
@@ -1693,11 +1736,12 @@ manual correction of the length of the resulting list.\>\""}],
  RowBox[{
   RowBox[{
    RowBox[{"Options", "[", "harmonicOrderAxis", "]"}], "=", 
-   RowBox[{"standardOptions", "~", "Join", "~", 
-    RowBox[{"{", 
-     RowBox[{
-      RowBox[{"TargetLength", "\[Rule]", "Automatic"}], ",", 
-      RowBox[{"LengthCorrection", "\[Rule]", "1"}]}], "}"}]}]}], 
+   RowBox[{"Join", "[", 
+    RowBox[{"standardOptions", ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"TargetLength", "\[Rule]", "Automatic"}], ",", 
+       RowBox[{"LengthCorrection", "\[Rule]", "1"}]}], "}"}]}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -1804,7 +1848,8 @@ frequency, for the provided field duration and sampling options.\>\""}],
    RowBox[{"options", ":", 
     RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
   RowBox[{
-   RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}], 
+   RowBox[{"GetCarrierFrequency", "[", 
+    RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}], "]"}], 
    RowBox[{
    "harmonicOrderAxis", "[", "options", "]"}]}]}], "\[IndentingNewLine]", 
  RowBox[{
@@ -1880,7 +1925,8 @@ LaserPeriods\>\""}], ";"}], "\[IndentingNewLine]",
        RowBox[{"2", 
         RowBox[{"\[Pi]", "/", "\[Omega]"}]}]}], ",", 
       RowBox[{"\[Omega]", "=", 
-       RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}]}], ",", 
+       RowBox[{"GetCarrierFrequency", "[", 
+        RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}], "]"}]}], ",", 
       RowBox[{"num", "=", 
        RowBox[{"OptionValue", "[", "TotalCycles", "]"}]}], ",", 
       RowBox[{"npp", "=", 
@@ -2095,9 +2141,8 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
       RowBox[{"num", "=", 
        RowBox[{"OptionValue", "[", "TotalCycles", "]"}]}], ",", 
       RowBox[{"npp", "=", 
-       RowBox[{"OptionValue", "[", "PointsPerCycle", "]"}]}], ",", 
-      RowBox[{"\[Omega]", "=", 
-       RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}]}], ",", 
+       RowBox[{"OptionValue", "[", "PointsPerCycle", "]"}]}], ",", "\[Omega]",
+       ",", 
       RowBox[{"\[Delta]t", "=", 
        FractionBox[
         RowBox[{"2", 
@@ -2174,6 +2219,24 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
           RowBox[{"getSpectrum", "::", "\[Omega]Pow"}], ",", 
           RowBox[{"OptionValue", "[", "\[Omega]Power", "]"}]}], "]"}], ";", 
         RowBox[{"Abort", "[", "]"}]}]}], "  ", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"OptionValue", "[", "\[Omega]Power", "]"}], "\[NotEqual]", 
+        "0"}], ",", 
+       RowBox[{"\[Omega]", "=", 
+        RowBox[{"GetCarrierFrequency", "[", 
+         RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}], "]"}]}], ",", 
+       
+       RowBox[{"\[Omega]", "=", "1"}]}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"If", " ", "\[Omega]Power"}], "\[Equal]", 
+       RowBox[{"0", " ", "the", " ", "value", " ", "of", " ", "\[Omega]", " ", 
+        RowBox[{"doesn", "'"}], "t", " ", "matter", " ", "and", " ", 
+        RowBox[{"there", "'"}], "s", " ", "no", " ", "sense", " ", "in", " ", 
+        "printing", " ", "error", " ", "messages"}]}], "*)"}], 
      "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"num", " ", 
       RowBox[{"Table", "[", "\[IndentingNewLine]", 
@@ -3003,7 +3066,8 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
      RowBox[{"\[Omega]", "=", 
-      RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}]}], ";", 
+      RowBox[{"GetCarrierFrequency", "[", 
+       RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}], "]"}]}], ";", 
      "\[IndentingNewLine]", 
      RowBox[{"If", "[", 
       RowBox[{
@@ -4167,7 +4231,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 

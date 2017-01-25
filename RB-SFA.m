@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 25 Jan 2017 18:40:33";
+$RBSFAtimestamp="Wed 25 Jan 2017 20:17:34";
 End[];
 
 
@@ -226,10 +226,28 @@ End[];
 PointsPerCycle::usage="PointsPerCycle is a sampling option which specifies the number of sampling points per cycle to be used in integrations.";
 TotalCycles::usage="TotalCycles is a sampling option which specifies the total number of periods to be integrated over.";
 CarrierFrequency::usage="CarrierFrequency is a sampling option which specifies the carrier frequency to be used.";
+CarrierFrequency::default="Warning: no CarrierFrequency was specified, using \[Omega]=`1` a.u. as the default.";
+$DefaultCarrierFrequency::usage="Default CarrierFrequency to use when no explicit option is indicated.";
+
 Protect[PointsPerCycle,TotalCycles,CarrierFrequency];
 
 
-standardOptions={PointsPerCycle->90,TotalCycles->1,CarrierFrequency->0.057,IntegrationPointsPerCycle->Automatic};
+standardOptions={PointsPerCycle->90,TotalCycles->1,CarrierFrequency->Automatic,IntegrationPointsPerCycle->Automatic};
+$DefaultCarrierFrequency=0.057;
+
+
+
+GetCarrierFrequency::usage="GetCarrierFrequency[OptionValue[CarrierFrequency]] returns OptionValue[CarrierFrequency], unless it's set to Automatic, in which case it returns $DefaultCarrierFrequency and issues a warning.
+
+GetCarrierFrequency[\[Omega]] works for any input.";
+Begin["`Private`"];
+GetCarrierFrequency[optionvalue_]:=If[
+optionvalue===Automatic,
+Message[CarrierFrequency::default,$DefaultCarrierFrequency];$DefaultCarrierFrequency,
+optionvalue
+]
+End[]
+
 
 
 harmonicOrderAxis::usage="harmonicOrderAxis[opt\[Rule]value] returns a list of frequencies which can be used as a frequency axis for Fourier transforms, scaled in units of harmonic order, for the provided field duration and sampling options.";
@@ -237,7 +255,7 @@ TargetLength::usage="TargetLength is an option for harmonicOrderAxis which speci
 LengthCorrection::usage="LengthCorrection is an option for harmonicOrderAxis which allows for manual correction of the length of the resulting list.";
 Protect[LengthCorrection,TargetLength];
 Begin["`Private`"];
-Options[harmonicOrderAxis]=standardOptions~Join~{TargetLength->Automatic,LengthCorrection->1};
+Options[harmonicOrderAxis]=Join[standardOptions,{TargetLength->Automatic,LengthCorrection->1}];
 harmonicOrderAxis::target="Invalid TargetLength option `1`. This must be a positive integer or Automatic.";
 harmonicOrderAxis[OptionsPattern[]]:=Module[{num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle]},
 Piecewise[{
@@ -253,7 +271,7 @@ End[];
 frequencyAxis::usage="frequencyAxis[opt\[Rule]value] returns a list of frequencies which can be used as a frequency axis for Fourier transforms, in atomic units of frequency, for the provided field duration and sampling options.";
 Begin["`Private`"];
 Options[frequencyAxis]=Options[harmonicOrderAxis];
-frequencyAxis[options:OptionsPattern[]]:=OptionValue[CarrierFrequency]harmonicOrderAxis[options]
+frequencyAxis[options:OptionsPattern[]]:=GetCarrierFrequency[OptionValue[CarrierFrequency]]harmonicOrderAxis[options]
 End[];
 
 
@@ -265,7 +283,7 @@ Protect[TimeScale,AtomicUnits,LaserPeriods];
 Begin["`Private`"];
 Options[timeAxis]=standardOptions~Join~{TimeScale->AtomicUnits,PointNumberCorrection->0};
 timeAxis::scale="Invalid TimeScale option `1`. Available values are AtomicUnits and LaserPeriods";
-timeAxis[OptionsPattern[]]:=Block[{T=2\[Pi]/\[Omega],\[Omega]=OptionValue[CarrierFrequency],num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle]},
+timeAxis[OptionsPattern[]]:=Block[{T=2\[Pi]/\[Omega],\[Omega]=GetCarrierFrequency[OptionValue[CarrierFrequency]],num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle]},
 Piecewise[{
 {1,OptionValue[TimeScale]===AtomicUnits},
 {1/T,OptionValue[TimeScale]===LaserPeriods}
@@ -293,7 +311,7 @@ getSpectrum::\[Omega]Pow="Invalid \[Omega] power `1`.";
 
 getSpectrum[dipoleList_,OptionsPattern[]]:=Block[
 {polarizationVector,differentiatedList,depth,dimensions,
-num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega]=OptionValue[CarrierFrequency],\[Delta]t=(2\[Pi]/\[Omega])/npp
+num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega],\[Delta]t=(2\[Pi]/\[Omega])/npp
 },
 polarizationVector=OptionValue[Polarization]/Norm[OptionValue[Polarization]];
 
@@ -305,6 +323,8 @@ Message[getSpectrum::diffOrd,OptionValue[DifferentiationOrder]];Abort[]
 ]];
 
 If[NumberQ[OptionValue[\[Omega]Power]],Null;,Message[getSpectrum::\[Omega]Pow,OptionValue[\[Omega]Power]];Abort[]  ];
+If[OptionValue[\[Omega]Power]!=0,\[Omega]=GetCarrierFrequency[OptionValue[CarrierFrequency]],\[Omega]=1];
+(*If \[Omega]Power\[Equal]0 the value of \[Omega] doesn't matter and there's no sense in printing error messages*)
 
 num Table[
 (\[Omega]/num k)^(2OptionValue[\[Omega]Power]),{k,1,Round[Length[differentiatedList]/2]}
@@ -462,7 +482,7 @@ TrueQ[OptionValue[VectorPotentialGradient]==None],        Table[0,{Length[A[tIni
 OptionValue[VectorPotentialGradient][t]//.OptionValue[FieldParameters]
 ];
 
-\[Omega]=OptionValue[CarrierFrequency];
+\[Omega]=GetCarrierFrequency[OptionValue[CarrierFrequency]];
 If[!NumberQ[\[Omega]]&&TrueQ[OptionValue[CheckNumericFields]],Message[makeDipoleList::carrfreq,\[Omega]];Abort[]];
 tInit=0;
 tFinal=(2\[Pi])/\[Omega] num;
