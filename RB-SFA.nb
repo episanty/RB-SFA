@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 14:30:27\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 14:31:59\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -5716,39 +5716,34 @@ specifies a list of labels to discard from the final output.\>\""}], ";"}],
           "\[Rule]", "#1"}], "&"}], "]"}], ",", "\[IndentingNewLine]", 
        "sortingFunction"}], "\[IndentingNewLine]", "]"}], ",", 
      "\[IndentingNewLine]", 
-     RowBox[{"Delete", "[", 
+     RowBox[{"Delete", "[", "\[IndentingNewLine]", 
       RowBox[{
-       RowBox[{"DeleteMissing", "[", "\[IndentingNewLine]", 
+       RowBox[{"AssociationTranspose", "[", "\[IndentingNewLine]", 
         RowBox[{
-         RowBox[{
-          RowBox[{"Query", "[", "Transpose", "]"}], "[", 
-          "\[IndentingNewLine]", 
+         RowBox[{"MapIndexed", "[", "\[IndentingNewLine]", 
           RowBox[{
-           RowBox[{"MapIndexed", "[", "\[IndentingNewLine]", 
+           RowBox[{
             RowBox[{
-             RowBox[{
+             RowBox[{"GroupBy", "[", 
               RowBox[{
-               RowBox[{"GroupBy", "[", 
-                RowBox[{
-                 RowBox[{"classifierFunction", "@@", "#"}], "&"}], "]"}], "[", 
-               RowBox[{"Flatten", "/@", 
-                RowBox[{"Transpose", "[", 
-                 RowBox[{"{", 
-                  RowBox[{"#1", ",", 
-                   RowBox[{"ConstantArray", "[", 
-                    RowBox[{
-                    RowBox[{"#2", "\[LeftDoubleBracket]", 
+               RowBox[{"classifierFunction", "@@", "#"}], "&"}], "]"}], "[", 
+             RowBox[{"Flatten", "/@", 
+              RowBox[{"Transpose", "[", 
+               RowBox[{"{", 
+                RowBox[{"#1", ",", 
+                 RowBox[{"ConstantArray", "[", 
+                  RowBox[{
+                   RowBox[{"#2", "\[LeftDoubleBracket]", 
                     RowBox[{
                     RowBox[{"{", "1", "}"}], ",", "1"}], 
                     "\[RightDoubleBracket]"}], ",", 
-                    RowBox[{"Length", "[", "#1", "]"}]}], "]"}]}], "}"}], 
-                 "]"}]}], "]"}], "&"}], "\[IndentingNewLine]", ",", 
-             "saddlePointList"}], "]"}], "\[LeftDoubleBracket]", 
-           RowBox[{"All", ",", "All", ",", "All", ",", 
-            RowBox[{"{", 
-             RowBox[{"1", ",", "2"}], "}"}]}], "\[RightDoubleBracket]"}], 
-          "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}], 
-        "]"}], ",", 
+                   RowBox[{"Length", "[", "#1", "]"}]}], "]"}]}], "}"}], 
+               "]"}]}], "]"}], "&"}], "\[IndentingNewLine]", ",", 
+           "saddlePointList"}], "]"}], "\[LeftDoubleBracket]", 
+         RowBox[{"All", ",", "All", ",", "All", ",", 
+          RowBox[{"{", 
+           RowBox[{"1", ",", "2"}], "}"}]}], "\[RightDoubleBracket]"}], 
+        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
        RowBox[{"List", "/@", 
         RowBox[{"OptionValue", "[", "DiscardedLabels", "]"}]}]}], "]"}], 
      "\[IndentingNewLine]", ",", 

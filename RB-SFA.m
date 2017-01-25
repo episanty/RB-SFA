@@ -37,7 +37,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 25 Jan 2017 14:30:27";
+$RBSFAtimestamp="Wed 25 Jan 2017 14:31:59";
 End[];
 
 
@@ -955,13 +955,13 @@ Association,
 MapIndexed[#2[[1]]->#1&],
 sortingFunction
 ],
-Delete[DeleteMissing[
-Query[Transpose][
+Delete[
+AssociationTranspose[
 MapIndexed[
 GroupBy[classifierFunction@@#&][Flatten/@Transpose[{#1,ConstantArray[#2[[{1},1]],Length[#1]]}]]&
 ,saddlePointList][[All,All,All,{1,2}]]
 ]
-,2],List/@OptionValue[DiscardedLabels]]
+,List/@OptionValue[DiscardedLabels]]
 ,{2}]
 
 End[];
