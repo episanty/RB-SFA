@@ -259,7 +259,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 25 Jan 2017 20:17:34\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 26 Jan 2017 19:47:41\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -930,27 +930,40 @@ does the same.\>\""}], ";"}], "\[IndentingNewLine]",
       "\[IndentingNewLine]", 
       RowBox[{"If", "[", 
        RowBox[{
+        RowBox[{"TrueQ", "[", 
+         RowBox[{
+          RowBox[{"Pochhammer", "[", 
+           RowBox[{
+            RowBox[{"\[Lambda]", "-", 
+             RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
+             RowBox[{"2", " ", "k"}], "+", "1"}], ",", 
+            RowBox[{"Abs", "[", "\[Mu]", "]"}]}], "]"}], "\[Equal]", "0"}], 
+         "]"}], ",", "1", ",", "\[IndentingNewLine]", 
         RowBox[{
-         RowBox[{"Rationalize", "[", "k", "]"}], "\[Equal]", "0"}], ",", "1", 
-        ",", 
-        SuperscriptBox[
-         RowBox[{"(", 
+         RowBox[{"If", "[", 
           RowBox[{
-           SuperscriptBox["x", "2"], "+", 
-           SuperscriptBox["y", "2"], "+", 
-           SuperscriptBox["z", "2"]}], ")"}], "k"]}], "]"}], "\[Times]", 
-      "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{
-         RowBox[{"Rationalize", "[", 
-          RowBox[{"\[Lambda]", "-", 
-           RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
-           RowBox[{"2", " ", "k"}]}], "]"}], "\[Equal]", "0"}], ",", "1", ",", 
-        SuperscriptBox["z", 
-         RowBox[{"\[Lambda]", "-", 
-          RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
-          RowBox[{"2", " ", "k"}]}]]}], "]"}]}], "\[IndentingNewLine]", ",", 
+           RowBox[{
+            RowBox[{"Rationalize", "[", "k", "]"}], "\[Equal]", "0"}], ",", 
+           "1", ",", 
+           SuperscriptBox[
+            RowBox[{"(", 
+             RowBox[{
+              SuperscriptBox["x", "2"], "+", 
+              SuperscriptBox["y", "2"], "+", 
+              SuperscriptBox["z", "2"]}], ")"}], "k"]}], "]"}], 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Rationalize", "[", 
+             RowBox[{"\[Lambda]", "-", 
+              RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
+              RowBox[{"2", " ", "k"}]}], "]"}], "\[Equal]", "0"}], ",", "1", 
+           ",", 
+           SuperscriptBox["z", 
+            RowBox[{"\[Lambda]", "-", 
+             RowBox[{"Abs", "[", "\[Mu]", "]"}], "-", 
+             RowBox[{"2", " ", "k"}]}]]}], "]"}]}]}], "\[IndentingNewLine]", 
+       "]"}]}], "\[IndentingNewLine]", ",", 
      RowBox[{"{", 
       RowBox[{"k", ",", "0", ",", 
        RowBox[{"Quotient", "[", 
@@ -970,7 +983,7 @@ does the same.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -4231,7 +4244,7 @@ VectorPotentialGradient\[Rule]None.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -5637,7 +5650,8 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
+           
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
