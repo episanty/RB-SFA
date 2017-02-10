@@ -19,6 +19,11 @@
 
 
 
+(*
+This is the RB-SFA package for calculating high-order harmonic generation within the Strong Field Approximation. For the notebook that generated this package file and additional documentaion, see https://github.com/episanty/RB-SFA.
+*)
+
+
 BeginPackage["RBSFA`"];
 
 
@@ -37,7 +42,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 26 Jan 2017 19:47:41";
+$RBSFAtimestamp="Fri 10 Feb 2017 12:27:29";
 End[];
 
 

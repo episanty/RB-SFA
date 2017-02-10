@@ -22,6 +22,8 @@ Cell[CellGroupData[{
 
 Cell["Readme", "Subsection"],
 
+Cell[CellGroupData[{
+
 Cell[TextData[{
  "RB-SFA is a compact and flexible ",
  StyleBox["Mathematica",
@@ -98,7 +100,33 @@ High Harmonic Generation in the Strong Field Approximation via ",
 code and its documentation, a corresponding auto-generated package file. This \
 notebook also contains a Usage and Examples section which explains how to use \
 the code and documents the calculations used in the original publication."
-}], "Text"]
+}], "Text",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.}],
+
+Cell[BoxData[
+ RowBox[{"(*", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"This", " ", "is", " ", "the", " ", "RB"}], "-", 
+    RowBox[{
+    "SFA", " ", "package", " ", "for", " ", "calculating", " ", "high"}], "-", 
+    RowBox[{
+    "order", " ", "harmonic", " ", "generation", " ", "within", " ", "the", 
+     " ", "Strong", " ", "Field", " ", 
+     RowBox[{"Approximation", ".", " ", "For"}], " ", "the", " ", "notebook", 
+     " ", "that", " ", "generated", " ", "this", " ", "package", " ", "file", 
+     " ", "and", " ", "additional", " ", "documentaion"}]}], ",", " ", 
+   RowBox[{
+    RowBox[{"see", " ", 
+     RowBox[{"https", ":"}]}], "//", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"github", ".", "com"}], "/", "episanty"}], "/", "RB"}], "-", 
+     RowBox[{"SFA", "."}]}]}]}], "\[IndentingNewLine]", "*)"}]], "Input",
+ CellGroupingRules->{GroupTogetherGrouping, 10000.},
+ InitializationCell->True]
+}, Closed]]
 }, Open  ]]
 }, Open  ]],
 
@@ -259,7 +287,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 26 Jan 2017 19:47:41\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 10 Feb 2017 12:27:29\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -5650,8 +5678,7 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
-           
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
