@@ -10,7 +10,7 @@ via ",
   FontSlant->"Italic"]
 }], "Title"],
 
-Cell["\[Copyright] Emilio Pisanty 2014-2016. Licensed under GPL and \
+Cell["\[Copyright] Emilio Pisanty 2014-2017. Licensed under GPL and \
 CC-BY-SA.", "Text"],
 
 Cell[CellGroupData[{
@@ -287,7 +287,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 10 Feb 2017 16:52:04\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 10 Feb 2017 17:52:06\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",

@@ -3,7 +3,7 @@ RB-SFA
 
 High Harmonic Generation in the Strong Field Approximation via Mathematica
 
-© Emilio Pisanty, 2014-2016
+© Emilio Pisanty, 2014-2017
 
 RB-SFA is a compact and flexible Mathematica package for calculating High Harmonic Generation emission within the Strong Field Approximation. It combines Mathematica's analytical integration capabilities with its numerical calculation capacities to offer a fast and user-friendly plug-and-play solver for calculating HHG spectra and other properties. In addition, it can calculate first-order nondipole corrections to the SFA results to evaluate the effect of the driving laser's magnetic field on harmonic spectra. There is also an experimental section for calculating spectra using quantum-orbit methods.
 
