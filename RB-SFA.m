@@ -42,7 +42,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 10 Feb 2017 12:27:29";
+$RBSFAtimestamp="Fri 10 Feb 2017 16:52:04";
 End[];
 
 
@@ -115,13 +115,16 @@ KeyValueMap::usage="\!\(\*RowBox[{\"KeyValueMap\", \"[\", RowBox[{StyleBox[\"f\"
 
 \!\(\*RowBox[{\"KeyValueMap\", \"[\", StyleBox[\"f\", \"TI\"], \"]\"}]\) represents an operator form of KeyValueMap that can be applied to an expression.";
 KeyValueMap::invak="The argument `1` is not a valid association";
+]
 
 Begin["`Private`"];
+If[
+$VersionNumber<10.1,
 KeyValueMap[f_,assoc_?AssociationQ]:=Map[Apply[f],Normal[assoc]];
 KeyValueMap[f_][assoc_?AssociationQ]:=KeyValueMap[f,assoc];
 KeyValueMap[f_,assoc__]:="Doesn't display; cf. mm.se/q/29321 for details"/;Message[KeyValueMap::invak,assoc];
-End[];
 ]
+End[];
 
 
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).

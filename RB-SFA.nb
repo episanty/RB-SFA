@@ -287,7 +287,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 10 Feb 2017 12:27:29\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 10 Feb 2017 16:52:04\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -614,17 +614,18 @@ Cell[TextData[{
 so this is a back-port for versions that do not have it."
 }], "Text"],
 
-Cell[BoxData[
- RowBox[{"If", "[", "\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{"$VersionNumber", "<", "10.1"}], ",", "\[IndentingNewLine]", 
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"If", "[", "\[IndentingNewLine]", 
    RowBox[{
+    RowBox[{"$VersionNumber", "<", "10.1"}], ",", "\[IndentingNewLine]", 
     RowBox[{
-     RowBox[{"KeyValueMap", "::", "usage"}], "=", 
-     "\"\<\\!\\(\\*RowBox[{\\\"KeyValueMap\\\", \\\"[\\\", \
-RowBox[{StyleBox[\\\"f\\\",\\\"TI\\\"], \\\",\\\", RowBox[{\\\"\
-\[LeftAssociation]\\\",RowBox[{RowBox[{SubscriptBox[StyleBox[\\\"key\\\", \
-\\\"TI\\\"], StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\"\[Rule]\\\", \
+     RowBox[{
+      RowBox[{"KeyValueMap", "::", "usage"}], "=", 
+      "\"\<\\!\\(\\*RowBox[{\\\"KeyValueMap\\\", \\\"[\\\", RowBox[{StyleBox[\
+\\\"f\\\",\\\"TI\\\"], \\\",\\\", \
+RowBox[{\\\"\[LeftAssociation]\\\",RowBox[{RowBox[{SubscriptBox[StyleBox[\\\"\
+key\\\", \\\"TI\\\"], StyleBox[\\\"1\\\", \\\"TR\\\"]], \\\"\[Rule]\\\", \
 SubscriptBox[StyleBox[\\\"val\\\", \\\"TI\\\"], StyleBox[\\\"1\\\", \
 \\\"TR\\\"]]}], \\\",\\\", RowBox[{SubscriptBox[StyleBox[\\\"key\\\", \
 \\\"TI\\\"], StyleBox[\\\"2\\\", \\\"TR\\\"]], \\\"\[Rule]\\\", \
@@ -644,12 +645,18 @@ SubscriptBox[StyleBox[\\\"val\\\", \\\"TI\\\"], StyleBox[\\\"2\\\", \
 \\!\\(\\*RowBox[{\\\"KeyValueMap\\\", \\\"[\\\", StyleBox[\\\"f\\\", \\\"TI\\\
 \"], \\\"]\\\"}]\\) represents an operator form of KeyValueMap that can be \
 applied to an expression.\>\""}], ";", "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{"KeyValueMap", "::", "invak"}], "=", 
-     "\"\<The argument `1` is not a valid association\>\""}], ";", 
-    "\[IndentingNewLine]", "\[IndentingNewLine]", 
-    RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";", 
-    "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"KeyValueMap", "::", "invak"}], "=", 
+      "\"\<The argument `1` is not a valid association\>\""}], ";"}]}], 
+   "\[IndentingNewLine]", "]"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"If", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"$VersionNumber", "<", "10.1"}], ",", "\[IndentingNewLine]", 
+   RowBox[{
     RowBox[{
      RowBox[{"KeyValueMap", "[", 
       RowBox[{"f_", ",", 
@@ -672,8 +679,9 @@ applied to an expression.\>\""}], ";", "\[IndentingNewLine]",
       RowBox[{"Message", "[", 
        RowBox[{
         RowBox[{"KeyValueMap", "::", "invak"}], ",", "assoc"}], "]"}]}]}], 
-    ";", "\[IndentingNewLine]", 
-    RowBox[{"End", "[", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]], "Input",
+    ";"}]}], "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
 }, Closed]]
 }, Open  ]],
@@ -1011,7 +1019,7 @@ does the same.\>\""}], ";"}], "\[IndentingNewLine]",
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1690,6 +1698,8 @@ Cell[BoxData[{
   RowBox[{"$DefaultCarrierFrequency", "=", "0.057"}], ";"}]}], "Input",
  InitializationCell->True],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[
  RowBox[{"\[IndentingNewLine]", 
   RowBox[{
@@ -1719,6 +1729,9 @@ GetCarrierFrequency[\[Omega]] works for any input.\>\""}], ";"}],
    
    RowBox[{"End", "[", "]"}], "\[IndentingNewLine]"}]}]], "Input",
  InitializationCell->True],
+
+Cell[BoxData["\<\"RBSFA`Private`\"\>"], "Output"]
+}, Open  ]],
 
 Cell[TextData[{
  "PointsPerCycle dictates how many sampling points are used per laser cycle \
@@ -4293,6 +4306,8 @@ https://github.com/episanty/EPToolbox, and it is also documented in \
 http://mathematica.stackexchange.com/a/57821/1000.\
 \>", "Text"],
 
+Cell[CellGroupData[{
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -4374,6 +4389,196 @@ zmin and zmax.\>\""}], ";"}],
  RowBox[{
   RowBox[{"Protect", "[", "SeedGenerator", "]"}], ";"}]}], "Input",
  InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"\<\"Compiler\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     RowBox[{
+      StyleBox[
+       RowBox[{"Compile", "::", "cif"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpapot"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpbool"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpdsts"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpint"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpintlt"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpintlt2"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpiter"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cplist"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpout"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cppat"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cprank"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cpts"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cptype"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cret"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "nocomp"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "part"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "cxcoerce"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compile", "::", "realcoerce"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfex"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cflist"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfn"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfnlts"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "orank"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfsa"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfse"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfta"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfte"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cfsec"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "cftec"}], "MessageName"]}], "}"}]}],
+    ",", 
+   RowBox[{"\<\"CompilerWarnings\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     RowBox[{
+      StyleBox[
+       RowBox[{"Compile", "::", "noinfo"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "npext"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "nprng"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "pext"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "plrng"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "psbrng"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"CompiledFunction", "::", "prngd"}], "MessageName"]}], "}"}]}],
+    ",", 
+   RowBox[{"\<\"Graphics\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     RowBox[{
+      StyleBox[
+       RowBox[{"General", "::", "plnr"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "pp3tr"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "pptr"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "pwfailed"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "nfunfail"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Compiled", "::", "deprec"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"System`Dump`ContourPlot3D", "::", "njnum"}], "MessageName"], 
+      ",", 
+      StyleBox[
+       RowBox[{"System`Dump`ParametricPlot3D", "::", "njnum"}], "MessageName"],
+       ",", 
+      StyleBox[
+       RowBox[{"System`Dump`Plot3D", "::", "njnum"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"System`Dump`RegionPlot3D", "::", "njnum"}], "MessageName"], 
+      ",", 
+      StyleBox[
+       RowBox[{"General", "::", "accbend"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"System`Dump`ContourPlot", "::", "accbend"}], "MessageName"], 
+      ",", 
+      StyleBox[
+       RowBox[{"System`Dump`ContourPlot3D", "::", "accbend"}], "MessageName"],
+       ",", 
+      StyleBox[
+       RowBox[{"System`Dump`DensityPlot", "::", "accbend"}], "MessageName"], 
+      ",", 
+      StyleBox[
+       RowBox[{"LogLinearPlot", "::", "accbend"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"LogLogPlot", "::", "accbend"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"LogPlot", "::", "accbend"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"System`Dump`ParametricPlot", "::", "accbend"}], "MessageName"],
+       ",", 
+      StyleBox[
+       RowBox[{"System`Dump`ParametricPlot3D", "::", "accbend"}], 
+       "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"System`Dump`Plot", "::", "accbend"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"System`Dump`Plot3D", "::", "accbend"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"PolarPlot", "::", "accbend"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"System`Dump`RegionPlot3D", "::", "accbend"}], 
+       "MessageName"]}], "}"}]}], ",", 
+   RowBox[{"\<\"Obsolete\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     RowBox[{
+      StyleBox[
+       RowBox[{"General", "::", "obs"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "obspkg"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "newpkg"}], "MessageName"]}], "}"}]}], ",", 
+   RowBox[{"\<\"Packing\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     RowBox[{
+      StyleBox[
+       RowBox[{"General", "::", "unpack"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "punpack"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "punpack1"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "punpackl"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "punpackl1"}], "MessageName"]}], "}"}]}], ",", 
+   RowBox[{"\<\"Spelling\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     RowBox[{
+      StyleBox[
+       RowBox[{"General", "::", "spell"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"General", "::", "spell1"}], "MessageName"]}], "}"}]}], ",", 
+   RowBox[{"\<\"Symbolics\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     RowBox[{
+      StyleBox[
+       RowBox[{"Integrate", "::", "gener"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Maximize", "::", "nopmet"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Minimize", "::", "nopmet"}], "MessageName"], ",", 
+      StyleBox[
+       RowBox[{"Series", "::", "esss"}], "MessageName"]}], "}"}]}], ",", 
+   RowBox[{"\<\"FindComplexRoots\"\>", "\[RuleDelayed]", 
+    RowBox[{"{", 
+     StyleBox[
+      RowBox[{"FindRoot", "::", "lstol"}], "MessageName"], "}"}]}]}], 
+  "}"}]], "Output"]
+}, Open  ]],
 
 Cell[BoxData[{
  RowBox[{
