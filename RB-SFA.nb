@@ -287,7 +287,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 10 Feb 2017 17:52:06\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 28 Feb 2017 11:48:14\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -490,8 +490,12 @@ Cell[BoxData[
  RowBox[{"If", "[", "\[IndentingNewLine]", 
   RowBox[{
    RowBox[{
-    RowBox[{"Context", "[", "ReIm", "]"}], "=!=", "\"\<System`\>\""}], ",", 
-   "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Context", "[", "ReIm", "]"}], "=!=", "\"\<System`\>\""}], "&&", 
+    
+    RowBox[{
+     RowBox[{"Attributes", "[", "ReIm", "]"}], "\[Equal]", 
+     RowBox[{"{", "}"}]}]}], ",", "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{
      RowBox[{"ReIm", "::", "usage"}], "=", 
@@ -513,7 +517,7 @@ RowBox[{RowBox[{\\\"Re\\\", \\\"[\\\", StyleBox[\\\"z\\\", \\\"TI\\\"], \\\"]\
     RowBox[{"Protect", "[", "ReIm", "]"}], ";"}]}], "\[IndentingNewLine]", 
   "]"}]], "Input",
  InitializationCell->True]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -7097,8 +7101,8 @@ NotebookEventActions->{{"MenuCommand", "Save"} :> (NotebookWrite[
           DateString[], "\";\nEnd[];"]}]], "Input", InitializationCell -> 
       True, CellTags -> "version-timestamp"], None, AutoScroll -> False]; 
    NotebookSave[]), PassEventsDown -> True},
-WindowSize->{1863, 1056},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowSize->{1383, 876},
+WindowMargins->{{Automatic, 0}, {13, Automatic}},
 PrintingCopies->1,
 PrintingStartingPageNumber->1,
 PrintingPageRange->{Automatic, Automatic},
