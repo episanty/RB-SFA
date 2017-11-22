@@ -25,24 +25,50 @@ Cell["Readme", "Subsection"],
 Cell[CellGroupData[{
 
 Cell[TextData[{
- "RB-SFA is a compact and flexible ",
- StyleBox["Mathematica",
-  FontSlant->"Italic"],
- " package for calculating High Harmonic Generation emission within the \
-Strong Field Approximation. It combines ",
- StyleBox["Mathematica",
-  FontSlant->"Italic"],
- "\[CloseCurlyQuote]s analytical integration capabilities with its numerical \
-calculation capacities to offer a fast and user-friendly plug-and-play solver \
-for calculating harmonic spectra and other properties. In addition, it can \
-calculate first-order nondipole corrections to the SFA results to evaluate \
-the effect of the driving laser\[CloseCurlyQuote]s magnetic field on harmonic \
-spectra.\n\nThe name RB-SFA comes from its first application (as Rotating \
-Bicircular High Harmonic Generation in the Strong field Approximation) but \
-the code is general so RB-SFA just stands for itself now. This first \
-application was used to calculate the polarization properties of the \
-harmonics produced by multi-colour circularly polarized fields, as reported \
-in the paper\n\n    Spin conservation in high-order-harmonic generation using \
+ "RB-SFA is a compact and flexible Mathematica package for calculating High \
+Harmonic Generation emission within the Strong Field Approximation. It \
+combines Mathematica\[CloseCurlyQuote]s analytical integration capabilities \
+with its numerical calculation capacities to offer a fast and user-friendly \
+plug-and-play solver for calculating HHG spectra and other properties. In \
+addition, it can calculate first-order nondipole corrections to the SFA \
+results to evaluate the effect of the driving laser\[CloseCurlyQuote]s \
+magnetic field on harmonic spectra. There is also an experimental section for \
+calculating spectra using quantum-orbit methods.\n\nThe name RB-SFA comes \
+from its first application (as Rotating Bicircular High Harmonic Generation \
+in the Strong field Approximation) but the code is general so RB-SFA just \
+stands for itself now. The publications by the author that use this code are:\
+\n\n \[Bullet] Anatomy of high-order harmonic emission from p states in \
+bicircular fields. E. Pisanty and \[CapitalAAcute]. Jim\[EAcute]nez-Gal\
+\[AAcute]n. ",
+ ButtonBox["Phys. Rev. A, in press (2017)",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://journals-aps-org.recursos.biblioteca.upc.edu/pra/accepted/\
+6c071N39X6913c1796bf7e24239fdcf0c7991c377"], None},
+  ButtonNote->
+   "https://journals-aps-org.recursos.biblioteca.upc.edu/pra/accepted/\
+6c071N39X6913c1796bf7e24239fdcf0c7991c377"],
+ ", ",
+ ButtonBox["arXiv:1709.00397",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://arxiv.org/abs/1709.00397"], None},
+  ButtonNote->"https://arxiv.org/abs/1709.00397"],
+ ".\n \[Bullet] Electron dynamics in complex time and complex space. E. \
+Pisanty Alatorre. ",
+ ButtonBox["PhD Thesis, Imperial College London, 2016",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://hdl.handle.net/10044/1/43538"], None},
+  ButtonNote->"http://hdl.handle.net/10044/1/43538"],
+ ".\n \[Bullet] High harmonic interferometry of the Lorentz force in strong \
+mid-infrared laser fields. E. Pisanty, D.D. Hickstein, et al. (2016), ",
+ ButtonBox["arXiv:1606.01931",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://arxiv.org/abs/1606.01931"], None},
+  ButtonNote->"https://arxiv.org/abs/1606.01931"],
+ ".\n \[Bullet] Spin conservation in high-order-harmonic generation using \
 bicircular fields. E. Pisanty, S. Sukiasyan and M. Ivanov. ",
  StyleBox[ButtonBox["Phys. Rev. A",
   BaseStyle->"Hyperlink",
@@ -72,22 +98,18 @@ bicircular fields. E. Pisanty, S. Sukiasyan and M. Ivanov. ",
   ButtonData->{
     URL["http://arxiv.org/abs/1404.6242"], None},
   ButtonNote->"http://arxiv.org/abs/1404.6242"],
- ".\n\nThis code is dual-licensed under the ",
- ButtonBox["GPL",
-  BaseStyle->"Hyperlink",
-  ButtonData->{
-    URL["http://www.gnu.org/licenses/gpl-3.0.en.html"], None},
-  ButtonNote->"http://www.gnu.org/licenses/gpl-3.0.en.html"],
- " and ",
- ButtonBox["CC-BY-SA",
-  BaseStyle->"Hyperlink",
-  ButtonData->{
-    URL["https://creativecommons.org/licenses/by-sa/4.0/"], None},
-  ButtonNote->"https://creativecommons.org/licenses/by-sa/4.0/"],
- " licenses. If you use this code or its results in an academic publication, \
-please cite the paper above or the GitHub repository where the latest version \
-will always be available. An example citation is \n\n    E. Pisanty. RB-SFA: \
-High Harmonic Generation in the Strong Field Approximation via ",
+ ".\n \nThis code is dual-licensed under the GPL and CC-BY-SA licenses; you \
+are free to use, modify, and redistribute it, but you must abide by the terms \
+in either of those licenses.\n\nIn addition to that ",
+ StyleBox["legal",
+  FontSlant->"Italic"],
+ " obligation, if you use this code in calculations for an academic \
+publication, you have an ",
+ StyleBox["academic",
+  FontSlant->"Italic"],
+ " obligation to cite it correctly. For that purpose, please cite the PhD \
+thesis above, or use a direct citation to the code such as\n\n    E. Pisanty. \
+RB-SFA: High Harmonic Generation in the Strong Field Approximation via ",
  StyleBox["Mathematica",
   FontSlant->"Italic"],
  ". ",
@@ -96,10 +118,21 @@ High Harmonic Generation in the Strong Field Approximation via ",
   ButtonData->{
     URL["https://github.com/episanty/RB-SFA"], None},
   ButtonNote->"https://github.com/episanty/RB-SFA"],
- " (2016).\n\nThis software consists of this notebook, which contains the \
-code and its documentation, a corresponding auto-generated package file. This \
-notebook also contains a Usage and Examples section which explains how to use \
-the code and documents the calculations used in the original publication."
+ " (2016).\n    \nIf you wish to include a DOI in your citation, please use \
+one of the ",
+ ButtonBox["numbered-version releases",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://github.com/episanty/RB-SFA/releases"], None},
+  ButtonNote->"https://github.com/episanty/RB-SFA/releases"],
+ ".\n\nThis software consists of the Mathematica notebook `RB-SFA.nb`, which \
+contains the code and its documentation, a corresponding auto-generated \
+package file `RB-SFA.m`, which provides the package functions to other \
+notebooks, a `Usage and Examples.nb` notebook which explains how to install \
+and use the code, and documents the calculations used in the original \
+publication, and a (draft) `Quantum Orbits Usage.nb` notebook documenting the \
+use of the quantum-orbit functionality. PDF printouts of all notebooks are \
+also provided."
 }], "Text",
  CellGroupingRules->{GroupTogetherGrouping, 10000.}],
 
@@ -287,7 +320,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 28 Feb 2017 11:48:14\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 22 Nov 2017 19:04:25\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -7102,7 +7135,7 @@ NotebookEventActions->{{"MenuCommand", "Save"} :> (NotebookWrite[
       True, CellTags -> "version-timestamp"], None, AutoScroll -> False]; 
    NotebookSave[]), PassEventsDown -> True},
 WindowSize->{1383, 876},
-WindowMargins->{{Automatic, 0}, {13, Automatic}},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
 PrintingCopies->1,
 PrintingStartingPageNumber->1,
 PrintingPageRange->{Automatic, Automatic},
