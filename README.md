@@ -9,7 +9,7 @@ RB-SFA is a compact and flexible Mathematica package for calculating High Harmon
 
 The name RB-SFA comes from its first application (as Rotating Bicircular High Harmonic Generation in the Strong field Approximation) but the code is general so RB-SFA just stands for itself now. The publications by the author that use this code are:
 
- - Anatomy of high-order harmonic emission from p states in bicircular fields. E. Pisanty and Á. Jiménez-Galán. [*Phys. Rev. A* **96**, 063401 (2017)](https://doi.org/10.1103/PhysRevA.96.063401), [arXiv:1709.00397](https://arxiv.org/abs/1709.00397).
+ - Strong-field approximation in a rotating frame: high-order harmonic emission from p states in bicircular fields. E. Pisanty and Á. Jiménez-Galán. [*Phys. Rev. A* **96**, 063401 (2017)](https://doi.org/10.1103/PhysRevA.96.063401), [arXiv:1709.00397](https://arxiv.org/abs/1709.00397).
  - Electron dynamics in complex time and complex space. E. Pisanty Alatorre. [PhD Thesis, Imperial College London, 2016](http://hdl.handle.net/10044/1/43538).
  - High harmonic interferometry of the Lorentz force in strong mid-infrared laser fields. E. Pisanty, D.D. Hickstein, et al. (2016), [arXiv:1606.01931](https://arxiv.org/abs/1606.01931).
  - Spin conservation in high-order-harmonic generation using bicircular fields. E. Pisanty, S. Sukiasyan and M. Ivanov. [*Phys. Rev. A* **90**, 043829 (2014)](http://dx.doi.org/10.1103/PhysRevA.90.043829), [arXiv:1404.6242](http://arxiv.org/abs/1404.6242).
