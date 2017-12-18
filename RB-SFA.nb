@@ -40,14 +40,28 @@ stands for itself now. The publications by the author that use this code are:\
 \n\n \[Bullet] Anatomy of high-order harmonic emission from p states in \
 bicircular fields. E. Pisanty and \[CapitalAAcute]. Jim\[EAcute]nez-Gal\
 \[AAcute]n. ",
- ButtonBox["Phys. Rev. A, in press (2017)",
+ StyleBox[ButtonBox["Phys. Rev. A",
   BaseStyle->"Hyperlink",
   ButtonData->{
-    URL["https://journals-aps-org.recursos.biblioteca.upc.edu/pra/accepted/\
-6c071N39X6913c1796bf7e24239fdcf0c7991c377"], None},
-  ButtonNote->
-   "https://journals-aps-org.recursos.biblioteca.upc.edu/pra/accepted/\
-6c071N39X6913c1796bf7e24239fdcf0c7991c377"],
+    URL["https://doi.org/10.1103/PhysRevA.96.063401\n\n"], None},
+  ButtonNote->"https://doi.org/10.1103/PhysRevA.96.063401\n\n"],
+  FontSlant->"Italic"],
+ ButtonBox[" ",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1103/PhysRevA.96.063401\n\n"], None},
+  ButtonNote->"https://doi.org/10.1103/PhysRevA.96.063401\n\n"],
+ StyleBox[ButtonBox["96",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1103/PhysRevA.96.063401\n\n"], None},
+  ButtonNote->"https://doi.org/10.1103/PhysRevA.96.063401\n\n"],
+  FontWeight->"Bold"],
+ ButtonBox[" 063401 (2017)",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1103/PhysRevA.96.063401\n\n"], None},
+  ButtonNote->"https://doi.org/10.1103/PhysRevA.96.063401\n\n"],
  ", ",
  ButtonBox["arXiv:1709.00397",
   BaseStyle->"Hyperlink",
@@ -320,7 +334,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 22 Nov 2017 19:04:25\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 18 Dec 2017 12:28:15\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -5920,7 +5934,8 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
+           
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
