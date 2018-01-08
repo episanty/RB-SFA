@@ -335,7 +335,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 8 Jan 2018 13:53:22\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 8 Jan 2018 14:35:03\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -4358,8 +4358,6 @@ https://github.com/episanty/EPToolbox, and it is also documented in \
 http://mathematica.stackexchange.com/a/57821/1000.\
 \>", "Text"],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -4428,209 +4426,20 @@ zmin and zmax.\>\""}], ";"}],
    "\"\<Value of option Tolerance -> `1` is not Automatic or a number in [0,\
 \[Infinity]).\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"$MessageGroups", "=", 
-   RowBox[{"Join", "[", 
-    RowBox[{"$MessageGroups", ",", 
-     RowBox[{"{", 
-      RowBox[{"\"\<FindComplexRoots\>\"", "\[RuleDelayed]", 
-       RowBox[{"{", 
-        RowBox[{"FindRoot", "::", "lstol"}], "}"}]}], "}"}]}], "]"}]}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"$MessageGroups", "=", 
+    RowBox[{"Join", "[", 
+     RowBox[{"$MessageGroups", ",", 
+      RowBox[{"{", 
+       RowBox[{"\"\<FindComplexRoots\>\"", "\[RuleDelayed]", 
+        RowBox[{"{", 
+         RowBox[{"FindRoot", "::", "lstol"}], "}"}]}], "}"}]}], "]"}]}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Protect", "[", "Seeds", "]"}], ";"}], "\n", 
  RowBox[{
   RowBox[{"Protect", "[", "SeedGenerator", "]"}], ";"}]}], "Input",
  InitializationCell->True],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   RowBox[{"\<\"Compiler\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     RowBox[{
-      StyleBox[
-       RowBox[{"Compile", "::", "cif"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpapot"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpbool"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpdsts"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpint"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpintlt"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpintlt2"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpiter"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cplist"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpout"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cppat"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cprank"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cpts"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cptype"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cret"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "nocomp"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "part"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "cxcoerce"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compile", "::", "realcoerce"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfex"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cflist"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfn"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfnlts"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "orank"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfsa"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfse"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfta"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfte"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cfsec"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "cftec"}], "MessageName"]}], "}"}]}],
-    ",", 
-   RowBox[{"\<\"CompilerWarnings\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     RowBox[{
-      StyleBox[
-       RowBox[{"Compile", "::", "noinfo"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "npext"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "nprng"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "pext"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "plrng"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "psbrng"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"CompiledFunction", "::", "prngd"}], "MessageName"]}], "}"}]}],
-    ",", 
-   RowBox[{"\<\"Graphics\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     RowBox[{
-      StyleBox[
-       RowBox[{"General", "::", "plnr"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "pp3tr"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "pptr"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "pwfailed"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "nfunfail"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Compiled", "::", "deprec"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"System`Dump`ContourPlot3D", "::", "njnum"}], "MessageName"], 
-      ",", 
-      StyleBox[
-       RowBox[{"System`Dump`ParametricPlot3D", "::", "njnum"}], "MessageName"],
-       ",", 
-      StyleBox[
-       RowBox[{"System`Dump`Plot3D", "::", "njnum"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"System`Dump`RegionPlot3D", "::", "njnum"}], "MessageName"], 
-      ",", 
-      StyleBox[
-       RowBox[{"General", "::", "accbend"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"System`Dump`ContourPlot", "::", "accbend"}], "MessageName"], 
-      ",", 
-      StyleBox[
-       RowBox[{"System`Dump`ContourPlot3D", "::", "accbend"}], "MessageName"],
-       ",", 
-      StyleBox[
-       RowBox[{"System`Dump`DensityPlot", "::", "accbend"}], "MessageName"], 
-      ",", 
-      StyleBox[
-       RowBox[{"LogLinearPlot", "::", "accbend"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"LogLogPlot", "::", "accbend"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"LogPlot", "::", "accbend"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"System`Dump`ParametricPlot", "::", "accbend"}], "MessageName"],
-       ",", 
-      StyleBox[
-       RowBox[{"System`Dump`ParametricPlot3D", "::", "accbend"}], 
-       "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"System`Dump`Plot", "::", "accbend"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"System`Dump`Plot3D", "::", "accbend"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"PolarPlot", "::", "accbend"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"System`Dump`RegionPlot3D", "::", "accbend"}], 
-       "MessageName"]}], "}"}]}], ",", 
-   RowBox[{"\<\"Obsolete\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     RowBox[{
-      StyleBox[
-       RowBox[{"General", "::", "obs"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "obspkg"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "newpkg"}], "MessageName"]}], "}"}]}], ",", 
-   RowBox[{"\<\"Packing\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     RowBox[{
-      StyleBox[
-       RowBox[{"General", "::", "unpack"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "punpack"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "punpack1"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "punpackl"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "punpackl1"}], "MessageName"]}], "}"}]}], ",", 
-   RowBox[{"\<\"Spelling\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     RowBox[{
-      StyleBox[
-       RowBox[{"General", "::", "spell"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"General", "::", "spell1"}], "MessageName"]}], "}"}]}], ",", 
-   RowBox[{"\<\"Symbolics\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     RowBox[{
-      StyleBox[
-       RowBox[{"Integrate", "::", "gener"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Maximize", "::", "nopmet"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Minimize", "::", "nopmet"}], "MessageName"], ",", 
-      StyleBox[
-       RowBox[{"Series", "::", "esss"}], "MessageName"]}], "}"}]}], ",", 
-   RowBox[{"\<\"FindComplexRoots\"\>", "\[RuleDelayed]", 
-    RowBox[{"{", 
-     StyleBox[
-      RowBox[{"FindRoot", "::", "lstol"}], "MessageName"], "}"}]}]}], 
-  "}"}]], "Output"]
-}, Open  ]],
 
 Cell[BoxData[{
  RowBox[{
@@ -7493,6 +7302,218 @@ the saddle-point approximation for this set.\>\""}], ";"}],
               RowBox[{"-", "z"}], "]"}], "z"]}]}], ")"}]}]}]}], 
       "\[IndentingNewLine]", "]"}]}], ")"}]}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["ConstrainedDerivative", "Subsection"],
+
+Cell[TextData[{
+ "In some situations, one can require solving the ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"t", "'"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " saddle-point equation ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       RowBox[{"t", "'"}]}]], 
+     RowBox[{"S", "(", 
+      RowBox[{"t", ",", 
+       RowBox[{"t", "'"}]}], ")"}]}], "=", "0"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " first to find a saddle point ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"t", "'"}], "=", 
+    RowBox[{
+     RowBox[{
+      SubscriptBox["t", "s"], "'"}], 
+     RowBox[{"(", "t", ")"}]}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " and an action ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"S", "(", "t", ")"}], "=", 
+    RowBox[{"S", "(", 
+     RowBox[{"t", ",", 
+      RowBox[{
+       RowBox[{
+        SubscriptBox["t", "s"], "'"}], 
+       RowBox[{"(", "t", ")"}]}]}], ")"}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ", and then find the derivatives of this function with respect to ",
+ Cell[BoxData[
+  FormBox["t", TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ". This can be done by differentiating the defining equation ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       RowBox[{"t", "'"}]}]], 
+     RowBox[{"S", "(", 
+      RowBox[{"t", ",", 
+       RowBox[{
+        RowBox[{
+         SubscriptBox["t", "s"], "'"}], 
+        RowBox[{"(", "t", ")"}]}]}], ")"}]}], "\[Congruent]", "0"}], 
+   TraditionalForm]]],
+ " with respect to ",
+ Cell[BoxData[
+  FormBox["t", TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " to find the relation obeyed by ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox[
+    RowBox[{"d", " ", 
+     RowBox[{
+      SubscriptBox["t", "s"], "'"}]}], 
+    RowBox[{"d", " ", "t"}]], TraditionalForm]]],
+ ", in the form ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       FractionBox[
+        RowBox[{
+         SuperscriptBox["\[PartialD]", "2"], "S"}], 
+        RowBox[{
+         RowBox[{"\[PartialD]", 
+          RowBox[{"t", "'"}]}], 
+         RowBox[{"\[PartialD]", "t"}]}]], 
+       RowBox[{"(", 
+        RowBox[{"t", ",", 
+         RowBox[{
+          RowBox[{
+           SubscriptBox["t", "s"], "'"}], 
+          RowBox[{"(", "t", ")"}]}]}], ")"}]}], "+", 
+      RowBox[{
+       FractionBox[
+        RowBox[{"d", " ", 
+         RowBox[{
+          SubscriptBox["t", "s"], "'"}]}], 
+        RowBox[{"d", " ", "t"}]], 
+       RowBox[{"(", "t", ")"}], 
+       FractionBox[
+        RowBox[{
+         SuperscriptBox["\[PartialD]", "2"], "S"}], 
+        SuperscriptBox[
+         RowBox[{"(", 
+          RowBox[{"\[PartialD]", 
+           RowBox[{"t", "'"}]}], ")"}], "2"]], 
+       RowBox[{"(", 
+        RowBox[{"t", ",", 
+         RowBox[{
+          RowBox[{
+           SubscriptBox["t", "s"], "'"}], 
+          RowBox[{"(", "t", ")"}]}]}], ")"}]}]}], "\[Congruent]", "0"}], 
+    ","}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " and using "
+}], "Text"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ConstrainedDerivative", "::", "usage"}], "=", 
+    "\"\<ConstrainedDerivative[n][f][t,tt] calculates the nth derivative of \
+f[t,tt] with respect to t under the constraint that \
+\!\(\*SuperscriptBox[\"f\", TagBox[
+RowBox[{\"(\", 
+RowBox[{\"0\", \",\", \"1\"}], \")\"}],
+Derivative],
+MultilineFunction->None]\)[t,tt]\[Congruent]0.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ConstrainedDerivative", "[", "n_", "]"}], "[", "F_", "]"}], "[", 
+   
+   RowBox[{"te_", ",", "tte_"}], "]"}], ":=", 
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"f", ",", "tts", ",", "t", ",", "tt"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"ConstrainedDerivative", "[", "n", "]"}], "[", "f_", "]"}], 
+       "[", 
+       RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
+      RowBox[{"Nest", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Function", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Simplify", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{"#", "/.", 
+               RowBox[{"{", 
+                RowBox[{"tt", "\[Rule]", 
+                 RowBox[{"tts", "[", "t", "]"}]}], "}"}]}], ",", "t"}], "]"}],
+             "/.", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Derivative", "[", 
+                  RowBox[{"0", ",", "1"}], "]"}], "[", "f", "]"}], "[", 
+                RowBox[{"t", ",", 
+                 RowBox[{"tts", "[", "t", "]"}]}], "]"}], "\[Rule]", "0"}], 
+              ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"tts", "'"}], "[", "t", "]"}], "\[Rule]", 
+               RowBox[{"-", 
+                FractionBox[
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Derivative", "[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "[", "Ss", "]"}], "[", 
+                  RowBox[{"t", ",", 
+                   RowBox[{"tts", "[", "t", "]"}]}], "]"}], 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Derivative", "[", 
+                    RowBox[{"0", ",", "2"}], "]"}], "[", "Ss", "]"}], "[", 
+                  RowBox[{"t", ",", 
+                   RowBox[{"tts", "[", "t", "]"}]}], "]"}]]}]}]}], "}"}]}], 
+           "\[IndentingNewLine]", "]"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"tts", "[", "t", "]"}], "\[Rule]", "tt"}], "}"}]}], 
+         "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+        RowBox[{"f", "[", 
+         RowBox[{"t", ",", "tt"}], "]"}], ",", "n"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ConstrainedDerivative", "[", "n", "]"}], "[", "F", "]"}], "[", 
+      RowBox[{"te", ",", "tte"}], "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]

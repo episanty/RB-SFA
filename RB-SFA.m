@@ -42,7 +42,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 8 Jan 2018 13:53:22";
+$RBSFAtimestamp="Mon 8 Jan 2018 14:35:03";
 End[];
 
 
@@ -1214,6 +1214,25 @@ If[\[CapitalOmega]<transition[[2]],z=(-(3/2)Sm)^(2/3),z=(-(3/2)Sm)^(2/3) Exp[I (
 Sqrt[6\[Pi] Sm]Exp[-I Ss+I \[Pi]/4]((A1-I A2)/2 AiryAi[-z]/Sqrt[z]+I (A1+I A2)/2 AiryAi'[-z]/z)
 ])
 
+End[];
+
+
+ConstrainedDerivative::usage="ConstrainedDerivative[n][f][t,tt] calculates the nth derivative of f[t,tt] with respect to t under the constraint that \!\(\*SuperscriptBox[\(f\), TagBox[
+RowBox[{\"(\", 
+RowBox[{\"0\", \",\", \"1\"}], \")\"}],
+Derivative],\nMultilineFunction->None]\)[t,tt]\[Congruent]0.";
+
+Begin["`Private`"];
+ConstrainedDerivative[n_][F_][te_,tte_]:=Block[{f,tts,t,tt},
+ConstrainedDerivative[n][f_][t_,tt_]=Nest[
+Function[
+Simplify[
+D[#/.{tt->tts[t]},t]/.{Derivative[0,1][f][t,tts[t]]->0,tts'[t]->-(Derivative[1,1][Ss][t,tts[t]]/Derivative[0,2][Ss][t,tts[t]])}
+]/.{tts[t]->tt}
+]
+,f[t,tt],n];
+ConstrainedDerivative[n][F][te,tte]
+]
 End[];
 
 
