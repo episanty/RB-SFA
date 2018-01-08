@@ -42,7 +42,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 18 Dec 2017 12:36:47";
+$RBSFAtimestamp="Mon 8 Jan 2018 13:53:22";
 End[];
 
 
@@ -982,6 +982,77 @@ Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S,
 ]
 ]
 ]
+End[];
+
+
+GetDoubleSaddlePoints::usage="GetDoubleSaddlePoints[S,{tmin,tmax},{\[Tau]min,\[Tau]max},{\[CapitalOmega]min,\[CapitalOmega]max}] finds a list of double solutions {t,\[Tau],\[CapitalOmega]} of the HHG temporal saddle-point equations, using a complex-valued \[CapitalOmega] in the range {\[CapitalOmega]min,\[CapitalOmega]max}, for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where the ranges should indicate the lower-left and upper-right corners of rectangles in the complex plane.
+
+GetDoubleSaddlePoints[S,{{{\!\(\*SubscriptBox[\(tmin\), \(1\)]\),\!\(\*SubscriptBox[\(tmax\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]max\), \(1\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \(2\)]\),\!\(\*SubscriptBox[\(tmax\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]max\), \(2\)]\)}},\[Ellipsis]}] uses multiple variable ranges and combines the solutions.
+
+GetDoubleSaddlePoints[S,{{urange,vrange,\[CapitalOmega]range},\[Ellipsis]},IndependentVariables\[Rule]{u,v}] uses the explicit independent temporal variables u and v to solve the equations and over the given ranges, where u and v can be any of \"RecombinationTime\", \"IonizationTime\" and \"ExcursionTime\", or their shorthands \"t\", \"tt\" and \"\[Tau]\" resp.";
+
+GetDoubleSaddlePoints::error="Errors encountered at tag `1`.";
+
+ErrorReportingTag::usage="";
+Protect[ErrorReportingTag];
+
+
+Begin["`Private`"];
+Options[GetDoubleSaddlePoints]=Join[{SortingFunction->({#4&,#2&,#1&}),SelectionFunction->(True&),ErrorReportingTag->None,IndependentVariables->{"RecombinationTime","ExcursionTime"}},Options[FindComplexRoots]];
+
+GetDoubleSaddlePoints[S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},{\[CapitalOmega]min_,\[CapitalOmega]max_},options:OptionsPattern[]]:=GetDoubleSaddlePoints[S,{{{tmin,tmax},{\[Tau]min,\[Tau]max},{\[CapitalOmega]min,\[CapitalOmega]max}}},options]
+
+GetDoubleSaddlePoints[S_,variableRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],\[CapitalOmega],indVars,depVar,depVarRule,tolerances},
+indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
+depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
+depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
+equations={
+D[S[t,tt],t]==\[CapitalOmega],
+D[S[t,tt],tt]==0,
+D[S[t,tt],{t,2}] D[S[t,tt],{tt,2}]-D[S[t,tt],t,tt]^2==0
+}/.depVarRule;
+tolerances=Which[
+ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,ConstantArray[
+Which[
+NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
+]
+,3]];
+
+SortBy[
+DeleteDuplicates[
+Flatten[Table[
+Select[
+Check[
+roots=({t,\[Tau],\[CapitalOmega]}/.depVarRule)/.(FindComplexRoots[
+equations
+,Evaluate[Sequence[
+{Symbol[indVars[[1]]],range[[1,1]],range[[1,2]]},
+{Symbol[indVars[[2]]],range[[2,1]],range[[2,2]]},
+{\[CapitalOmega],range[[3,1]],range[[3,2]]}
+]]
+,Evaluate[Sequence@@FilterRules[{options},Options[FindComplexRoots]]]
+,SeedGenerator->RandomSobolComplexes
+,Seeds->50
+]/.{{}->(({t,\[Tau]}/.depVarRule)->{})})(*to deal with empty results*)
+,
+If[OptionValue[ErrorReportingTag]!=None,Message[GetDoubleSaddlePoints::error,OptionValue[ErrorReportingTag]]];
+roots
+]
+,Function[variableSet,OptionValue[SelectionFunction][variableSet[[1]],variableSet[[2]],S]]
+]
+,{range,variableRanges}],1]
+,Function[{variableSet1,variableSet2},    And@@Thread[Abs[variableSet1-variableSet2]<tolerances]     ]
+]
+,If[
+ListQ[OptionValue[SortingFunction]],
+Table[Function[variableSet,f[variableSet[[1]],variableSet[[2]],S,variableSet[[3]]]],{f,OptionValue[SortingFunction]}],
+Function[variableSet,OptionValue[SortingFunction][variableSet[[1]],variableSet[[2]],S,variableSet[[3]]]]
+]
+]
+]
+
 End[];
 
 

@@ -335,7 +335,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 18 Dec 2017 12:36:47\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 8 Jan 2018 13:53:22\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -6106,6 +6106,394 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
             "]"}]}], "]"}]}], "\[IndentingNewLine]", "]"}]}], 
       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
    "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["GetDoubleSaddlePoints", "Subsection"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GetDoubleSaddlePoints", "::", "usage"}], "=", 
+    "\"\<GetDoubleSaddlePoints[S,{tmin,tmax},{\[Tau]min,\[Tau]max},{\
+\[CapitalOmega]min,\[CapitalOmega]max}] finds a list of double solutions {t,\
+\[Tau],\[CapitalOmega]} of the HHG temporal saddle-point equations, using a \
+complex-valued \[CapitalOmega] in the range {\[CapitalOmega]min,\
+\[CapitalOmega]max}, for action S, in the range {tmin, tmax} of recombination \
+time and {\[Tau]min, \[Tau]max} of excursion time, where the ranges should \
+indicate the lower-left and upper-right corners of rectangles in the complex \
+plane.\n\nGetDoubleSaddlePoints[S,{{{\!\(\*SubscriptBox[\(tmin\), \(1\)]\),\!\
+\(\*SubscriptBox[\(tmax\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \
+\(1\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(1\)]\)},{\!\(\*SubscriptBox[\(\
+\[CapitalOmega]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]max\), \(1\
+\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \(2\)]\),\!\(\*SubscriptBox[\(tmax\), \
+\(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\
+\[Tau]max\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]min\), \
+\(2\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]max\), \(2\)]\)}},\[Ellipsis]}] \
+uses multiple variable ranges and combines the solutions.\n\n\
+GetDoubleSaddlePoints[S,{{urange,vrange,\[CapitalOmega]range},\[Ellipsis]},\
+IndependentVariables\[Rule]{u,v}] uses the explicit independent temporal \
+variables u and v to solve the equations and over the given ranges, where u \
+and v can be any of \\\"RecombinationTime\\\", \\\"IonizationTime\\\" and \
+\\\"ExcursionTime\\\", or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\
+\[Tau]\\\" resp.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GetDoubleSaddlePoints", "::", "error"}], "=", 
+    "\"\<Errors encountered at tag `1`.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ErrorReportingTag", "::", "usage"}], "=", "\"\<\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Protect", "[", "ErrorReportingTag", "]"}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "GetDoubleSaddlePoints", "]"}], "=", 
+    RowBox[{"Join", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"SortingFunction", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"#4", "&"}], ",", 
+            RowBox[{"#2", "&"}], ",", 
+            RowBox[{"#1", "&"}]}], "}"}], ")"}]}], ",", 
+        RowBox[{"SelectionFunction", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"True", "&"}], ")"}]}], ",", 
+        RowBox[{"ErrorReportingTag", "\[Rule]", "None"}], ",", 
+        RowBox[{"IndependentVariables", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<RecombinationTime\>\"", ",", "\"\<ExcursionTime\>\""}],
+           "}"}]}]}], "}"}], ",", 
+      RowBox[{"Options", "[", "FindComplexRoots", "]"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetDoubleSaddlePoints", "[", 
+    RowBox[{"S_", ",", 
+     RowBox[{"{", 
+      RowBox[{"tmin_", ",", "tmax_"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\[Tau]min_", ",", "\[Tau]max_"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\[CapitalOmega]min_", ",", "\[CapitalOmega]max_"}], "}"}], ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"GetDoubleSaddlePoints", "[", 
+    RowBox[{"S", ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"tmin", ",", "tmax"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"\[Tau]min", ",", "\[Tau]max"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"\[CapitalOmega]min", ",", "\[CapitalOmega]max"}], "}"}]}], 
+       "}"}], "}"}], ",", "options"}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetDoubleSaddlePoints", "[", 
+    RowBox[{"S_", ",", "variableRanges_", ",", 
+     RowBox[{"options", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"equations", ",", "roots", ",", 
+       RowBox[{"t", "=", 
+        RowBox[{"Symbol", "[", "\"\<t\>\"", "]"}]}], ",", 
+       RowBox[{"tt", "=", 
+        RowBox[{"Symbol", "[", "\"\<tt\>\"", "]"}]}], ",", 
+       RowBox[{"\[Tau]", "=", 
+        RowBox[{"Symbol", "[", "\"\<\[Tau]\>\"", "]"}]}], ",", 
+       "\[CapitalOmega]", ",", "indVars", ",", "depVar", ",", "depVarRule", 
+       ",", "tolerances"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"indVars", "=", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "IndependentVariables", "]"}], "/.", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"\"\<RecombinationTime\>\"", "\[Rule]", "\"\<t\>\""}], ",", 
+          
+          RowBox[{"\"\<ExcursionTime\>\"", "\[Rule]", "\"\<\[Tau]\>\""}], ",", 
+          RowBox[{"\"\<IonizationTime\>\"", "\[Rule]", "\"\<tt\>\""}]}], 
+         "}"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"depVar", "=", 
+       RowBox[{"First", "[", 
+        RowBox[{"DeleteCases", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\"\<t\>\"", ",", "\"\<\[Tau]\>\"", ",", "\"\<tt\>\""}], 
+           "}"}], ",", 
+          RowBox[{"Alternatives", "@@", "indVars"}]}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"depVarRule", "=", 
+       RowBox[{"depVar", "/.", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"\"\<tt\>\"", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"tt", "\[Rule]", 
+             RowBox[{"t", "-", "\[Tau]"}]}], "}"}]}], ",", 
+          RowBox[{"\"\<t\>\"", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"t", "\[Rule]", 
+             RowBox[{"tt", "+", "\[Tau]"}]}], "}"}]}], ",", 
+          RowBox[{"\"\<\[Tau]\>\"", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\[Tau]", "\[Rule]", 
+             RowBox[{"t", "-", "tt"}]}], "}"}]}]}], "}"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"equations", "=", 
+       RowBox[{
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"D", "[", 
+            RowBox[{
+             RowBox[{"S", "[", 
+              RowBox[{"t", ",", "tt"}], "]"}], ",", "t"}], "]"}], "\[Equal]", 
+           "\[CapitalOmega]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"D", "[", 
+            RowBox[{
+             RowBox[{"S", "[", 
+              RowBox[{"t", ",", "tt"}], "]"}], ",", "tt"}], "]"}], "\[Equal]",
+            "0"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"D", "[", 
+              RowBox[{
+               RowBox[{"S", "[", 
+                RowBox[{"t", ",", "tt"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"t", ",", "2"}], "}"}]}], "]"}], " ", 
+             RowBox[{"D", "[", 
+              RowBox[{
+               RowBox[{"S", "[", 
+                RowBox[{"t", ",", "tt"}], "]"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"tt", ",", "2"}], "}"}]}], "]"}]}], "-", 
+            SuperscriptBox[
+             RowBox[{"D", "[", 
+              RowBox[{
+               RowBox[{"S", "[", 
+                RowBox[{"t", ",", "tt"}], "]"}], ",", "t", ",", "tt"}], "]"}],
+              "2"]}], "\[Equal]", "0"}]}], "\[IndentingNewLine]", "}"}], "/.",
+         "depVarRule"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"tolerances", "=", 
+       RowBox[{"Which", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"ListQ", "[", 
+          RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
+         RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
+         "\[IndentingNewLine]", "True", ",", 
+         RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Which", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"NumberQ", "[", 
+              RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
+             RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
+             "\[IndentingNewLine]", "True", ",", 
+             RowBox[{"10", "^", 
+              RowBox[{"If", "[", 
+               RowBox[{
+                RowBox[{"NumberQ", "[", 
+                 RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}],
+                 ",", " ", 
+                RowBox[{"2", "-", 
+                 RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
+                RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
+            "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "3"}], 
+          "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"Table", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Select", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Check", "[", "\[IndentingNewLine]", 
+                 RowBox[{
+                  RowBox[{"roots", "=", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"t", ",", "\[Tau]", ",", "\[CapitalOmega]"}], 
+                    "}"}], "/.", "depVarRule"}], ")"}], "/.", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"FindComplexRoots", "[", "\[IndentingNewLine]", 
+                    RowBox[{"equations", "\[IndentingNewLine]", ",", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Sequence", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Symbol", "[", 
+                    RowBox[{
+                    "indVars", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"1", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Symbol", "[", 
+                    RowBox[{
+                    "indVars", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], "]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"2", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "}"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{"\[CapitalOmega]", ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "1"}], "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{"range", "\[LeftDoubleBracket]", 
+                    RowBox[{"3", ",", "2"}], "\[RightDoubleBracket]"}]}], 
+                    "}"}]}], "\[IndentingNewLine]", "]"}], "]"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{"Evaluate", "[", 
+                    RowBox[{"Sequence", "@@", 
+                    RowBox[{"FilterRules", "[", 
+                    RowBox[{
+                    RowBox[{"{", "options", "}"}], ",", 
+                    RowBox[{"Options", "[", "FindComplexRoots", "]"}]}], 
+                    "]"}]}], "]"}], "\[IndentingNewLine]", ",", 
+                    RowBox[{
+                    "SeedGenerator", "\[Rule]", "RandomSobolComplexes"}], 
+                    "\[IndentingNewLine]", ",", 
+                    RowBox[{"Seeds", "\[Rule]", "50"}]}], 
+                    "\[IndentingNewLine]", "]"}], "/.", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"{", "}"}], "\[Rule]", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"t", ",", "\[Tau]"}], "}"}], "/.", "depVarRule"}],
+                     ")"}], "\[Rule]", 
+                    RowBox[{"{", "}"}]}], ")"}]}], "}"}]}], ")"}]}]}], 
+                  RowBox[{"(*", 
+                   RowBox[{
+                   "to", " ", "deal", " ", "with", " ", "empty", " ", 
+                    "results"}], "*)"}], "\[IndentingNewLine]", ",", 
+                  "\[IndentingNewLine]", 
+                  RowBox[{
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"OptionValue", "[", "ErrorReportingTag", "]"}], 
+                    "\[NotEqual]", "None"}], ",", 
+                    RowBox[{"Message", "[", 
+                    RowBox[{
+                    RowBox[{"GetDoubleSaddlePoints", "::", "error"}], ",", 
+                    RowBox[{"OptionValue", "[", "ErrorReportingTag", "]"}]}], 
+                    "]"}]}], "]"}], ";", "\[IndentingNewLine]", "roots"}]}], 
+                 "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+                RowBox[{"Function", "[", 
+                 RowBox[{"variableSet", ",", 
+                  RowBox[{
+                   RowBox[{"OptionValue", "[", "SelectionFunction", "]"}], 
+                   "[", 
+                   RowBox[{
+                    RowBox[{
+                    "variableSet", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", 
+                    RowBox[{
+                    "variableSet", "\[LeftDoubleBracket]", "2", 
+                    "\[RightDoubleBracket]"}], ",", "S"}], "]"}]}], "]"}]}], 
+               "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+              RowBox[{"{", 
+               RowBox[{"range", ",", "variableRanges"}], "}"}]}], "]"}], ",", 
+            "1"}], "]"}], "\[IndentingNewLine]", ",", 
+          RowBox[{"Function", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"variableSet1", ",", "variableSet2"}], "}"}], ",", 
+            "    ", 
+            RowBox[{"And", "@@", 
+             RowBox[{"Thread", "[", 
+              RowBox[{
+               RowBox[{"Abs", "[", 
+                RowBox[{"variableSet1", "-", "variableSet2"}], "]"}], "<", 
+               "tolerances"}], "]"}]}]}], "     ", "]"}]}], 
+         "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+        RowBox[{"If", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ListQ", "[", 
+           RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"Function", "[", 
+             RowBox[{"variableSet", ",", 
+              RowBox[{"f", "[", 
+               RowBox[{
+                RowBox[{
+                "variableSet", "\[LeftDoubleBracket]", "1", 
+                 "\[RightDoubleBracket]"}], ",", 
+                RowBox[{
+                "variableSet", "\[LeftDoubleBracket]", "2", 
+                 "\[RightDoubleBracket]"}], ",", "S", ",", 
+                RowBox[{
+                "variableSet", "\[LeftDoubleBracket]", "3", 
+                 "\[RightDoubleBracket]"}]}], "]"}]}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"f", ",", 
+              RowBox[{"OptionValue", "[", "SortingFunction", "]"}]}], "}"}]}],
+            "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Function", "[", 
+           RowBox[{"variableSet", ",", 
+            RowBox[{
+             RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "[", 
+             RowBox[{
+              RowBox[{
+              "variableSet", "\[LeftDoubleBracket]", "1", 
+               "\[RightDoubleBracket]"}], ",", 
+              RowBox[{
+              "variableSet", "\[LeftDoubleBracket]", "2", 
+               "\[RightDoubleBracket]"}], ",", "S", ",", 
+              RowBox[{
+              "variableSet", "\[LeftDoubleBracket]", "3", 
+               "\[RightDoubleBracket]"}]}], "]"}]}], "]"}]}], 
+         "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
