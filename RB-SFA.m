@@ -42,7 +42,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 8 Jan 2018 14:35:03";
+$RBSFAtimestamp="Mon 8 Jan 2018 19:58:02";
 End[];
 
 
@@ -1052,7 +1052,69 @@ Function[variableSet,OptionValue[SortingFunction][variableSet[[1]],variableSet[[
 ]
 ]
 ]
+End[];
 
+
+GetCutoffSaddlePoints::usage="GetCutoffSaddlePoints[S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds a list of solutions {t,\[Tau],\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S,\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S} of the HHG cutoff saddle-point equations {\!\(\*SubscriptBox[\(\[PartialD]\), \(t'\)]\)S=0,\!\(\*SubsuperscriptBox[\(d\), \(t\), \(2\)]\)S=0} for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where both ranges should be the lower-left and upper-right corners of rectangles in the complex plane.
+
+GetCutoffSaddlePoints[S,{{{\!\(\*SubscriptBox[\(tmin\), \(1\)]\),\!\(\*SubscriptBox[\(tmax\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(1\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \(2\)]\),\!\(\*SubscriptBox[\(tmax\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(2\)]\)}},\[Ellipsis]}] uses multiple time domains and combines the solutions.
+
+GetCutoffSaddlePoints[S,{{urange,vrange},\[Ellipsis]},IndependentVariables\[Rule]{u,v}] uses the explicit independent variables u and v to solve the equations and over the given ranges, where u and v can be any of \"RecombinationTime\", \"IonizationTime\" and \"ExcursionTime\", or their shorthands \"t\", \"tt\" and \"\[Tau]\" resp.";
+
+GetCutoffSaddlePoints::error="Errors encountered at tag `1`.";
+
+Begin["`Private`"];
+Options[GetCutoffSaddlePoints]=Join[{SortingFunction->(#2&),SelectionFunction->(True&),ErrorReportingTag->None,IndependentVariables->{"RecombinationTime","ExcursionTime"}},Options[FindComplexRoots]];
+
+GetCutoffSaddlePoints[S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},options:OptionsPattern[]]:=GetCutoffSaddlePoints[S,{{{tmin,tmax},{\[Tau]min,\[Tau]max}}},options]
+
+GetCutoffSaddlePoints[S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,tolerances,d1S,d3S},
+indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
+depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
+depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
+equations={
+D[S[t,tt],tt]==0,
+D[S[t,tt],{t,2}]D[S[t,tt],{tt,2}]-D[S[t,tt],t,tt]^2==0
+}/.depVarRule;
+d1S[t_,tt_]=ConstrainedDerivative[1][S][t,tt];
+d3S[t_,tt_]=ConstrainedDerivative[3][S][t,tt];
+tolerances=Which[
+ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,ConstantArray[
+Which[
+NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
+True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
+]
+,2]];
+
+SortBy[
+DeleteDuplicates[
+Flatten[Table[
+Select[
+Check[
+roots=({t,\[Tau],d1S[t,t-\[Tau]],d3S[t,t-\[Tau]]}/.depVarRule)/.(FindComplexRoots[
+equations
+,Evaluate[Sequence[{Symbol[indVars[[1]]],range[[1,1]],range[[1,2]]},{Symbol[indVars[[2]]],range[[2,1]],range[[2,2]]}]]
+,Evaluate[Sequence@@FilterRules[{options},Options[FindComplexRoots]]]
+,SeedGenerator->RandomSobolComplexes
+,Seeds->50
+]/.{{}->(({t,\[Tau]}/.depVarRule)->{})})(*to deal with empty results*)
+,
+If[OptionValue[ErrorReportingTag]!=None,Message[GetCutoffSaddlePoints::error,OptionValue[ErrorReportingTag]]];
+roots
+]
+,Function[timesPair,OptionValue[SelectionFunction][timesPair[[1]],timesPair[[2]],S]]
+]
+,{range,timeRanges}],1]
+,Function[{timesPair1,timesPair2},    And@@Thread[Abs[timesPair1-timesPair2][[{1,2}]]<tolerances]     ]
+]
+,If[
+ListQ[OptionValue[SortingFunction]],
+Table[Function[timesPair,f[timesPair[[1]],timesPair[[2]],S]],{f,OptionValue[SortingFunction]}],
+Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S]]
+]
+]
+]
 End[];
 
 
@@ -1227,7 +1289,7 @@ ConstrainedDerivative[n_][F_][te_,tte_]:=Block[{f,tts,t,tt},
 ConstrainedDerivative[n][f_][t_,tt_]=Nest[
 Function[
 Simplify[
-D[#/.{tt->tts[t]},t]/.{Derivative[0,1][f][t,tts[t]]->0,tts'[t]->-(Derivative[1,1][Ss][t,tts[t]]/Derivative[0,2][Ss][t,tts[t]])}
+D[#/.{tt->tts[t]},t]/.{Derivative[0,1][f][t,tts[t]]->0,tts'[t]->-(Derivative[1,1][f][t,tts[t]]/Derivative[0,2][f][t,tts[t]])}
 ]/.{tts[t]->tt}
 ]
 ,f[t,tt],n];
