@@ -699,7 +699,7 @@ Options[FindComplexRoots] = Join[Options[FindRoot], {Seeds -> 50, SeedGenerator 
 SyntaxInformation[FindComplexRoots] = {"ArgumentsPattern" -> {_, {_, _, _}, OptionsPattern[]},    "LocalVariables" -> {"Table", {2, \[Infinity]}}};
 FindComplexRoots::seeds = "Value of option Seeds -> `1` is not a positive integer.";
 FindComplexRoots::tol = "Value of option Tolerance -> `1` is not Automatic or a number in [0,\[Infinity]).";
-$MessageGroups=Join[$MessageGroups,{"FindComplexRoots":>{FindRoot::lstol}}]
+$MessageGroups=Join[$MessageGroups,{"FindComplexRoots":>{FindRoot::lstol}}];
 
 Protect[Seeds];
 Protect[SeedGenerator];
