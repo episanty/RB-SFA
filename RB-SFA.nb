@@ -335,7 +335,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 8 Jan 2018 19:58:02\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 9 Jan 2018 17:12:06\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -5138,6 +5138,209 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
+Cell["ConstrainedDerivative", "Subsection"],
+
+Cell[TextData[{
+ "In some situations, one can require solving the ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"t", "'"}], TraditionalForm]]],
+ " saddle-point equation ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       RowBox[{"t", "'"}]}]], 
+     RowBox[{"S", "(", 
+      RowBox[{"t", ",", 
+       RowBox[{"t", "'"}]}], ")"}]}], "=", "0"}], TraditionalForm]]],
+ " first to find a saddle point ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"t", "'"}], "=", 
+    RowBox[{
+     RowBox[{
+      SubscriptBox["t", "s"], "'"}], 
+     RowBox[{"(", "t", ")"}]}]}], TraditionalForm]]],
+ " and an action ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"S", "(", "t", ")"}], "=", 
+    RowBox[{"S", "(", 
+     RowBox[{"t", ",", 
+      RowBox[{
+       RowBox[{
+        SubscriptBox["t", "s"], "'"}], 
+       RowBox[{"(", "t", ")"}]}]}], ")"}]}], TraditionalForm]]],
+ ", and then find the derivatives of this function with respect to ",
+ Cell[BoxData[
+  FormBox["t", TraditionalForm]]],
+ ". This can be done by differentiating the defining equation ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     FractionBox["\[PartialD]", 
+      RowBox[{"\[PartialD]", 
+       RowBox[{"t", "'"}]}]], 
+     RowBox[{"S", "(", 
+      RowBox[{"t", ",", 
+       RowBox[{
+        RowBox[{
+         SubscriptBox["t", "s"], "'"}], 
+        RowBox[{"(", "t", ")"}]}]}], ")"}]}], "\[Congruent]", "0"}], 
+   TraditionalForm]]],
+ " with respect to ",
+ Cell[BoxData[
+  FormBox["t", TraditionalForm]]],
+ " to find the relation obeyed by ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox[
+    RowBox[{"d", " ", 
+     RowBox[{
+      SubscriptBox["t", "s"], "'"}]}], 
+    RowBox[{"d", " ", "t"}]], TraditionalForm]]],
+ ", in the form ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       FractionBox[
+        RowBox[{
+         SuperscriptBox["\[PartialD]", "2"], "S"}], 
+        RowBox[{
+         RowBox[{"\[PartialD]", 
+          RowBox[{"t", "'"}]}], 
+         RowBox[{"\[PartialD]", "t"}]}]], 
+       RowBox[{"(", 
+        RowBox[{"t", ",", 
+         RowBox[{
+          RowBox[{
+           SubscriptBox["t", "s"], "'"}], 
+          RowBox[{"(", "t", ")"}]}]}], ")"}]}], "+", 
+      RowBox[{
+       FractionBox[
+        RowBox[{"d", " ", 
+         RowBox[{
+          SubscriptBox["t", "s"], "'"}]}], 
+        RowBox[{"d", " ", "t"}]], 
+       RowBox[{"(", "t", ")"}], 
+       FractionBox[
+        RowBox[{
+         SuperscriptBox["\[PartialD]", "2"], "S"}], 
+        SuperscriptBox[
+         RowBox[{"(", 
+          RowBox[{"\[PartialD]", 
+           RowBox[{"t", "'"}]}], ")"}], "2"]], 
+       RowBox[{"(", 
+        RowBox[{"t", ",", 
+         RowBox[{
+          RowBox[{
+           SubscriptBox["t", "s"], "'"}], 
+          RowBox[{"(", "t", ")"}]}]}], ")"}]}]}], "\[Congruent]", "0"}], 
+    ","}], TraditionalForm]]],
+ " and using "
+}], "Text"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ConstrainedDerivative", "::", "usage"}], "=", 
+    "\"\<ConstrainedDerivative[n][f][t,tt] calculates the nth derivative of \
+f[t,tt] with respect to t under the constraint that \
+\!\(\*SuperscriptBox[\\\"f\\\", TagBox[\n  RowBox[{\\\"(\\\", \n   RowBox[{\\\
+\"0\\\", \\\",\\\", \\\"1\\\"}], \\\")\\\"}],\n  \
+Derivative],\\nMultilineFunction->None]\)[t,tt]\[Congruent]0.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ConstrainedDerivative", "[", "n_", "]"}], "[", "F_", "]"}], "[", 
+   
+   RowBox[{"te_", ",", "tte_"}], "]"}], ":=", 
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"f", ",", "tts", ",", "t", ",", "tt"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"ConstrainedDerivative", "[", "n", "]"}], "[", "f_", "]"}], 
+       "[", 
+       RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
+      RowBox[{"Nest", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Function", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Simplify", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"D", "[", 
+             RowBox[{
+              RowBox[{"#", "/.", 
+               RowBox[{"{", 
+                RowBox[{"tt", "\[Rule]", 
+                 RowBox[{"tts", "[", "t", "]"}]}], "}"}]}], ",", "t"}], "]"}],
+             "/.", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Derivative", "[", 
+                  RowBox[{"0", ",", "1"}], "]"}], "[", "f", "]"}], "[", 
+                RowBox[{"t", ",", 
+                 RowBox[{"tts", "[", "t", "]"}]}], "]"}], "\[Rule]", "0"}], 
+              ",", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"tts", "'"}], "[", "t", "]"}], "\[Rule]", 
+               RowBox[{"-", 
+                FractionBox[
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Derivative", "[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "[", "f", "]"}], "[", 
+                  RowBox[{"t", ",", 
+                   RowBox[{"tts", "[", "t", "]"}]}], "]"}], 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Derivative", "[", 
+                    RowBox[{"0", ",", "2"}], "]"}], "[", "f", "]"}], "[", 
+                  RowBox[{"t", ",", 
+                   RowBox[{"tts", "[", "t", "]"}]}], "]"}]]}]}]}], "}"}]}], 
+           "\[IndentingNewLine]", "]"}], "/.", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"tts", "[", "t", "]"}], "\[Rule]", "tt"}], "}"}]}], 
+         "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+        RowBox[{"f", "[", 
+         RowBox[{"t", ",", "tt"}], "]"}], ",", "n"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"ConstrainedDerivative", "[", "n", "]"}], "[", "F", "]"}], "[", 
+      RowBox[{"te", ",", "tte"}], "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->True]
+}, Closed]],
+
+Cell[CellGroupData[{
+
 Cell["GetSaddlePoints", "Subsection"],
 
 Cell[BoxData[{
@@ -5744,8 +5947,7 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
         RowBox[{"\"\<tt\>\"", "\[Rule]", 
          RowBox[{
           RowBox[{
-          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-",
-           
+          "seed", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "-", 
           RowBox[{
           "seed", "\[LeftDoubleBracket]", "2", 
            "\[RightDoubleBracket]"}]}]}]}], "\[RightAssociation]"}]}], ";", 
@@ -6682,7 +6884,7 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Closed]]
+}, Open  ]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -7679,218 +7881,6 @@ the saddle-point approximation for this set.\>\""}], ";"}],
               RowBox[{"-", "z"}], "]"}], "z"]}]}], ")"}]}]}]}], 
       "\[IndentingNewLine]", "]"}]}], ")"}]}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True]
-}, Closed]],
-
-Cell[CellGroupData[{
-
-Cell["ConstrainedDerivative", "Subsection"],
-
-Cell[TextData[{
- "In some situations, one can require solving the ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{"t", "'"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
- " saddle-point equation ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{
-    RowBox[{
-     FractionBox["\[PartialD]", 
-      RowBox[{"\[PartialD]", 
-       RowBox[{"t", "'"}]}]], 
-     RowBox[{"S", "(", 
-      RowBox[{"t", ",", 
-       RowBox[{"t", "'"}]}], ")"}]}], "=", "0"}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
- " first to find a saddle point ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{
-    RowBox[{"t", "'"}], "=", 
-    RowBox[{
-     RowBox[{
-      SubscriptBox["t", "s"], "'"}], 
-     RowBox[{"(", "t", ")"}]}]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
- " and an action ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{
-    RowBox[{"S", "(", "t", ")"}], "=", 
-    RowBox[{"S", "(", 
-     RowBox[{"t", ",", 
-      RowBox[{
-       RowBox[{
-        SubscriptBox["t", "s"], "'"}], 
-       RowBox[{"(", "t", ")"}]}]}], ")"}]}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
- ", and then find the derivatives of this function with respect to ",
- Cell[BoxData[
-  FormBox["t", TraditionalForm]],
-  FormatType->"TraditionalForm"],
- ". This can be done by differentiating the defining equation ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{
-    RowBox[{
-     FractionBox["\[PartialD]", 
-      RowBox[{"\[PartialD]", 
-       RowBox[{"t", "'"}]}]], 
-     RowBox[{"S", "(", 
-      RowBox[{"t", ",", 
-       RowBox[{
-        RowBox[{
-         SubscriptBox["t", "s"], "'"}], 
-        RowBox[{"(", "t", ")"}]}]}], ")"}]}], "\[Congruent]", "0"}], 
-   TraditionalForm]]],
- " with respect to ",
- Cell[BoxData[
-  FormBox["t", TraditionalForm]],
-  FormatType->"TraditionalForm"],
- " to find the relation obeyed by ",
- Cell[BoxData[
-  FormBox[
-   FractionBox[
-    RowBox[{"d", " ", 
-     RowBox[{
-      SubscriptBox["t", "s"], "'"}]}], 
-    RowBox[{"d", " ", "t"}]], TraditionalForm]]],
- ", in the form ",
- Cell[BoxData[
-  FormBox[
-   RowBox[{
-    RowBox[{
-     RowBox[{
-      RowBox[{
-       FractionBox[
-        RowBox[{
-         SuperscriptBox["\[PartialD]", "2"], "S"}], 
-        RowBox[{
-         RowBox[{"\[PartialD]", 
-          RowBox[{"t", "'"}]}], 
-         RowBox[{"\[PartialD]", "t"}]}]], 
-       RowBox[{"(", 
-        RowBox[{"t", ",", 
-         RowBox[{
-          RowBox[{
-           SubscriptBox["t", "s"], "'"}], 
-          RowBox[{"(", "t", ")"}]}]}], ")"}]}], "+", 
-      RowBox[{
-       FractionBox[
-        RowBox[{"d", " ", 
-         RowBox[{
-          SubscriptBox["t", "s"], "'"}]}], 
-        RowBox[{"d", " ", "t"}]], 
-       RowBox[{"(", "t", ")"}], 
-       FractionBox[
-        RowBox[{
-         SuperscriptBox["\[PartialD]", "2"], "S"}], 
-        SuperscriptBox[
-         RowBox[{"(", 
-          RowBox[{"\[PartialD]", 
-           RowBox[{"t", "'"}]}], ")"}], "2"]], 
-       RowBox[{"(", 
-        RowBox[{"t", ",", 
-         RowBox[{
-          RowBox[{
-           SubscriptBox["t", "s"], "'"}], 
-          RowBox[{"(", "t", ")"}]}]}], ")"}]}]}], "\[Congruent]", "0"}], 
-    ","}], TraditionalForm]],
-  FormatType->"TraditionalForm"],
- " and using "
-}], "Text"],
-
-Cell[BoxData[{
- RowBox[{
-  RowBox[{
-   RowBox[{
-    RowBox[{"ConstrainedDerivative", "::", "usage"}], "=", 
-    "\"\<ConstrainedDerivative[n][f][t,tt] calculates the nth derivative of \
-f[t,tt] with respect to t under the constraint that \
-\!\(\*SuperscriptBox[\"f\", TagBox[
-RowBox[{\"(\", 
-RowBox[{\"0\", \",\", \"1\"}], \")\"}],
-Derivative],
-MultilineFunction->None]\)[t,tt]\[Congruent]0.\>\""}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{
-    RowBox[{"ConstrainedDerivative", "[", "n_", "]"}], "[", "F_", "]"}], "[", 
-   
-   RowBox[{"te_", ",", "tte_"}], "]"}], ":=", 
-  RowBox[{"Block", "[", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"f", ",", "tts", ",", "t", ",", "tt"}], "}"}], ",", 
-    "\[IndentingNewLine]", 
-    RowBox[{
-     RowBox[{
-      RowBox[{
-       RowBox[{
-        RowBox[{"ConstrainedDerivative", "[", "n", "]"}], "[", "f_", "]"}], 
-       "[", 
-       RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
-      RowBox[{"Nest", "[", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"Function", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"Simplify", "[", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"D", "[", 
-             RowBox[{
-              RowBox[{"#", "/.", 
-               RowBox[{"{", 
-                RowBox[{"tt", "\[Rule]", 
-                 RowBox[{"tts", "[", "t", "]"}]}], "}"}]}], ",", "t"}], "]"}],
-             "/.", 
-            RowBox[{"{", 
-             RowBox[{
-              RowBox[{
-               RowBox[{
-                RowBox[{
-                 RowBox[{"Derivative", "[", 
-                  RowBox[{"0", ",", "1"}], "]"}], "[", "f", "]"}], "[", 
-                RowBox[{"t", ",", 
-                 RowBox[{"tts", "[", "t", "]"}]}], "]"}], "\[Rule]", "0"}], 
-              ",", 
-              RowBox[{
-               RowBox[{
-                RowBox[{"tts", "'"}], "[", "t", "]"}], "\[Rule]", 
-               RowBox[{"-", 
-                FractionBox[
-                 RowBox[{
-                  RowBox[{
-                   RowBox[{"Derivative", "[", 
-                    RowBox[{"1", ",", "1"}], "]"}], "[", "f", "]"}], "[", 
-                  RowBox[{"t", ",", 
-                   RowBox[{"tts", "[", "t", "]"}]}], "]"}], 
-                 RowBox[{
-                  RowBox[{
-                   RowBox[{"Derivative", "[", 
-                    RowBox[{"0", ",", "2"}], "]"}], "[", "f", "]"}], "[", 
-                  RowBox[{"t", ",", 
-                   RowBox[{"tts", "[", "t", "]"}]}], "]"}]]}]}]}], "}"}]}], 
-           "\[IndentingNewLine]", "]"}], "/.", 
-          RowBox[{"{", 
-           RowBox[{
-            RowBox[{"tts", "[", "t", "]"}], "\[Rule]", "tt"}], "}"}]}], 
-         "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
-        RowBox[{"f", "[", 
-         RowBox[{"t", ",", "tt"}], "]"}], ",", "n"}], "]"}]}], ";", 
-     "\[IndentingNewLine]", 
-     RowBox[{
-      RowBox[{
-       RowBox[{"ConstrainedDerivative", "[", "n", "]"}], "[", "F", "]"}], "[", 
-      RowBox[{"te", ",", "tte"}], "]"}]}]}], "\[IndentingNewLine]", 
-   "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
