@@ -42,7 +42,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 11 Jan 2018 15:04:33";
+$RBSFAtimestamp="Thu 11 Jan 2018 15:09:05";
 End[];
 
 
@@ -725,15 +725,7 @@ FindComplexRoots[equations_List,domainSpecifiers__, ops : OptionsPattern[]] := B
 If[! IntegerQ[Rationalize[OptionValue[Seeds]]] || OptionValue[Seeds]<=0,Message[FindComplexRoots::seeds, OptionValue[Seeds]]];If[! (OptionValue[Tolerance] === Automatic || OptionValue[Tolerance]>=0),Message[FindComplexRoots::tol, OptionValue[Seeds]]];
 
 seeds=OptionValue[SeedGenerator][{domainSpecifiers}[[All,{2,3}]],OptionValue[Seeds]];
-tolerances=Which[
-ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,ConstantArray[
-Which[
-NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
-]
-,Length[{domainSpecifiers}]]
-];
+tolerances=SetTolerances[OptionValue[Tolerance],Length[{domainSpecifiers}],OptionValue[WorkingPrecision]];
 
 If[OptionValue[Verbose],Hold[], Hold[FindRoot::lstol]] /. {
 Hold[messageSequence___] :> Quiet[
@@ -901,18 +893,11 @@ Protect[SortingFunction,SelectionFunction,IndependentVariables,FiniteDifference]
 GetSaddlePoints[\[CapitalOmega]spec_,S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},options:OptionsPattern[]]:=GetSaddlePoints[\[CapitalOmega]spec,S,{{{tmin,tmax},{\[Tau]min,\[Tau]max}}},options]
 
 GetSaddlePoints[\[CapitalOmega]_,S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,tolerances},
+tolerances=SetTolerances[OptionValue[Tolerance],2,OptionValue[WorkingPrecision]];
 indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
 depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
 depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
 equations={D[S[t,tt],t]==\[CapitalOmega],D[S[t,tt],tt]==0}/.depVarRule;
-tolerances=Which[
-ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,ConstantArray[
-Which[
-NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
-]
-,2]];
 
 SortBy[
 DeleteDuplicates[
@@ -976,19 +961,12 @@ GetSaddlesFromSeeds[Flatten[Values[seedsAssociation[[Key/@keys]]],1],\[CapitalOm
 
 GetSaddlesFromSeeds[seedsList_List,\[CapitalOmega]_?NumberQ,S_,options:OptionsPattern[]]:=Block[
 {equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,fullSeedVars,tolerances},
+tolerances=SetTolerances[OptionValue[Tolerance],2,OptionValue[WorkingPrecision]];
 indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
 depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
 depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
 fullSeedVars[seed_]:=<|"t"->seed[[1]],"\[Tau]"->seed[[2]],"tt"->seed[[1]]-seed[[2]]|>;
 equations={D[S[t,tt],t]==\[CapitalOmega],D[S[t,tt],tt]==0}/.depVarRule;
-tolerances=Which[
-ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,ConstantArray[
-Which[
-NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
-]
-,2]];
 
 SortBy[
 DeleteDuplicates[
@@ -1037,6 +1015,7 @@ Options[GetDoubleSaddlePoints]=Join[{SortingFunction->({#4&,#2&,#1&}),SelectionF
 GetDoubleSaddlePoints[S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},{\[CapitalOmega]min_,\[CapitalOmega]max_},options:OptionsPattern[]]:=GetDoubleSaddlePoints[S,{{{tmin,tmax},{\[Tau]min,\[Tau]max},{\[CapitalOmega]min,\[CapitalOmega]max}}},options]
 
 GetDoubleSaddlePoints[S_,variableRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],\[CapitalOmega],indVars,depVar,depVarRule,tolerances},
+tolerances=SetTolerances[OptionValue[Tolerance],3,OptionValue[WorkingPrecision]];
 indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
 depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
 depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
@@ -1045,14 +1024,6 @@ D[S[t,tt],t]==\[CapitalOmega],
 D[S[t,tt],tt]==0,
 D[S[t,tt],{t,2}] D[S[t,tt],{tt,2}]-D[S[t,tt],t,tt]^2==0
 }/.depVarRule;
-tolerances=Which[
-ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,ConstantArray[
-Which[
-NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
-]
-,3]];
 
 SortBy[
 DeleteDuplicates[
@@ -1103,6 +1074,7 @@ Options[GetCutoffSaddlePoints]=Join[{SortingFunction->(#2&),SelectionFunction->(
 GetCutoffSaddlePoints[S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},options:OptionsPattern[]]:=GetCutoffSaddlePoints[S,{{{tmin,tmax},{\[Tau]min,\[Tau]max}}},options]
 
 GetCutoffSaddlePoints[S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,tolerances,d1S,d3S},
+tolerances=SetTolerances[OptionValue[Tolerance],2,OptionValue[WorkingPrecision]];
 indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
 depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
 depVarRule=depVar/.{"tt"->{tt->t-\[Tau]},"t"->{t->tt+\[Tau]},"\[Tau]"->{\[Tau]->t-tt}};
@@ -1112,14 +1084,6 @@ D[S[t,tt],{t,2}]D[S[t,tt],{tt,2}]-D[S[t,tt],t,tt]^2==0
 }/.depVarRule;
 d1S[t_,tt_]=ConstrainedDerivative[1][S][t,tt];
 d3S[t_,tt_]=ConstrainedDerivative[3][S][t,tt];
-tolerances=Which[
-ListQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,ConstantArray[
-Which[
-NumberQ[OptionValue[Tolerance]],OptionValue[Tolerance],
-True,10^If[NumberQ[OptionValue[WorkingPrecision]], 2-OptionValue[WorkingPrecision],2-$MachinePrecision]
-]
-,2]];
 
 SortBy[
 DeleteDuplicates[

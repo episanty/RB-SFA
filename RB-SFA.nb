@@ -335,7 +335,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 11 Jan 2018 15:04:33\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Thu 11 Jan 2018 15:09:05\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
@@ -4537,35 +4537,13 @@ Cell[BoxData[{
         RowBox[{"OptionValue", "[", "Seeds", "]"}]}], "]"}]}], ";", 
      "\[IndentingNewLine]", 
      RowBox[{"tolerances", "=", 
-      RowBox[{"Which", "[", "\[IndentingNewLine]", 
+      RowBox[{"SetTolerances", "[", 
        RowBox[{
-        RowBox[{"ListQ", "[", 
-         RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
         RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-        "\[IndentingNewLine]", "True", ",", 
-        RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"Which", "[", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"NumberQ", "[", 
-             RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-            RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-            "\[IndentingNewLine]", "True", ",", 
-            RowBox[{"10", "^", 
-             RowBox[{"If", "[", 
-              RowBox[{
-               RowBox[{"NumberQ", "[", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}], 
-               ",", " ", 
-               RowBox[{"2", "-", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
-               
-               RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
-           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
-          RowBox[{"Length", "[", 
-           RowBox[{"{", "domainSpecifiers", "}"}], "]"}]}], "]"}]}], 
-       "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
-     "\[IndentingNewLine]", 
+        RowBox[{"Length", "[", 
+         RowBox[{"{", "domainSpecifiers", "}"}], "]"}], ",", 
+        RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], "]"}]}], ";",
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{
       RowBox[{"If", "[", 
        RowBox[{
@@ -4728,7 +4706,7 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -5514,6 +5492,12 @@ difference procedures.\>\""}], ";"}],
       "depVar", ",", "depVarRule", ",", "tolerances"}], "}"}], ",", 
     "\[IndentingNewLine]", 
     RowBox[{
+     RowBox[{"tolerances", "=", 
+      RowBox[{"SetTolerances", "[", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", "2", ",", 
+        RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], "]"}]}], ";",
+      "\[IndentingNewLine]", 
      RowBox[{"indVars", "=", 
       RowBox[{
        RowBox[{"OptionValue", "[", "IndependentVariables", "]"}], "/.", 
@@ -5566,35 +5550,7 @@ difference procedures.\>\""}], ";"}],
             RowBox[{"S", "[", 
              RowBox[{"t", ",", "tt"}], "]"}], ",", "tt"}], "]"}], "\[Equal]", 
           "0"}]}], "}"}], "/.", "depVarRule"}]}], ";", "\[IndentingNewLine]", 
-     
-     RowBox[{"tolerances", "=", 
-      RowBox[{"Which", "[", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"ListQ", "[", 
-         RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-        "\[IndentingNewLine]", "True", ",", 
-        RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"Which", "[", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"NumberQ", "[", 
-             RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-            RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-            "\[IndentingNewLine]", "True", ",", 
-            RowBox[{"10", "^", 
-             RowBox[{"If", "[", 
-              RowBox[{
-               RowBox[{"NumberQ", "[", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}], 
-               ",", " ", 
-               RowBox[{"2", "-", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
-               
-               RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
-           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}], 
-         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     
+     "\[IndentingNewLine]", 
      RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
@@ -5934,6 +5890,12 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
       "depVar", ",", "depVarRule", ",", "fullSeedVars", ",", "tolerances"}], 
      "}"}], ",", "\[IndentingNewLine]", 
     RowBox[{
+     RowBox[{"tolerances", "=", 
+      RowBox[{"SetTolerances", "[", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", "2", ",", 
+        RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], "]"}]}], ";",
+      "\[IndentingNewLine]", 
      RowBox[{"indVars", "=", 
       RowBox[{
        RowBox[{"OptionValue", "[", "IndependentVariables", "]"}], "/.", 
@@ -6006,35 +5968,7 @@ for this case set RecalculateRoots to True.\>\""}], ";"}],
             RowBox[{"S", "[", 
              RowBox[{"t", ",", "tt"}], "]"}], ",", "tt"}], "]"}], "\[Equal]", 
           "0"}]}], "}"}], "/.", "depVarRule"}]}], ";", "\[IndentingNewLine]", 
-     
-     RowBox[{"tolerances", "=", 
-      RowBox[{"Which", "[", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"ListQ", "[", 
-         RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-        "\[IndentingNewLine]", "True", ",", 
-        RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"Which", "[", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"NumberQ", "[", 
-             RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-            RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-            "\[IndentingNewLine]", "True", ",", 
-            RowBox[{"10", "^", 
-             RowBox[{"If", "[", 
-              RowBox[{
-               RowBox[{"NumberQ", "[", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}], 
-               ",", " ", 
-               RowBox[{"2", "-", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
-               
-               RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
-           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}], 
-         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     
+     "\[IndentingNewLine]", 
      RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
@@ -6281,6 +6215,12 @@ and v can be any of \\\"RecombinationTime\\\", \\\"IonizationTime\\\" and \
       "\[CapitalOmega]", ",", "indVars", ",", "depVar", ",", "depVarRule", 
       ",", "tolerances"}], "}"}], ",", "\[IndentingNewLine]", 
     RowBox[{
+     RowBox[{"tolerances", "=", 
+      RowBox[{"SetTolerances", "[", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", "3", ",", 
+        RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], "]"}]}], ";",
+      "\[IndentingNewLine]", 
      RowBox[{"indVars", "=", 
       RowBox[{
        RowBox[{"OptionValue", "[", "IndependentVariables", "]"}], "/.", 
@@ -6354,35 +6294,7 @@ and v can be any of \\\"RecombinationTime\\\", \\\"IonizationTime\\\" and \
               RowBox[{"S", "[", 
                RowBox[{"t", ",", "tt"}], "]"}], ",", "t", ",", "tt"}], "]"}], 
             "2"]}], "\[Equal]", "0"}]}], "\[IndentingNewLine]", "}"}], "/.", 
-       "depVarRule"}]}], ";", "\[IndentingNewLine]", 
-     RowBox[{"tolerances", "=", 
-      RowBox[{"Which", "[", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"ListQ", "[", 
-         RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-        "\[IndentingNewLine]", "True", ",", 
-        RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"Which", "[", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"NumberQ", "[", 
-             RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-            RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-            "\[IndentingNewLine]", "True", ",", 
-            RowBox[{"10", "^", 
-             RowBox[{"If", "[", 
-              RowBox[{
-               RowBox[{"NumberQ", "[", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}], 
-               ",", " ", 
-               RowBox[{"2", "-", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
-               
-               RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
-           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "3"}], 
-         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     
+       "depVarRule"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
      RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
@@ -6649,6 +6561,12 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
       "depVar", ",", "depVarRule", ",", "tolerances", ",", "d1S", ",", 
       "d3S"}], "}"}], ",", "\[IndentingNewLine]", 
     RowBox[{
+     RowBox[{"tolerances", "=", 
+      RowBox[{"SetTolerances", "[", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", "2", ",", 
+        RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], "]"}]}], ";",
+      "\[IndentingNewLine]", 
      RowBox[{"indVars", "=", 
       RowBox[{
        RowBox[{"OptionValue", "[", "IndependentVariables", "]"}], "/.", 
@@ -6733,34 +6651,7 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
         RowBox[{"ConstrainedDerivative", "[", "3", "]"}], "[", "S", "]"}], 
        "[", 
        RowBox[{"t", ",", "tt"}], "]"}]}], ";", "\[IndentingNewLine]", 
-     RowBox[{"tolerances", "=", 
-      RowBox[{"Which", "[", "\[IndentingNewLine]", 
-       RowBox[{
-        RowBox[{"ListQ", "[", 
-         RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-        RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-        "\[IndentingNewLine]", "True", ",", 
-        RowBox[{"ConstantArray", "[", "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"Which", "[", "\[IndentingNewLine]", 
-           RowBox[{
-            RowBox[{"NumberQ", "[", 
-             RowBox[{"OptionValue", "[", "Tolerance", "]"}], "]"}], ",", 
-            RowBox[{"OptionValue", "[", "Tolerance", "]"}], ",", 
-            "\[IndentingNewLine]", "True", ",", 
-            RowBox[{"10", "^", 
-             RowBox[{"If", "[", 
-              RowBox[{
-               RowBox[{"NumberQ", "[", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}], "]"}], 
-               ",", " ", 
-               RowBox[{"2", "-", 
-                RowBox[{"OptionValue", "[", "WorkingPrecision", "]"}]}], ",", 
-               
-               RowBox[{"2", "-", "$MachinePrecision"}]}], "]"}]}]}], 
-           "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", "2"}], 
-         "]"}]}], "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-     
+     "\[IndentingNewLine]", 
      RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
       RowBox[{
        RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
@@ -6922,7 +6813,7 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
