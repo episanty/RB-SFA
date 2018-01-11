@@ -42,7 +42,7 @@ End[];
 
 
 Begin["`Private`"];
-$RBSFAtimestamp="Tue 9 Jan 2018 17:12:06";
+$RBSFAtimestamp="Thu 11 Jan 2018 15:04:33";
 End[];
 
 
@@ -703,6 +703,21 @@ $MessageGroups=Join[$MessageGroups,{"FindComplexRoots":>{FindRoot::lstol}}];
 
 Protect[Seeds];
 Protect[SeedGenerator];
+
+
+SetTolerances::usage="SetTolerances[tolerance,length] produces a list of the given length with the specified tolerance, which may be a number or a list of numbers.\n
+SetTolerances[tolerance,length,workingPrecision] allows a fallback to a specified workingPrecision in case the given tolerance fails to be numeric.";
+Begin["`Private`"];
+SetTolerances[tolerance_,length_,workingPrecision_:$MachinePrecision]:=Which[
+ListQ[tolerance],tolerance,
+True,ConstantArray[
+Which[
+NumberQ[tolerance],tolerance,
+True,10^If[NumberQ[workingPrecision], 2-workingPrecision,2-$MachinePrecision]
+]
+,length]
+]
+End[];
 
 
 Begin["`Private`"];
