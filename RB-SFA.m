@@ -19,14 +19,17 @@
 
 
 
+(* ::Input::Initialization:: *)
 (*
 This is the RB-SFA package for calculating high-order harmonic generation within the Strong Field Approximation. For the notebook that generated this package file and additional documentaion, see https://github.com/episanty/RB-SFA.
 *)
 
 
+(* ::Input::Initialization:: *)
 BeginPackage["RBSFA`"];
 
 
+(* ::Input::Initialization:: *)
 $RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";
 $RBSFAtimestamp::usage="$RBSFAtimestamp prints the timestamp of the current version of the RB-SFA package.";
 Begin["`Private`"];
@@ -34,6 +37,7 @@ $RBSFAversion:="RB-SFA v2.1.3, "<>$RBSFAtimestamp;
 End[];
 
 
+(* ::Input::Initialization:: *)
 RBSFAversion::usage="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
 RBSFAversion::dprc="RBSFAversion[] has been deprecated in favour of $RBSFAversion.";
 Begin["`Private`"];
@@ -41,14 +45,17 @@ RBSFAversion[]:=(Message[RBSFAversion::dprc];$RBSFAversion);
 End[];
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Thu 11 Jan 2018 15:09:05";
+$RBSFAtimestamp="Mon 17 Feb 2020 21:05:21";
 End[];
 
 
+(* ::Input::Initialization:: *)
 $RBSFAdirectory::usage="$RBSFAdirectory is the directory where the current RB-SFA package instance is located.";
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 With[{softLinkTestString=StringSplit[StringJoin[ReadList["! ls -la "<>StringReplace[$InputFileName,{" "->"\\ "}],String]]," -> "]},
 If[Length[softLinkTestString]>1,(*Testing in case $InputFileName is a soft link to the actual directory.*)
@@ -58,16 +65,19 @@ $RBSFAdirectory=StringReplace[DirectoryName[$InputFileName],{" "->"\\ "}];
 End[];
 
 
+(* ::Input::Initialization:: *)
 $RBSFAcommit::usage="$RBSFAcommit returns the git commit log at the location of the RB-SFA package if there is one.";
 $RBSFAcommit::OS="$RBSFAcommit has only been tested on Linux.";
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 $RBSFAcommit:=(If[$OperatingSystem!="Unix",Message[$RBSFAcommit::OS]];
 StringJoin[Riffle[ReadList["!cd "<>$RBSFAdirectory<>" && git log -1",String],{"\n"}]]);
 End[];
 
 
+(* ::Input::Initialization:: *)
 Quiet[Check[
 ConstantArray[0,{}];,
 Unprotect[ConstantArray];
@@ -76,6 +86,7 @@ Protect[ConstantArray];
 ]];
 
 
+(* ::Input::Initialization:: *)
 Parallelize;
 Parallel`Developer`$InitCode=Hold[
 Quiet[Check[
@@ -87,6 +98,7 @@ Protect[ConstantArray];
 ];
 
 
+(* ::Input::Initialization:: *)
 If[
 Context[ReIm]=!="System`"&&Attributes[ReIm]=={},
 ReIm::usage="\!\(\*RowBox[{\"ReIm\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}]\) gives the list \!\(\*RowBox[{\"{\", RowBox[{RowBox[{\"Re\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}], \",\", RowBox[{\"Im\", \"[\", StyleBox[\"z\", \"TI\"], \"]\"}]}], \"}\"}]\) of the number \!\(\*StyleBox[\"z\", \"TI\"]\).";
@@ -96,6 +108,7 @@ Protect[ReIm];
 ]
 
 
+(* ::Input::Initialization:: *)
 AssociationTranspose::usage="AssociationTranspose[association] transposes the given two-level association of associations.";
 AssociationTranspose::wrngshp="Input `1` is the wrong shape; it must be an association all of whose Values are valid associations.";
 Begin["`Private`"];
@@ -109,6 +122,7 @@ AssociationTranspose[association__]:="Doesn't display; cf. mm.se/q/29321 for det
 End[];
 
 
+(* ::Input::Initialization:: *)
 If[
 $VersionNumber<10.1,
 KeyValueMap::usage="\!\(\*RowBox[{\"KeyValueMap\", \"[\", RowBox[{StyleBox[\"f\",\"TI\"], \",\", RowBox[{\"\[LeftAssociation]\",RowBox[{RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"1\", \"TR\"]], \"\[Rule]\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"1\", \"TR\"]]}], \",\", RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"2\", \"TR\"]], \"\[Rule]\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"2\", \"TR\"]]}], \",\", StyleBox[\"\[Ellipsis]\", \"TR\"]}], \"\[RightAssociation]\"}]}], \"]\"}]\) gives the list \!\(\*RowBox[{\"{\", RowBox[{RowBox[{StyleBox[\"f\", \"TI\"], \"[\", RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"1\", \"TR\"]], \",\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"1\", \"TR\"]]}], \"]\"}], \",\", RowBox[{StyleBox[\"f\", \"TI\"], \"[\", RowBox[{SubscriptBox[StyleBox[\"key\", \"TI\"], StyleBox[\"2\", \"TR\"]], \",\", SubscriptBox[StyleBox[\"val\", \"TI\"], StyleBox[\"2\", \"TR\"]]}], \"]\"}], \",\", StyleBox[\"\[Ellipsis]\", \"TR\"]}], \"}\"}]\). (Note: function backported from v10.1+.)
@@ -127,6 +141,7 @@ KeyValueMap[f_,assoc__]:="Doesn't display; cf. mm.se/q/29321 for details"/;Messa
 End[];
 
 
+(* ::Input::Initialization:: *)
 hydrogenicDTME::usage="hydrogenicDTME[p,\[Kappa]] returns the dipole transition matrix element for a 1s hydrogenic state of ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).
 
 hydrogenicDTME[p,\[Kappa],{n,l,m}] returns the dipole transition matrix element for an n,l,m hydrogenic state of ground-state ionization potential \!\(\*SubscriptBox[\(I\), \(p\)]\)=\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\).
@@ -145,6 +160,7 @@ hydrogenicDTMERegularized[p_?NumberQ,\[Kappa]_]:=(8I)/\[Pi] (Sqrt[2\[Kappa]^5]p)
 End[];
 
 
+(* ::Input::Initialization:: *)
 gaussianDTME::usage="gaussianDTME[p,\[Kappa]] returns the dipole transition matrix element for a gaussian state of characteristic size 1/\[Kappa].";
 Begin["`Private`"];
 gaussianDTME[p_List,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(Total[p^2]/(2\[Kappa]^2))]
@@ -152,6 +168,7 @@ gaussianDTME[p_?NumberQ,\[Kappa]_]:=-I (4\[Pi])^(3/4) \[Kappa]^(-7/2) p Exp[-(p^
 End[];
 
 
+(* ::Input::Initialization:: *)
 SolidHarmonicS::usage="SolidHarmonicS[l,m,x,y,z] calculates the solid harmonic \!\(\*SubscriptBox[\(S\), \(lm\)]\)(x,y,z)=\!\(\*SuperscriptBox[\(r\), \(l\)]\)\!\(\*SubscriptBox[\(Y\), \(lm\)]\)(x,y,z).
 
 SolidHarmonicS[l,m,{x,y,z}] does the same.";
@@ -168,6 +185,7 @@ SolidHarmonicS[\[Lambda]_Integer,\[Mu]_Integer,{x_,y_,z_}]/;\[Lambda]>=Abs[\[Mu]
 End[];
 
 
+(* ::Input::Initialization:: *)
 hydrogenic\[CapitalPsi]::usage="hydrogenic\[CapitalPsi][n,l,m,\[Kappa],px,py,pz] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.
 
 hydrogenic\[CapitalPsi][n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.";
@@ -182,6 +200,7 @@ hydrogenic\[CapitalPsi][n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[CapitalPs
 End[];
 
 
+(* ::Input::Initialization:: *)
 hydrogenic\[CapitalPsi]Regularized::usage="hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],px,py,pz] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\) in the denominator.
 
 hydrogenic\[CapitalUpsilon]Regularized[n,l,m,\[Kappa],{px,py,pz}] calculates the momentum-space wavefunction \[CapitalPsi](p)=\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2, multiplied by (\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)\!\(\*SuperscriptBox[\()\), \(n + 1\)]\) to remove any factors of \!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\) in the denominator.";
@@ -196,6 +215,7 @@ hydrogenic\[CapitalPsi]Regularized[n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic
 End[];
 
 
+(* ::Input::Initialization:: *)
 hydrogenic\[CapitalUpsilon]::usage="hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz] calculates the Upsilon function \[CapitalUpsilon](p)=(\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SubscriptBox[\(I\), \(p\)]\))\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.
 
 hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],{px,py,pz}] calculates the Upsilon function \[CapitalUpsilon](p)=(\!\(\*FractionBox[\(1\), \(2\)]\)\!\(\*SuperscriptBox[\(p\), \(2\)]\)+\!\(\*SubscriptBox[\(I\), \(p\)]\))\[LeftAngleBracket]p|nlm\[RightAngleBracket] for a hydrogenic atom with ionization potential \!\(\*SuperscriptBox[\(\[Kappa]\), \(2\)]\)/2.";
@@ -205,6 +225,7 @@ hydrogenic\[CapitalUpsilon][n_,l_,m_,\[Kappa]_,{px_,py_,pz_}]:=hydrogenic\[Capit
 End[];
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 hydrogenicDTME[{ppx_,ppy_,ppz_},\[Kappa]\[Kappa]_,n_,l_,m_]:=Block[{\[Kappa],px,py,pz},
 hydrogenicDTME[{px_,py_,pz_},\[Kappa]_,n,l,m]=Simplify[Grad[hydrogenic\[CapitalUpsilon][n,l,m,\[Kappa],px,py,pz],{px,py,pz}]];
@@ -214,24 +235,28 @@ hydrogenicDTME[{px_,py_,pz_},\[Kappa]_,{n_,l_,m_}]:=hydrogenicDTME[{px,py,pz},\[
 End[];
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 hydrogenicDTMERegularized[{px_,py_,pz_},\[Kappa]_,n_,l_,m_]:=(px^2+py^2+pz^2+\[Kappa]^2)^(n+1) hydrogenicDTME[{px,py,pz},\[Kappa],n,l,m];
 hydrogenicDTMERegularized[{px_,py_,pz_},\[Kappa]_,{n_,l_,m_}]:=hydrogenicDTMERegularized[{px,py,pz},\[Kappa],n,l,m];
 End[];
 
 
+(* ::Input::Initialization:: *)
 flatTopEnvelope::usage="flatTopEnvelope[\[Omega],num,nRamp] returns a Function object representing a flat-top envelope at carrier frequency \[Omega] lasting a total of num cycles and with linear ramps nRamp cycles long.";
 Begin["`Private`"];
 flatTopEnvelope[\[Omega]_,num_,nRamp_]:=Function[t,Piecewise[{{0,t<0},{Sin[(\[Omega] t)/(4nRamp)]^2,0<=t<(2 \[Pi])/\[Omega] nRamp},{1,(2 \[Pi])/\[Omega] nRamp<=t<(2 \[Pi])/\[Omega] (num-nRamp)},{Sin[(\[Omega] ((2 \[Pi])/\[Omega] num-t))/(4nRamp)]^2,(2 \[Pi])/\[Omega] (num-nRamp)<=t<(2 \[Pi])/\[Omega] num},{0,(2 \[Pi])/\[Omega] num<=t}}]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 cosPowerFlatTop::usage="cosPowerFlatTop[\[Omega],num,power] returns a Function object representing a smooth flat-top envelope of the form 1-Cos(\[Omega] t/2 num\!\(\*SuperscriptBox[\()\), \(power\)]\)";
 Begin["`Private`"];
 cosPowerFlatTop[\[Omega]_,num_,power_]:=Function[t,1-Cos[(\[Omega] t)/(2num)]^power]
 End[];
 
 
+(* ::Input::Initialization:: *)
 PointsPerCycle::usage="PointsPerCycle is a sampling option which specifies the number of sampling points per cycle to be used in integrations.";
 TotalCycles::usage="TotalCycles is a sampling option which specifies the total number of periods to be integrated over.";
 CarrierFrequency::usage="CarrierFrequency is a sampling option which specifies the carrier frequency to be used.";
@@ -241,10 +266,12 @@ $DefaultCarrierFrequency::usage="Default CarrierFrequency to use when no explici
 Protect[PointsPerCycle,TotalCycles,CarrierFrequency];
 
 
+(* ::Input::Initialization:: *)
 standardOptions={PointsPerCycle->90,TotalCycles->1,CarrierFrequency->Automatic,IntegrationPointsPerCycle->Automatic};
 $DefaultCarrierFrequency=0.057;
 
 
+(* ::Input::Initialization:: *)
 
 GetCarrierFrequency::usage="GetCarrierFrequency[OptionValue[CarrierFrequency]] returns OptionValue[CarrierFrequency], unless it's set to Automatic, in which case it returns $DefaultCarrierFrequency and issues a warning.
 
@@ -259,6 +286,7 @@ End[]
 
 
 
+(* ::Input::Initialization:: *)
 harmonicOrderAxis::usage="harmonicOrderAxis[opt\[Rule]value] returns a list of frequencies which can be used as a frequency axis for Fourier transforms, scaled in units of harmonic order, for the provided field duration and sampling options.";
 TargetLength::usage="TargetLength is an option for harmonicOrderAxis which specifies the total length required of the resulting list.";
 LengthCorrection::usage="LengthCorrection is an option for harmonicOrderAxis which allows for manual correction of the length of the resulting list.";
@@ -277,6 +305,7 @@ Message[harmonicOrderAxis::target,OptionValue["TargetLength"]];Abort[]
 End[];
 
 
+(* ::Input::Initialization:: *)
 frequencyAxis::usage="frequencyAxis[opt\[Rule]value] returns a list of frequencies which can be used as a frequency axis for Fourier transforms, in atomic units of frequency, for the provided field duration and sampling options.";
 Begin["`Private`"];
 Options[frequencyAxis]=Options[harmonicOrderAxis];
@@ -284,6 +313,7 @@ frequencyAxis[options:OptionsPattern[]]:=GetCarrierFrequency[OptionValue[Carrier
 End[];
 
 
+(* ::Input::Initialization:: *)
 timeAxis::usage="timeAxis[opt\[Rule]value] returns a list of times which can be used as a time axis ";
 TimeScale::usage="TimeScale is an option for timeAxis which specifies the units the list should use: AtomicUnits by default, or LaserPeriods if required.";
 AtomicUnits::usage="AtomicUnits is a value for the option TimeScale of timeAxis which specifies that the times should be in atomic units of time.";
@@ -305,6 +335,7 @@ Message[timeAxis::scale,OptionValue[TimeScale]];Abort[]
 End[];
 
 
+(* ::Input::Initialization:: *)
 getSpectrum::usage="getSpectrum[DipoleList] returns the power spectrum of DipoleList.";
 Polarization::usage="Polarization is an option for getSpectrum which specifies a polarization vector along which to polarize the dipole list. The default, Polarization\[Rule]False, specifies an unpolarized spectrum.";
 ComplexPart::usage="ComplexPart is an option for getSpectrum which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
@@ -362,6 +393,7 @@ Re[differentiatedList[[All,i]]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 spectrumPlotter::usage="spectrumPlotter[spectrum] plots the given spectrum with an appropriate axis in a \!\(\*SubscriptBox[\(log\), \(10\)]\) scale.";
 FrequencyAxis::usage="FrequencyAxis is an option for spectrumPlotter which specifies the axis to use.";
 Protect[FrequencyAxis];
@@ -388,6 +420,7 @@ Log[10,spectrum]
 End[];
 
 
+(* ::Input::Initialization:: *)
 biColorSpectrum::usage="biColorSpectrum[DipoleList] produces a two-colour spectrum of DipoleList, separating the two circular polarizations.";
 Begin["`Private`"];
 Options[biColorSpectrum]=Join[{PlotRange->All},Options[Show],Options[spectrumPlotter],DeleteCases[Options[getSpectrum],Polarization->False]];
@@ -405,6 +438,7 @@ PlotStyle->Blue,Sequence@@FilterRules[{options},Options[spectrumPlotter]]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 SineSquaredGate::usage="SineSquaredGate[nGateRamp] specifies an integration gate with a sine-squared ramp, such that SineSquaredGate[nGateRamp][\[Omega]t,nGate] has nGate flat periods and nGateRamp ramp periods.";
 LinearRampGate::usage="LinearRampGate[nGateRamp] specifies an integration gate with a linear ramp, such that SineSquaredGate[nGateRamp][\[Omega]t,nGate] has nGate flat periods and nGateRamp ramp periods.";
 Begin["`Private`"];
@@ -413,6 +447,7 @@ LinearRampGate[nGateRamp_][\[Omega]\[Tau]_,nGate_]:=Piecewise[{{1,\[Omega]\[Tau]
 End[];
 
 
+(* ::Input::Initialization:: *)
 getIonizationPotential::usage="getIonizationPotential[Target] returns the ionization potential of an atomic target, e.g. \"Hydrogen\", in atomic units.\[IndentingNewLine]
 getIonizationPotential[Target,q] returns the ionization potential of the q-th ion of the specified Target, in atomic units.\[IndentingNewLine]
 getIonizationPotential[{Target,q}] returns the ionization potential of the q-th ion of the specified Target, in atomic units.";
@@ -422,6 +457,7 @@ getIonizationPotential[{Target_,Charge_:0}]:=getIonizationPotential[Target,Charg
 End[];
 
 
+(* ::Input::Initialization:: *)
 makeDipoleList::usage="makeDipoleList[VectorPotential\[Rule]A] calculates the dipole response to the vector potential A.";
 
 VectorPotential::usage="VectorPotential is an option for makeDipole list which specifies the field's vector potential. Usage should be VectorPotential\[Rule]A, where A[t]//.pars must yield a list of numbers for numeric t and parameters indicated by FieldParameters\[Rule]pars.";
@@ -689,6 +725,7 @@ dipoleList
 End[];
 
 
+(* ::Input::Initialization:: *)
 FindComplexRoots::usage="FindComplexRoots[e1==e2, {z, zmin, zmax}] attempts to find complex roots of the equation e1==e2 in the complex rectangle with corners zmin and zmax.
 
 FindComplexRoots[{e1==e2, e3==e4, \[Ellipsis]}, {z1, z1min, z1max}, {z2, z2min, z2max}, \[Ellipsis]] attempts to find complex roots of the given system of equations in the multidimensional complex rectangle with corners z1min, z1max, z2min, z2max, \[Ellipsis].";
@@ -705,6 +742,7 @@ Protect[Seeds];
 Protect[SeedGenerator];
 
 
+(* ::Input::Initialization:: *)
 SetTolerances::usage="SetTolerances[tolerance,length] produces a list of the given length with the specified tolerance, which may be a number or a list of numbers.\n
 SetTolerances[tolerance,length,workingPrecision] allows a fallback to a specified workingPrecision in case the given tolerance fails to be numeric.";
 Begin["`Private`"];
@@ -720,6 +758,7 @@ True,10^If[NumberQ[workingPrecision], 2-workingPrecision,2-$MachinePrecision]
 End[];
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 FindComplexRoots[equations_List,domainSpecifiers__, ops : OptionsPattern[]] := Block[{seeds,tolerances},
 If[! IntegerQ[Rationalize[OptionValue[Seeds]]] || OptionValue[Seeds]<=0,Message[FindComplexRoots::seeds, OptionValue[Seeds]]];If[! (OptionValue[Tolerance] === Automatic || OptionValue[Tolerance]>=0),Message[FindComplexRoots::tol, OptionValue[Seeds]]];
@@ -763,11 +802,13 @@ FindComplexRoots[e1_==e2_,{z_,zmin_,zmax_},ops:OptionsPattern[]]:=FindComplexRoo
 End[];
 
 
+(* ::Input::Initialization:: *)
 RandomSobolComplexes::usage="RandomSobolComplexes[{zmin, zmax}, n] generates a low-discrepancy Sobol sequence of n quasirandom complex numbers in the rectangle with corners zmin and zmax.
 
 RandomSobolComplexes[{{z1min,z1max},{z2min,z2max},\[Ellipsis]},n] generates a low-discrepancy Sobol sequence of n quasirandom complex numbers in the multi-dimensional rectangle with corners {z1min,z1max},{z2min,z2max},\[Ellipsis].";
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 RandomSobolComplexes[pairsList__, number_] :=Map[
 Function[randomsList,
@@ -786,11 +827,13 @@ RandomSobolComplexes[{zmin_?NumericQ,zmax_?NumericQ},number_]:=RandomSobolComple
 End[];
 
 
+(* ::Input::Initialization:: *)
 RandomNiederreiterComplexes::usage="RandomNiederreiterComplexes[{zmin, zmax}, n] generates a low-discrepancy Niederreiter sequence of n quasirandom complex numbers in the rectangle with corners zmin and zmax.
 
 RandomNiederreiterComplexes[{{z1min,z1max},{z2min,z2max},\[Ellipsis]},n] generates a low-discrepancy Niederreiter sequence of n quasirandom complex numbers in the multi-dimensional rectangle with corners {z1min,z1max},{z2min,z2max},\[Ellipsis].";
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 RandomNiederreiterComplexes[pairsList__, number_] :=Map[
 Function[randomsList,
@@ -809,11 +852,13 @@ RandomNiederreiterComplexes[{zmin_?NumericQ,zmax_?NumericQ},number_]:=RandomNied
 End[];
 
 
+(* ::Input::Initialization:: *)
 DeterministicComplexGrid::usage="DeterministicComplexGrid[{zmin, zmax}, n] generates a grid of about n equally spaced complex numbers in the rectangle with corners zmin and zmax.
 
 DeterministicComplexGrid[{{z1min,z1max},{z2min,z2max},\[Ellipsis]},n] generates a regular grid of about n equally spaced complex numbers in the multi-dimensional rectangle with corners {z1min,z1max},{z2min,z2max},\[Ellipsis].";
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 DeterministicComplexGrid[pairsList_,number_]:=Block[{sep,separationsList,gridPointBasis,k},
 sep=NestWhile[0.99#&,Min[Flatten[ReIm[pairsList[[All,2]]-pairsList[[All,1]]]]],Times@@(Floor[Flatten[ReIm[pairsList[[All,2]]-pairsList[[All,1]]]],0.99#]/(0.99#))<=number&];
@@ -831,6 +876,7 @@ DeterministicComplexGrid[{zmin_?NumericQ,zmax_?NumericQ},number_]:=Deterministic
 End[];
 
 
+(* ::Input::Initialization:: *)
 Begin["`Private`"];
 Unprotect[RandomComplex];
 RandomComplex[{range1_List,moreRanges___},number_]:=Transpose[RandomComplex[#,number]&/@{range1,moreRanges}]
@@ -838,6 +884,7 @@ Protect[RandomComplex];
 End[];
 
 
+(* ::Input::Initialization:: *)
 Parallelize;
 If[Head[Parallel`Developer`$InitCode]=!=Hold,
 Parallel`Developer`$InitCode=Hold[]
@@ -852,6 +899,7 @@ Protect[RandomComplex];
 ];
 
 
+(* ::Input::Initialization:: *)
 ConstrainedDerivative::usage="ConstrainedDerivative[n][f][t,tt] calculates the nth derivative of f[t,tt] with respect to t under the constraint that \!\(\*SuperscriptBox[\"f\", TagBox[
   RowBox[{\"(\", 
    RowBox[{\"0\", \",\", \"1\"}], \")\"}],
@@ -871,6 +919,7 @@ ConstrainedDerivative[n][F][te,tte]
 End[];
 
 
+(* ::Input::Initialization:: *)
 GetSaddlePoints::usage="GetSaddlePoints[\[CapitalOmega],S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where both ranges should be the lower-left and upper-right corners of rectangles in the complex plane.
 
 GetSaddlePoints[\[CapitalOmega]Range,S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds solutions of the HHG temporal saddle-point equations for a range of harmonic energies \[CapitalOmega]Range, and returns an Association with each harmonic energy \[CapitalOmega] indexing a list of saddle-point solution pairs {t,\[Tau]}.
@@ -932,6 +981,7 @@ GetSaddlePoints[\[CapitalOmega]Range_List,S_,timeRanges_,options:OptionsPattern[
 End[];
 
 
+(* ::Input::Initialization:: *)
 GetSaddlesFromSeeds::usage="GetSaddlesFromSeeds[{{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]},\[CapitalOmega],S] finds a list of solutions {t,\[Tau]} of the HHG temporal saddle-point equations at harmonic energy \[CapitalOmega] for action S, using the given {\!\(\*SubscriptBox[\(t\), \(i\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i\)]\)} as seeds for the process.
 
 GetSaddlesFromSeeds[\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]},\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(21\)]\)},{\!\(\*SubscriptBox[\(t\), \(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)},\[Ellipsis]},\[Ellipsis]\[RightAssociation],\[CapitalOmega],S] finds solutions of the HHG temporal saddle-point equations, using the seeds list from the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\) that's closest to \[CapitalOmega], or as specified by the value of KeyChooserFunction.
@@ -997,6 +1047,7 @@ Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S,
 End[];
 
 
+(* ::Input::Initialization:: *)
 GetDoubleSaddlePoints::usage="GetDoubleSaddlePoints[S,{tmin,tmax},{\[Tau]min,\[Tau]max},{\[CapitalOmega]min,\[CapitalOmega]max}] finds a list of double solutions {t,\[Tau],\[CapitalOmega]} of the HHG temporal saddle-point equations, using a complex-valued \[CapitalOmega] in the range {\[CapitalOmega]min,\[CapitalOmega]max}, for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where the ranges should indicate the lower-left and upper-right corners of rectangles in the complex plane.
 
 GetDoubleSaddlePoints[S,{{{\!\(\*SubscriptBox[\(tmin\), \(1\)]\),\!\(\*SubscriptBox[\(tmax\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]max\), \(1\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \(2\)]\),\!\(\*SubscriptBox[\(tmax\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[CapitalOmega]max\), \(2\)]\)}},\[Ellipsis]}] uses multiple variable ranges and combines the solutions.
@@ -1060,6 +1111,7 @@ Function[variableSet,OptionValue[SortingFunction][variableSet[[1]],variableSet[[
 End[];
 
 
+(* ::Input::Initialization:: *)
 GetCutoffSaddlePoints::usage="GetCutoffSaddlePoints[S,{tmin,tmax},{\[Tau]min,\[Tau]max}] finds a list of solutions {t,\[Tau],\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S,\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S} of the HHG cutoff saddle-point equations {\!\(\*SubscriptBox[\(\[PartialD]\), \(t'\)]\)S=0,\!\(\*SubsuperscriptBox[\(d\), \(t\), \(2\)]\)S=0} for action S, in the range {tmin, tmax} of recombination time and {\[Tau]min, \[Tau]max} of excursion time, where both ranges should be the lower-left and upper-right corners of rectangles in the complex plane.
 
 GetCutoffSaddlePoints[S,{{{\!\(\*SubscriptBox[\(tmin\), \(1\)]\),\!\(\*SubscriptBox[\(tmax\), \(1\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(1\)]\)}},{{\!\(\*SubscriptBox[\(tmin\), \(2\)]\),\!\(\*SubscriptBox[\(tmax\), \(2\)]\)},{\!\(\*SubscriptBox[\(\[Tau]min\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]max\), \(2\)]\)}},\[Ellipsis]}] uses multiple time domains and combines the solutions.
@@ -1116,6 +1168,7 @@ Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S]
 End[];
 
 
+(* ::Input::Initialization:: *)
 ClassifyQuantumOrbits::usage="ClassifyQuantumOrbits[saddlePoints,f] sorts an indexed set of saddle points of the form \[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]{{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]}\[Ellipsis]\[RightAssociation] using a function f, which should turn f[t,\[Tau],\[CapitalOmega]] into an appropriate label, and returns an association of the form \[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(1\)]\)\[RightArrow]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{t,\[Tau]},2\[RightArrow]{t,\[Tau]},\[Ellipsis]\[RightAssociation],\[Ellipsis]\[RightAssociation],\[Ellipsis]\[RightAssociation].
 
 ClassifyQuantumOrbits[saddlePoints,f,sortFunction] uses the function sortFunction to sort the sets of saddle points {{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)},\[Ellipsis]} for each label and harmonic energy.
@@ -1146,6 +1199,7 @@ GroupBy[classifierFunction@@#&][Flatten/@Transpose[{#1,ConstantArray[#2[[{1},1]]
 End[];
 
 
+(* ::Input::Initialization:: *)
 ClearAll[ReperiodSaddles]
 ReperiodSaddles::usage="ReperiodSaddles[{{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]},f] readjusts the assigned cycle of the saddle points {\!\(\*SubscriptBox[\(t\), \(i\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(i\)]\)}, returning the list {{\!\(\*SubscriptBox[\(t\), \(1\)]\)+f[\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)],\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},\[Ellipsis]}.
 
@@ -1161,12 +1215,14 @@ ReperiodSaddles[association_,f_]:=Apply[f,association,{Depth[association]-2}]
 End[];
 
 
+(* ::Input::Initialization:: *)
 HessianRoot::usage="HessianRoot[S,t,\[Tau]] calculates the Hessian root \!\(\*SqrtBox[FractionBox[SuperscriptBox[\((2  \[Pi])\), \(2\)], \(\*SuperscriptBox[\(\[ImaginaryI]\), \(2\)] Det[\*SubsuperscriptBox[\(\[PartialD]\), \({t, tt}\), \(2\)]S]\)]]\).";
 Begin["`Private`"];
 HessianRoot[S_,t_,\[Tau]_]:=Sqrt[(2\[Pi])/(I Derivative[0,2][S][t,t-\[Tau]])] Sqrt[(2\[Pi] Derivative[0,2][S][t,t-\[Tau]])/(I( Derivative[2,0][S][t,t-\[Tau]]Derivative[0,2][S][t,t-\[Tau]]-Derivative[1,1][S][t,t-\[Tau]]^2))]
 End[];
 
 
+(* ::Input::Initialization:: *)
 FindStokesTransitions::usage="FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(11\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(11\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(12\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(12\)]\)}\[RightAssociation],\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(2\)]\)\[RightArrow]\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(21\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(21\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(22\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(22\)]\)}\[RightAssociation],\[Ellipsis]\[RightAssociation]] finds the set {{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(S\)]\)},{\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\)},n} of the Stokes and anti-Stokes transition energies for the given set of saddle points, where Re(S) changes sign after the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(S\)]\) and Im(S) changes sign after the \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(AS\)]\), and n is the index of the member of the pair that should be chosen after the transition (taken as the member with a positive imaginary part of the action at the largest \!\(\*SubscriptBox[\(\[CapitalOmega]\), \(i\)]\) in the given keys).
 
 FindStokesTransitions[S,\[LeftAssociation]\!\(\*SubscriptBox[\(label\), \(1\)]\)\[RightArrow]\[LeftAssociation]\!\(\*SubscriptBox[\(\[CapitalOmega]\), \(1\)]\)\[RightArrow]\[Ellipsis]\[RightAssociation]\[RightAssociation]] finds the Stokes transitions for the given set of saddle-point curve pairs, and returns them labeled with the \!\(\*SubscriptBox[\(label\), \(i\)]\).";
@@ -1219,6 +1275,7 @@ Sign[Last[actionList][[2]]]/.{1->2,-1->1}
 End[];
 
 
+(* ::Input::Initialization:: *)
 SPAdipole::usage="SPAdipole[S,prefactor,\[CapitalOmega],{t,\[Tau]}] returns the saddle-point approximation amplitude corresponding to action S[t,t-\[Tau]]-\[CapitalOmega]t and the given prefactor[t,t-\[Tau]].
 
 SPAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation]] returns the total harmonic-dipole contribution in the saddle-point approximation from the specified saddle points.
@@ -1241,7 +1298,7 @@ Total[SPAdipole[S,prefactor,\[CapitalOmega],#,options]&/@times]
 SPAdipole[S_,prefactor_,\[CapitalOmega]_,times_Association,transition_,options:OptionsPattern[]]:=Block[{},
 If[!NumberQ[transition[[2]]],Message[SPAdipole::invldtrns,transition];Return[SPAdipole[S,prefactor,\[CapitalOmega],times] ]];
 If[Length[times]!=2,Message[SPAdipole::wrongno,Length[times],\[CapitalOmega]];Return[SPAdipole[S,prefactor,\[CapitalOmega],times,options]]];
-If[\[CapitalOmega]<transition[[2]],
+If[\[CapitalOmega]<transition[[1]],
 SPAdipole[S,prefactor,\[CapitalOmega],times,options],
 SPAdipole[S,prefactor,\[CapitalOmega],KeySelect[times,#==transition[[3]]&],options]
 ]
@@ -1250,6 +1307,7 @@ SPAdipole[S,prefactor,\[CapitalOmega],KeySelect[times,#==transition[[3]]&],optio
 End[];
 
 
+(* ::Input::Initialization:: *)
 UAdipole::usage="UAdipole[S,prefactor,\[CapitalOmega],\[LeftAssociation]1\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(1\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(1\)]\)},2\[RightArrow]{\!\(\*SubscriptBox[\(t\), \(2\)]\),\!\(\*SubscriptBox[\(\[Tau]\), \(2\)]\)},\[Ellipsis]\[RightAssociation],transition] returns the total harmonic-dipole contribution in the uniform approximation from the specified saddle points, using the action S[t,t-\[Tau]]-\[CapitalOmega]t and prefactor[t,t-\[Tau]], and taking the given Stokes transition set as a reference.";
 UAdipole::saddleno="UAdipole called with `1` time pairs at \[CapitalOmega]=`2`. Reverting to the saddle-point approximation for this set.";
 UAdipole::invldtrns="UAdipole called with invalid Stokes transition set `1`. Reverting to the saddle-point approximation for this set.";
@@ -1277,7 +1335,9 @@ Sqrt[6\[Pi] Sm]Exp[-I Ss+I \[Pi]/4]((A1-I A2)/2 AiryAi[-z]/Sqrt[z]+I (A1+I A2)/2
 End[];
 
 
+(* ::Input::Initialization:: *)
 EndPackage[];
 
 
+(* ::Input::Initialization:: *)
 DistributeDefinitions["RBSFA`"];
