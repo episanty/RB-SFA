@@ -352,13 +352,13 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 17 Feb 2020 21:05:21\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Wed 19 Feb 2020 16:47:05\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True,
  CellTags->
-  "version-timestamp",ExpressionUUID->"4e55559f-5285-4121-8db9-667a16e1ac8c"]
+  "version-timestamp",ExpressionUUID->"18cb4418-4b77-47c4-a11a-c13ed0f4d198"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -6789,24 +6789,40 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
        "[", 
        RowBox[{"t", ",", "tt"}], "]"}]}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
-     RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
+     RowBox[{"Map", "[", "\[IndentingNewLine]", 
       RowBox[{
-       RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"Flatten", "[", 
+       RowBox[{
+        RowBox[{"Association", "[", 
+         RowBox[{"Thread", "[", 
           RowBox[{
-           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+           RowBox[{"{", 
             RowBox[{
-             RowBox[{"Select", "[", "\[IndentingNewLine]", 
+            "\"\<t\>\"", ",", "\"\<\[Tau]\>\"", ",", "\"\<S\>\"", ",", 
+             "\"\<\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S\>\"", ",", 
+             "\"\<\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S\>\""}], 
+            "}"}], "\[Rule]", "#"}], "]"}], "]"}], "&"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"DeleteDuplicates", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Flatten", "[", 
+            RowBox[{
+             RowBox[{"Table", "[", "\[IndentingNewLine]", 
               RowBox[{
-               RowBox[{"Check", "[", "\[IndentingNewLine]", 
+               RowBox[{"Select", "[", "\[IndentingNewLine]", 
                 RowBox[{
-                 RowBox[{"roots", "=", 
+                 RowBox[{"Check", "[", "\[IndentingNewLine]", 
                   RowBox[{
-                   RowBox[{"(", 
+                   RowBox[{"roots", "=", 
+                    RowBox[{
+                    RowBox[{"(", 
                     RowBox[{
                     RowBox[{"{", 
                     RowBox[{"t", ",", "\[Tau]", ",", 
+                    RowBox[{"S", "[", 
+                    RowBox[{"t", ",", 
+                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", 
                     RowBox[{"d1S", "[", 
                     RowBox[{"t", ",", 
                     RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", 
@@ -6814,7 +6830,7 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
                     RowBox[{"t", ",", 
                     RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "}"}], "/.", 
                     "depVarRule"}], ")"}], "/.", 
-                   RowBox[{"(", 
+                    RowBox[{"(", 
                     RowBox[{
                     RowBox[{"FindComplexRoots", "[", "\[IndentingNewLine]", 
                     RowBox[{"equations", "\[IndentingNewLine]", ",", 
@@ -6866,14 +6882,14 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
                     RowBox[{"t", ",", "\[Tau]"}], "}"}], "/.", "depVarRule"}],
                      ")"}], "\[Rule]", 
                     RowBox[{"{", "}"}]}], ")"}]}], "}"}]}], ")"}]}]}], 
-                 RowBox[{"(*", 
-                  RowBox[{
-                  "to", " ", "deal", " ", "with", " ", "empty", " ", 
-                   "results"}], "*)"}], "\[IndentingNewLine]", ",", 
-                 "\[IndentingNewLine]", 
-                 RowBox[{
-                  RowBox[{"If", "[", 
+                   RowBox[{"(*", 
+                    RowBox[{
+                    "to", " ", "deal", " ", "with", " ", "empty", " ", 
+                    "results"}], "*)"}], "\[IndentingNewLine]", ",", 
+                   "\[IndentingNewLine]", 
                    RowBox[{
+                    RowBox[{"If", "[", 
+                    RowBox[{
                     RowBox[{
                     RowBox[{"OptionValue", "[", "ErrorReportingTag", "]"}], 
                     "\[NotEqual]", "None"}], ",", 
@@ -6882,71 +6898,74 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
                     RowBox[{"GetCutoffSaddlePoints", "::", "error"}], ",", 
                     RowBox[{"OptionValue", "[", "ErrorReportingTag", "]"}]}], 
                     "]"}]}], "]"}], ";", "\[IndentingNewLine]", "roots"}]}], 
-                "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
-               RowBox[{"Function", "[", 
-                RowBox[{"timesPair", ",", 
-                 RowBox[{
-                  RowBox[{"OptionValue", "[", "SelectionFunction", "]"}], "[", 
-                  RowBox[{
+                  "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+                 RowBox[{"Function", "[", 
+                  RowBox[{"timesPair", ",", 
                    RowBox[{
-                   "timesPair", "\[LeftDoubleBracket]", "1", 
+                    RowBox[{"OptionValue", "[", "SelectionFunction", "]"}], 
+                    "[", 
+                    RowBox[{
+                    RowBox[{
+                    "timesPair", "\[LeftDoubleBracket]", "1", 
                     "\[RightDoubleBracket]"}], ",", 
-                   RowBox[{
-                   "timesPair", "\[LeftDoubleBracket]", "2", 
+                    RowBox[{
+                    "timesPair", "\[LeftDoubleBracket]", "2", 
                     "\[RightDoubleBracket]"}], ",", "S"}], "]"}]}], "]"}]}], 
-              "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
-             RowBox[{"{", 
-              RowBox[{"range", ",", "timeRanges"}], "}"}]}], "]"}], ",", 
-           "1"}], "]"}], "\[IndentingNewLine]", ",", 
-         RowBox[{"Function", "[", 
-          RowBox[{
-           RowBox[{"{", 
-            RowBox[{"timesPair1", ",", "timesPair2"}], "}"}], ",", "    ", 
-           RowBox[{"And", "@@", 
-            RowBox[{"Thread", "[", 
-             RowBox[{
-              RowBox[{
-               RowBox[{"Abs", "[", 
-                RowBox[{"timesPair1", "-", "timesPair2"}], "]"}], 
-               "\[LeftDoubleBracket]", 
+                "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
                RowBox[{"{", 
-                RowBox[{"1", ",", "2"}], "}"}], "\[RightDoubleBracket]"}], 
-              "<", "tolerances"}], "]"}]}]}], "     ", "]"}]}], 
-        "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
-       RowBox[{"If", "[", "\[IndentingNewLine]", 
-        RowBox[{
-         RowBox[{"ListQ", "[", 
-          RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "]"}], ",", 
-         "\[IndentingNewLine]", 
-         RowBox[{"Table", "[", 
+                RowBox[{"range", ",", "timeRanges"}], "}"}]}], "]"}], ",", 
+             "1"}], "]"}], "\[IndentingNewLine]", ",", 
+           RowBox[{"Function", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"timesPair1", ",", "timesPair2"}], "}"}], ",", "    ", 
+             RowBox[{"And", "@@", 
+              RowBox[{"Thread", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Abs", "[", 
+                  RowBox[{"timesPair1", "-", "timesPair2"}], "]"}], 
+                 "\[LeftDoubleBracket]", 
+                 RowBox[{"{", 
+                  RowBox[{"1", ",", "2"}], "}"}], "\[RightDoubleBracket]"}], 
+                "<", "tolerances"}], "]"}]}]}], "     ", "]"}]}], 
+          "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"If", "[", "\[IndentingNewLine]", 
           RowBox[{
+           RowBox[{"ListQ", "[", 
+            RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"Function", "[", 
+              RowBox[{"timesPair", ",", 
+               RowBox[{"f", "[", 
+                RowBox[{
+                 RowBox[{
+                 "timesPair", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}], ",", 
+                 RowBox[{
+                 "timesPair", "\[LeftDoubleBracket]", "2", 
+                  "\[RightDoubleBracket]"}], ",", "S"}], "]"}]}], "]"}], ",", 
+             
+             RowBox[{"{", 
+              RowBox[{"f", ",", 
+               RowBox[{"OptionValue", "[", "SortingFunction", "]"}]}], 
+              "}"}]}], "]"}], ",", "\[IndentingNewLine]", 
            RowBox[{"Function", "[", 
             RowBox[{"timesPair", ",", 
-             RowBox[{"f", "[", 
+             RowBox[{
+              RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "[", 
               RowBox[{
                RowBox[{
                "timesPair", "\[LeftDoubleBracket]", "1", 
                 "\[RightDoubleBracket]"}], ",", 
                RowBox[{
                "timesPair", "\[LeftDoubleBracket]", "2", 
-                "\[RightDoubleBracket]"}], ",", "S"}], "]"}]}], "]"}], ",", 
-           RowBox[{"{", 
-            RowBox[{"f", ",", 
-             RowBox[{"OptionValue", "[", "SortingFunction", "]"}]}], "}"}]}], 
-          "]"}], ",", "\[IndentingNewLine]", 
-         RowBox[{"Function", "[", 
-          RowBox[{"timesPair", ",", 
-           RowBox[{
-            RowBox[{"OptionValue", "[", "SortingFunction", "]"}], "[", 
-            RowBox[{
-             RowBox[{
-             "timesPair", "\[LeftDoubleBracket]", "1", 
-              "\[RightDoubleBracket]"}], ",", 
-             RowBox[{
-             "timesPair", "\[LeftDoubleBracket]", "2", 
-              "\[RightDoubleBracket]"}], ",", "S"}], "]"}]}], "]"}]}], 
-        "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}]}], 
-   "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+                "\[RightDoubleBracket]"}], ",", "S"}], "]"}]}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]}], 
+      "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
@@ -7204,7 +7223,7 @@ Cell[BoxData[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
   True,ExpressionUUID->"15f19319-f9bd-4d3d-8d5c-aa6a8f12e881"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -7549,7 +7568,7 @@ is preferable to do this in a single go using ReperiodSaddles.\>\""}], ";"}],
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
   True,ExpressionUUID->"065188be-5825-47ea-acfd-865235b317d9"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -7725,7 +7744,7 @@ to unstructured evaluation.\>\""}], ";"}],
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
   True,ExpressionUUID->"aab14d09-daf6-4637-ba79-64cfaff7e0f2"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 

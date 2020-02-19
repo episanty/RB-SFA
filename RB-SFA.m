@@ -47,7 +47,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 17 Feb 2020 21:05:21";
+$RBSFAtimestamp="Wed 19 Feb 2020 16:47:05";
 End[];
 
 
@@ -1137,12 +1137,14 @@ D[S[t,tt],{t,2}]D[S[t,tt],{tt,2}]-D[S[t,tt],t,tt]^2==0
 d1S[t_,tt_]=ConstrainedDerivative[1][S][t,tt];
 d3S[t_,tt_]=ConstrainedDerivative[3][S][t,tt];
 
+Map[
+Association[Thread[{"t","\[Tau]","S","\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S","\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S"}->#]]&,
 SortBy[
 DeleteDuplicates[
 Flatten[Table[
 Select[
 Check[
-roots=({t,\[Tau],d1S[t,t-\[Tau]],d3S[t,t-\[Tau]]}/.depVarRule)/.(FindComplexRoots[
+roots=({t,\[Tau],S[t,t-\[Tau]],d1S[t,t-\[Tau]],d3S[t,t-\[Tau]]}/.depVarRule)/.(FindComplexRoots[
 equations
 ,Evaluate[Sequence[{Symbol[indVars[[1]]],range[[1,1]],range[[1,2]]},{Symbol[indVars[[2]]],range[[2,1]],range[[2,2]]}]]
 ,Evaluate[Sequence@@FilterRules[{options},Options[FindComplexRoots]]]
@@ -1162,6 +1164,7 @@ roots
 ListQ[OptionValue[SortingFunction]],
 Table[Function[timesPair,f[timesPair[[1]],timesPair[[2]],S]],{f,OptionValue[SortingFunction]}],
 Function[timesPair,OptionValue[SortingFunction][timesPair[[1]],timesPair[[2]],S]]
+]
 ]
 ]
 ]
