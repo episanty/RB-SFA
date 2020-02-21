@@ -47,7 +47,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Wed 19 Feb 2020 16:47:05";
+$RBSFAtimestamp="Fri 21 Feb 2020 16:56:05";
 End[];
 
 
@@ -900,10 +900,7 @@ Protect[RandomComplex];
 
 
 (* ::Input::Initialization:: *)
-ConstrainedDerivative::usage="ConstrainedDerivative[n][f][t,tt] calculates the nth derivative of f[t,tt] with respect to t under the constraint that \!\(\*SuperscriptBox[\"f\", TagBox[
-  RowBox[{\"(\", 
-   RowBox[{\"0\", \",\", \"1\"}], \")\"}],
-  Derivative],\nMultilineFunction->None]\)[t,tt]\[Congruent]0.";
+ConstrainedDerivative::usage="ConstrainedDerivative[n][f][t,tt] calculates the nth derivative of f[t,tt] with respect to t under the constraint that Derivative[0,1][f][t,tt]\[Congruent]0.";
 
 Begin["`Private`"];
 ConstrainedDerivative[n_][F_][te_,tte_]:=Block[{f,tts,t,tt},
