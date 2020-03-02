@@ -47,7 +47,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Fri 21 Feb 2020 16:56:05";
+$RBSFAtimestamp="Mon 2 Mar 2020 18:21:01";
 End[];
 
 
@@ -1122,7 +1122,7 @@ Options[GetCutoffSaddlePoints]=Join[{SortingFunction->(#2&),SelectionFunction->(
 
 GetCutoffSaddlePoints[S_,{tmin_,tmax_},{\[Tau]min_,\[Tau]max_},options:OptionsPattern[]]:=GetCutoffSaddlePoints[S,{{{tmin,tmax},{\[Tau]min,\[Tau]max}}},options]
 
-GetCutoffSaddlePoints[S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,tolerances,d1S,d3S},
+GetCutoffSaddlePoints[S_,timeRanges_,options:OptionsPattern[]]:=Block[{equations,roots,t=Symbol["t"],tt=Symbol["tt"],\[Tau]=Symbol["\[Tau]"],indVars,depVar,depVarRule,tolerances,d1S,d3S,d2Sdtt2},
 tolerances=SetTolerances[OptionValue[Tolerance],2,OptionValue[WorkingPrecision]];
 indVars=OptionValue[IndependentVariables]/.{"RecombinationTime"->"t","ExcursionTime"->"\[Tau]","IonizationTime"->"tt"};
 depVar=First[DeleteCases[{"t","\[Tau]","tt"},Alternatives@@indVars]];
@@ -1133,15 +1133,16 @@ D[S[t,tt],{t,2}]D[S[t,tt],{tt,2}]-D[S[t,tt],t,tt]^2==0
 }/.depVarRule;
 d1S[t_,tt_]=ConstrainedDerivative[1][S][t,tt];
 d3S[t_,tt_]=ConstrainedDerivative[3][S][t,tt];
+d2Sdtt2[t_,tt_]=Derivative[0,2][S][t,tt];
 
 Map[
-Association[Thread[{"t","\[Tau]","S","\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S","\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S"}->#]]&,
+Association[Thread[{"t","\[Tau]","S","\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S","\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S","\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \(2\)]\)S"}->#]]&,
 SortBy[
 DeleteDuplicates[
 Flatten[Table[
 Select[
 Check[
-roots=({t,\[Tau],S[t,t-\[Tau]],d1S[t,t-\[Tau]],d3S[t,t-\[Tau]]}/.depVarRule)/.(FindComplexRoots[
+roots=({t,\[Tau],S[t,t-\[Tau]],d1S[t,t-\[Tau]],d3S[t,t-\[Tau]],d2Sdtt2[t,t-\[Tau]]}/.depVarRule)/.(FindComplexRoots[
 equations
 ,Evaluate[Sequence[{Symbol[indVars[[1]]],range[[1,1]],range[[1,2]]},{Symbol[indVars[[2]]],range[[2,1]],range[[2,2]]}]]
 ,Evaluate[Sequence@@FilterRules[{options},Options[FindComplexRoots]]]

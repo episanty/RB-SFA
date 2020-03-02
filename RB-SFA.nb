@@ -352,13 +352,13 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Fri 21 Feb 2020 16:56:05\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 2 Mar 2020 18:21:01\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True,
  CellTags->
-  "version-timestamp",ExpressionUUID->"6f0d67a2-a680-4036-896d-686eade35883"]
+  "version-timestamp",ExpressionUUID->"597202f0-76a6-4578-927e-bbf5d68f728c"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -6713,8 +6713,8 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
        RowBox[{"Symbol", "[", "\"\<tt\>\"", "]"}]}], ",", 
       RowBox[{"\[Tau]", "=", 
        RowBox[{"Symbol", "[", "\"\<\[Tau]\>\"", "]"}]}], ",", "indVars", ",", 
-      "depVar", ",", "depVarRule", ",", "tolerances", ",", "d1S", ",", 
-      "d3S"}], "}"}], ",", "\[IndentingNewLine]", 
+      "depVar", ",", "depVarRule", ",", "tolerances", ",", "d1S", ",", "d3S", 
+      ",", "d2Sdtt2"}], "}"}], ",", "\[IndentingNewLine]", 
     RowBox[{
      RowBox[{"tolerances", "=", 
       RowBox[{"SetTolerances", "[", 
@@ -6806,6 +6806,14 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
         RowBox[{"ConstrainedDerivative", "[", "3", "]"}], "[", "S", "]"}], 
        "[", 
        RowBox[{"t", ",", "tt"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"d2Sdtt2", "[", 
+       RowBox[{"t_", ",", "tt_"}], "]"}], "=", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Derivative", "[", 
+         RowBox[{"0", ",", "2"}], "]"}], "[", "S", "]"}], "[", 
+       RowBox[{"t", ",", "tt"}], "]"}]}], ";", "\[IndentingNewLine]", 
      "\[IndentingNewLine]", 
      RowBox[{"Map", "[", "\[IndentingNewLine]", 
       RowBox[{
@@ -6817,8 +6825,9 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
             RowBox[{
             "\"\<t\>\"", ",", "\"\<\[Tau]\>\"", ",", "\"\<S\>\"", ",", 
              "\"\<\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S\>\"", ",", 
-             "\"\<\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S\>\""}], 
-            "}"}], "\[Rule]", "#"}], "]"}], "]"}], "&"}], ",", 
+             "\"\<\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S\>\"", ",", 
+             "\"\<\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \
+\(2\)]\)S\>\""}], "}"}], "\[Rule]", "#"}], "]"}], "]"}], "&"}], ",", 
        "\[IndentingNewLine]", 
        RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
         RowBox[{
@@ -6845,6 +6854,9 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
                     RowBox[{"t", ",", 
                     RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", 
                     RowBox[{"d3S", "[", 
+                    RowBox[{"t", ",", 
+                    RowBox[{"t", "-", "\[Tau]"}]}], "]"}], ",", 
+                    RowBox[{"d2Sdtt2", "[", 
                     RowBox[{"t", ",", 
                     RowBox[{"t", "-", "\[Tau]"}]}], "]"}]}], "}"}], "/.", 
                     "depVarRule"}], ")"}], "/.", 
@@ -6986,8 +6998,8 @@ or their shorthands \\\"t\\\", \\\"tt\\\" and \\\"\[Tau]\\\" resp.\>\""}],
    "]"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True,
- CellLabel->"In[269]:=",ExpressionUUID->"6f675c4d-243c-40b7-b9fe-358bcd6ba0c9"]
+ InitializationCell->
+  True,ExpressionUUID->"6f675c4d-243c-40b7-b9fe-358bcd6ba0c9"]
 }, Closed]]
 }, Open  ]],
 
