@@ -231,12 +231,12 @@ RB-SFA package.\>\""}], ";"}], "\[IndentingNewLine]",
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"$RBSFAversion", ":=", 
-   RowBox[{"\"\<RB-SFA v2.1.3, \>\"", "<>", "$RBSFAtimestamp"}]}], 
+   RowBox[{"\"\<RB-SFA v2.2.0, \>\"", "<>", "$RBSFAtimestamp"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True,
- CellLabel->"In[3]:=",ExpressionUUID->"aa97ee0f-f35a-441d-9482-ce45b1a816f6"],
+ InitializationCell->
+  True,ExpressionUUID->"aa97ee0f-f35a-441d-9482-ce45b1a816f6"],
 
 Cell[TextData[{
  "Old syntax (in functional form ",
@@ -341,7 +341,7 @@ Cell[BoxData[
         RowBox[{"NotebookSave", "[", "]"}], ")"}]}], ",", 
       RowBox[{"PassEventsDown", "\[Rule]", "True"}]}], "}"}]}]}], 
   "]"}]], "Input",ExpressionUUID->"45760a97-ec43-42f5-a401-6d3b7f33f832"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -352,13 +352,13 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 2 Mar 2020 18:21:01\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 2 Mar 2020 18:53:22\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True,
  CellTags->
-  "version-timestamp",ExpressionUUID->"597202f0-76a6-4578-927e-bbf5d68f728c"]
+  "version-timestamp",ExpressionUUID->"ce9e134b-ea86-4573-912b-2f7ed1754afd"]
 }, Open  ]],
 
 Cell[CellGroupData[{
