@@ -39,10 +39,69 @@ calculating spectra using quantum-orbit methods.\n\nThe name RB-SFA comes \
 from its first application (as Rotating Bicircular High Harmonic Generation \
 in the Strong field Approximation) but the code is general so RB-SFA just \
 stands for itself now. The publications by the author that use this code are:\
-\n\n \[Bullet] ",
- "Strong-field approximation in a rotating frame:",
- " high-order harmonic emission from p states in bicircular fields. E. \
-Pisanty and \[CapitalAAcute]. Jim\[EAcute]nez-Gal\[AAcute]n. ",
+\n\n \[Bullet] The imaginary part of the high-harmonic cutoff. E. Pisanty, \
+M.F. Ciappina and M. Lewenstein. ",
+ StyleBox[ButtonBox["J. Phys: Photon.",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/2515-7647/ab8f1e"], None},
+  ButtonNote->"https://doi.org/10.1088/2515-7647/ab8f1e"],
+  FontSlant->"Italic"],
+ ButtonBox[" ",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/2515-7647/ab8f1e"], None},
+  ButtonNote->"https://doi.org/10.1088/2515-7647/ab8f1e"],
+ StyleBox[ButtonBox["2",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/2515-7647/ab8f1e"], None},
+  ButtonNote->"https://doi.org/10.1088/2515-7647/ab8f1e"],
+  FontWeight->"Bold"],
+ ButtonBox[" 034013 (2020)",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/2515-7647/ab8f1e"], None},
+  ButtonNote->"https://doi.org/10.1088/2515-7647/ab8f1e"],
+ ", ",
+ ButtonBox["arXiv:2003.00277",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://arxiv.org/abs/2003.00277"], None},
+  ButtonNote->"https://arxiv.org/abs/2003.00277"],
+ ".\n \[Bullet] High harmonic interferometry of the Lorentz force in strong \
+mid-infrared laser fields. E. Pisanty et al. ",
+ StyleBox[ButtonBox["New J. Phys.",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/1367-2630/aabb4d"], None},
+  ButtonNote->"https://doi.org/10.1088/1367-2630/aabb4d"],
+  FontSlant->"Italic"],
+ ButtonBox[" ",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/1367-2630/aabb4d"], None},
+  ButtonNote->"https://doi.org/10.1088/1367-2630/aabb4d"],
+ StyleBox[ButtonBox["20",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/1367-2630/aabb4d"], None},
+  ButtonNote->"https://doi.org/10.1088/1367-2630/aabb4d"],
+  FontWeight->"Bold"],
+ ButtonBox[" 053036 (2018)",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://doi.org/10.1088/1367-2630/aabb4d"], None},
+  ButtonNote->"https://doi.org/10.1088/1367-2630/aabb4d"],
+ ", ",
+ ButtonBox["arXiv:1606.01931",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["https://arxiv.org/abs/1606.01931"], None},
+  ButtonNote->"https://arxiv.org/abs/1606.01931"],
+ ".\n \[Bullet] Strong-field approximation in a rotating frame: high-order \
+harmonic emission from p states in bicircular fields. E. Pisanty and \
+\[CapitalAAcute]. Jim\[EAcute]nez-Gal\[AAcute]n. ",
  StyleBox[ButtonBox["Phys. Rev. A",
   BaseStyle->"Hyperlink",
   ButtonData->{

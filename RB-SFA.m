@@ -33,7 +33,7 @@ BeginPackage["RBSFA`"];
 $RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";
 $RBSFAtimestamp::usage="$RBSFAtimestamp prints the timestamp of the current version of the RB-SFA package.";
 Begin["`Private`"];
-$RBSFAversion:="RB-SFA v2.2.0, "<>$RBSFAtimestamp;
+$RBSFAversion:="RB-SFA v2.2.1, "<>$RBSFAtimestamp;
 End[];
 
 
