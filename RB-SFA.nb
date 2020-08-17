@@ -10,7 +10,7 @@ via ",
   FontSlant->"Italic"]
 }], "Title",ExpressionUUID->"4f97aa06-5237-417d-a3de-abc5fa8e4b58"],
 
-Cell["\[Copyright] Emilio Pisanty 2014-2017. Licensed under GPL and \
+Cell["\[Copyright] Emilio Pisanty 2014-2020. Licensed under GPL and \
 CC-BY-SA.", "Text",ExpressionUUID->"e4423e52-691d-4b3a-910a-227a5f4c9d8a"],
 
 Cell[CellGroupData[{
@@ -137,13 +137,6 @@ Pisanty Alatorre. ",
   ButtonData->{
     URL["http://hdl.handle.net/10044/1/43538"], None},
   ButtonNote->"http://hdl.handle.net/10044/1/43538"],
- ".\n \[Bullet] High harmonic interferometry of the Lorentz force in strong \
-mid-infrared laser fields. E. Pisanty, D.D. Hickstein, et al. (2016), ",
- ButtonBox["arXiv:1606.01931",
-  BaseStyle->"Hyperlink",
-  ButtonData->{
-    URL["https://arxiv.org/abs/1606.01931"], None},
-  ButtonNote->"https://arxiv.org/abs/1606.01931"],
  ".\n \[Bullet] Spin conservation in high-order-harmonic generation using \
 bicircular fields. E. Pisanty, S. Sukiasyan and M. Ivanov. ",
  StyleBox[ButtonBox["Phys. Rev. A",
@@ -194,7 +187,7 @@ RB-SFA: High Harmonic Generation in the Strong Field Approximation via ",
   ButtonData->{
     URL["https://github.com/episanty/RB-SFA"], None},
   ButtonNote->"https://github.com/episanty/RB-SFA"],
- " (2016).\n    \nIf you wish to include a DOI in your citation, please use \
+ " (2020).\n    \nIf you wish to include a DOI in your citation, please use \
 one of the ",
  ButtonBox["numbered-version releases",
   BaseStyle->"Hyperlink",
@@ -8069,8 +8062,132 @@ the saddle-point approximation for this set.\>\""}], ";"}],
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
- InitializationCell->True,
- CellLabel->"In[314]:=",ExpressionUUID->"705a3007-cbea-4493-855c-342c294724e9"]
+ InitializationCell->
+  True,ExpressionUUID->"705a3007-cbea-4493-855c-342c294724e9"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["HCAdipole", \
+"Subsection",ExpressionUUID->"13992433-9221-4b9e-82b8-798f35b25dd3"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"HCAdipole", "::", "usage"}], "=", 
+   "\"\<HCAdipole[cutoff,prefactor,k,\[CapitalOmega]] calculates the HCA \
+dipole from a cutoff (in the format \[LeftAssociation]\\\"t\\\"\[Rule]\
+\[Placeholder],\\\"\[Tau]\\\"\[Rule]\[Placeholder],\\\"S\\\"\[Rule]\
+\[Placeholder],\\\"\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S\\\"\[Rule]\
+\[Placeholder],\\\"\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S\\\"\[Rule]\
+\[Placeholder],\\\"\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \(2\)]\)S\
+\\\"\[Rule]\[Placeholder]\[RightAssociation]) and prefactor (as a function \
+prefactor[t,tt]) using the branch-cut factor \!\(\*SuperscriptBox[\(\
+\[ExponentialE]\), \(\[ImaginaryI]\\\ 2  \[Pi]\\\ k/3\)]\) at harmonic \
+frequency \[CapitalOmega].\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"HCAdipole", "::", "wrongcutoff"}], "=", 
+    "\"\<The cutoff `1` does not contain the right set of keys.\>\""}], ";"}],
+   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"HCAdipole", "[", 
+   RowBox[{
+   "cutoff_", ",", "prefactor_", ",", "k_", ",", "\[CapitalOmega]_", ",", 
+    RowBox[{"options", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+  RowBox[{"Block", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "thc", ",", "tthc", ",", "\[Tau]hc", ",", "S0", ",", "\[CapitalOmega]hc",
+       ",", "d2Sdtt2", ",", "A"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Sort", "[", 
+         RowBox[{"Keys", "[", "cutoff", "]"}], "]"}], "\[NotEqual]", 
+        RowBox[{"Sort", "[", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<t\>\"", ",", "\"\<\[Tau]\>\"", ",", "\"\<S\>\"", ",", 
+           "\"\<\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S\>\"", ",", 
+           "\"\<\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S\>\"", ",", 
+           "\"\<\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \
+\(2\)]\)S\>\""}], "}"}], "]"}]}], ",", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"HCAdipole", "::", "wrongcutoff"}], ",", "cutoff"}], "]"}], 
+        ";", 
+        RowBox[{"Return", "[", "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"thc", "=", 
+      RowBox[{"cutoff", "[", "\"\<t\>\"", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"tthc", "=", 
+      RowBox[{
+       RowBox[{"cutoff", "[", "\"\<t\>\"", "]"}], "-", 
+       RowBox[{"cutoff", "[", "\"\<\[Tau]\>\"", "]"}]}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\[Tau]hc", "=", 
+      RowBox[{"cutoff", "[", "\"\<\[Tau]\>\"", "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"S0", "=", 
+      RowBox[{"cutoff", "[", "\"\<S\>\"", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"\[CapitalOmega]hc", "=", 
+      RowBox[{
+      "cutoff", "[", "\"\<\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S\>\"", 
+       "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"A", "=", 
+      RowBox[{
+       RowBox[{
+       "cutoff", "[", 
+        "\"\<\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S\>\"", "]"}], "/",
+        "2"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"d2Sdtt2", "=", 
+      RowBox[{
+      "cutoff", "[", 
+       "\"\<\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \(2\)]\)S\>\"", 
+       "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"prefactor", "[", 
+       RowBox[{"thc", ",", "tthc"}], "]"}], 
+      SqrtBox[
+       FractionBox[
+        RowBox[{"2", "\[Pi]"}], 
+        RowBox[{"\[ImaginaryI]", " ", "d2Sdtt2"}]]], 
+      FractionBox[
+       RowBox[{"2", "\[Pi]"}], 
+       RowBox[{
+        SuperscriptBox["\[ExponentialE]", 
+         RowBox[{"\[ImaginaryI]", " ", "2", "\[Pi]", " ", 
+          RowBox[{"k", "/", "3"}]}]], 
+        SuperscriptBox["A", 
+         RowBox[{"1", "/", "3"}]]}]], 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", "S0"}], "+", 
+        RowBox[{"\[ImaginaryI]", " ", "\[CapitalOmega]", " ", "thc"}]}], 
+       "]"}], 
+      RowBox[{"AiryAi", "[", 
+       FractionBox[
+        RowBox[{"\[CapitalOmega]hc", "-", "\[CapitalOmega]"}], 
+        RowBox[{
+         SuperscriptBox["\[ExponentialE]", 
+          RowBox[{"\[ImaginaryI]", " ", "2", "\[Pi]", " ", 
+           RowBox[{"k", "/", "3"}]}]], 
+         SuperscriptBox["A", 
+          RowBox[{"1", "/", "3"}]]}]], "]"}]}]}]}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->
+  True,ExpressionUUID->"6cb620a2-bf8e-4f89-8b51-924cd27c278b"]
 }, Closed]]
 }, Open  ]],
 

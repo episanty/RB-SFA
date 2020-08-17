@@ -1337,6 +1337,25 @@ End[];
 
 
 (* ::Input::Initialization:: *)
+HCAdipole::usage="HCAdipole[cutoff,prefactor,k,\[CapitalOmega]] calculates the HCA dipole from a cutoff (in the format \[LeftAssociation]\"t\"\[Rule]\[Placeholder],\"\[Tau]\"\[Rule]\[Placeholder],\"S\"\[Rule]\[Placeholder],\"\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S\"\[Rule]\[Placeholder],\"\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S\"\[Rule]\[Placeholder],\"\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \(2\)]\)S\"\[Rule]\[Placeholder]\[RightAssociation]) and prefactor (as a function prefactor[t,tt]) using the branch-cut factor \!\(\*SuperscriptBox[\(\[ExponentialE]\), \(\[ImaginaryI]\\\ 2  \[Pi]\\\ k/3\)]\) at harmonic frequency \[CapitalOmega].";
+HCAdipole::wrongcutoff="The cutoff `1` does not contain the right set of keys.";
+
+Begin["`Private`"];
+HCAdipole[cutoff_,prefactor_,k_,\[CapitalOmega]_,options:OptionsPattern[]]:=Block[{thc,tthc,\[Tau]hc,S0,\[CapitalOmega]hc,d2Sdtt2,A},
+If[Sort[Keys[cutoff]]!=Sort[{"t","\[Tau]","S","\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S","\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S","\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \(2\)]\)S"}],Message[HCAdipole::wrongcutoff,cutoff];Return[]];
+thc=cutoff["t"];
+tthc=cutoff["t"]-cutoff["\[Tau]"];
+\[Tau]hc=cutoff["\[Tau]"];
+S0=cutoff["S"];
+\[CapitalOmega]hc=cutoff["\!\(\*SubscriptBox[\(\[PartialD]\), \(t\)]\)S"];
+A=cutoff["\!\(\*SubsuperscriptBox[\(d\), \(t\), \(3\)]\)S"]/2;
+d2Sdtt2=cutoff["\!\(\*SubsuperscriptBox[\(\[PartialD]\), \(tt\), \(2\)]\)S"];
+prefactor[thc,tthc]Sqrt[(2\[Pi])/(I d2Sdtt2)] (2\[Pi])/(E^(I 2\[Pi] k/3) A^(1/3)) Exp[-I S0+I \[CapitalOmega] thc]AiryAi[(\[CapitalOmega]hc-\[CapitalOmega])/(E^(I 2\[Pi] k/3) A^(1/3))]
+]
+End[];
+
+
+(* ::Input::Initialization:: *)
 EndPackage[];
 
 
