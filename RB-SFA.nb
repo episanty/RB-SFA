@@ -3064,7 +3064,11 @@ numeric t and parameters indicated by FieldParameters\[Rule]pars.\>\""}],
  RowBox[{
   RowBox[{
    RowBox[{"FieldParameters", "::", "usage"}], "=", 
-   "\"\<FieldParameters is an option for makeDipole list which \>\""}], 
+   "\"\<FieldParameters is an option for makeDipole list which provides the \
+parameters, as a list of replacement rules, to use in evaluating the vector \
+potential. If the vector potential is provided as VectorPotential\[Rule]A, \
+and the parameters as FieldParameters\[Rule]pars, then A[t]//.pars must yield \
+a list of numbers if given a numeric argument t.\>\""}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
