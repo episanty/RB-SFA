@@ -282,8 +282,7 @@ optionvalue===Automatic,
 Message[CarrierFrequency::default,$DefaultCarrierFrequency];$DefaultCarrierFrequency,
 optionvalue
 ]
-End[]
-
+End[];
 
 
 (* ::Input::Initialization:: *)
@@ -336,7 +335,36 @@ End[];
 
 
 (* ::Input::Initialization:: *)
-getSpectrum::usage="getSpectrum[DipoleList] returns the power spectrum of DipoleList.";
+VectorFourier::usage="VectorFourier[array,n] performs a Fourier transform on array only on level n of the array.
+VectorFourier[array,{n1,n2,\[Ellipsis],nk}] performs a Fourier transform on array only on the specified levels {n1,n2,\[Ellipsis],nk}.";
+
+Begin["`Private`"];
+
+Options[VectorFourier]=Options[Fourier];
+VectorFourier::levelspec="The level specification `1` is not correct.";
+
+VectorFourier[array_,level_?NumericQ,opts:OptionsPattern[]]:=VectorFourier[array,{level},opts]
+VectorFourier[array_,levelsToTransform_,opts:OptionsPattern[]]:=Block[{totalLevels,untouchedLevels,permutation,inversePermutation},
+totalLevels=Range[Depth[array]-1];
+untouchedLevels=Complement[totalLevels,levelsToTransform];
+If[Not[SubsetQ[totalLevels,levelsToTransform]],Message[VectorFourier::levelspec,levelsToTransform];Abort[]];
+permutation=Join[untouchedLevels,levelsToTransform];
+inversePermutation=InversePermutation[permutation];
+
+Transpose[
+Map[
+Function[Fourier[#,opts]],
+Transpose[
+array,
+inversePermutation
+],
+{Length[untouchedLevels]}
+],
+permutation
+]
+]
+
+End[];
 Polarization::usage="Polarization is an option for getSpectrum which specifies a polarization vector along which to polarize the dipole list. The default, Polarization\[Rule]False, specifies an unpolarized spectrum.";
 ComplexPart::usage="ComplexPart is an option for getSpectrum which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
 \[Omega]Power::usage="\[Omega]Power is an option for getSpectrum which specifies a power of frequency which should multiply the spectrum.";

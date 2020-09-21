@@ -2235,6 +2235,108 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
+Cell["VectorFourier", \
+"Subsection",ExpressionUUID->"abbfd122-2a25-420e-8e41-3a8e5327e845"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"VectorFourier", "::", "usage"}], "=", 
+    "\"\<VectorFourier[array,n] performs a Fourier transform on array only on \
+level n of the array.\nVectorFourier[array,{n1,n2,\[Ellipsis],nk}] performs a \
+Fourier transform on array only on the specified levels \
+{n1,n2,\[Ellipsis],nk}.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "VectorFourier", "]"}], "=", 
+   RowBox[{"Options", "[", "Fourier", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"VectorFourier", "::", "levelspec"}], "=", 
+    "\"\<The level specification `1` is not correct.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"VectorFourier", "[", 
+   RowBox[{"array_", ",", 
+    RowBox[{"level_", "?", "NumericQ"}], ",", 
+    RowBox[{"opts", ":", 
+     RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+  RowBox[{"VectorFourier", "[", 
+   RowBox[{"array", ",", 
+    RowBox[{"{", "level", "}"}], ",", "opts"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"VectorFourier", "[", 
+    RowBox[{"array_", ",", "levelsToTransform_", ",", 
+     RowBox[{"opts", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "totalLevels", ",", "untouchedLevels", ",", "permutation", ",", 
+       "inversePermutation"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"totalLevels", "=", 
+       RowBox[{"Range", "[", 
+        RowBox[{
+         RowBox[{"Depth", "[", "array", "]"}], "-", "1"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"untouchedLevels", "=", 
+       RowBox[{"Complement", "[", 
+        RowBox[{"totalLevels", ",", "levelsToTransform"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"Not", "[", 
+         RowBox[{"SubsetQ", "[", 
+          RowBox[{"totalLevels", ",", "levelsToTransform"}], "]"}], "]"}], 
+        ",", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"VectorFourier", "::", "levelspec"}], ",", 
+           "levelsToTransform"}], "]"}], ";", 
+         RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"permutation", "=", 
+       RowBox[{"Join", "[", 
+        RowBox[{"untouchedLevels", ",", "levelsToTransform"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"inversePermutation", "=", 
+       RowBox[{"InversePermutation", "[", "permutation", "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Transpose", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Map", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"Function", "[", 
+           RowBox[{"Fourier", "[", 
+            RowBox[{"#", ",", "opts"}], "]"}], "]"}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Transpose", "[", "\[IndentingNewLine]", 
+           RowBox[{
+           "array", ",", "\[IndentingNewLine]", "inversePermutation"}], 
+           "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"Length", "[", "untouchedLevels", "]"}], "}"}]}], 
+         "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+        "permutation"}], "\[IndentingNewLine]", "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->
+  True,ExpressionUUID->"6e8ca0bc-b9e8-4549-b34a-108db01b5227"]
+}, Open  ]],
+
 Cell["getSpectrum", \
 "Subsection",ExpressionUUID->"8b24d0dc-f123-4c71-ae02-3b3cad42c392"],
 
