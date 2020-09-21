@@ -2337,6 +2337,103 @@ Fourier transform on array only on the specified levels \
   True,ExpressionUUID->"6e8ca0bc-b9e8-4549-b34a-108db01b5227"]
 }, Open  ]],
 
+Cell[CellGroupData[{
+
+Cell["differentiateDipoleList", \
+"Subsection",ExpressionUUID->"5944a03f-68be-4661-afda-4981da62fba5"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"differentiateDipoleList", "::", "usage"}], "=", 
+    "\"\<differentiateDipoleList[dipoleList,\[Delta]t,DifferentiationOrder\
+\[Rule]n] differentiates dipoleList numerically with step \[Delta]t to order \
+n=0,1,2.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "differentiateDipoleList", "]"}], "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"DifferentiationOrder", "\[Rule]", "0"}], "}"}], ",", 
+     "standardOptions"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"differentiateDipoleList", "::", "diffOrd"}], "=", 
+    "\"\<Invalid differentiation order `1`.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"differentiateDipoleList", "[", 
+    RowBox[{"dipoleList_", ",", "\[Delta]t_", ",", 
+     RowBox[{"opts", ":", 
+      RowBox[{"OptionsPattern", "[", "]"}]}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Piecewise", "[", 
+      RowBox[{
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"dipoleList", ",", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "DifferentiationOrder", "]"}], 
+            "\[Equal]", "0"}]}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            FractionBox["1", 
+             RowBox[{"2", "\[Delta]t"}]], 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"Most", "[", 
+               RowBox[{"Most", "[", "dipoleList", "]"}], "]"}], "-", 
+              RowBox[{"Rest", "[", 
+               RowBox[{"Rest", "[", "dipoleList", "]"}], "]"}]}], ")"}]}], 
+           ",", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "DifferentiationOrder", "]"}], 
+            "\[Equal]", "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            FractionBox["1", 
+             SuperscriptBox["\[Delta]t", "2"]], 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"Most", "[", 
+               RowBox[{"Most", "[", "dipoleList", "]"}], "]"}], "-", 
+              RowBox[{"2", 
+               RowBox[{"Most", "[", 
+                RowBox[{"Rest", "[", "dipoleList", "]"}], "]"}]}], "+", 
+              RowBox[{"Rest", "[", 
+               RowBox[{"Rest", "[", "dipoleList", "]"}], "]"}]}], ")"}]}], 
+           ",", 
+           RowBox[{
+            RowBox[{"OptionValue", "[", "DifferentiationOrder", "]"}], 
+            "\[Equal]", "2"}]}], "}"}]}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Message", "[", 
+         RowBox[{
+          RowBox[{"differentiateDipoleList", "::", "diffOrd"}], ",", 
+          RowBox[{"OptionValue", "[", "DifferentiationOrder", "]"}]}], "]"}], 
+        ";", 
+        RowBox[{"Abort", "[", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->
+  True,ExpressionUUID->"aa2173cb-9b44-4712-8c00-5f7a303cd8dc"]
+}, Open  ]],
+}, Open  ]],
 Cell["getSpectrum", \
 "Subsection",ExpressionUUID->"8b24d0dc-f123-4c71-ae02-3b3cad42c392"],
 

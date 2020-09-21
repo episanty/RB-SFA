@@ -365,6 +365,26 @@ permutation
 ]
 
 End[];
+
+
+(* ::Input::Initialization:: *)
+differentiateDipoleList::usage="differentiateDipoleList[dipoleList,\[Delta]t,DifferentiationOrder\[Rule]n] differentiates dipoleList numerically with step \[Delta]t to order n=0,1,2.";
+
+Begin["`Private`"];
+
+Options[differentiateDipoleList]=Join[{DifferentiationOrder->0},standardOptions];
+differentiateDipoleList::diffOrd="Invalid differentiation order `1`.";
+
+differentiateDipoleList[dipoleList_,\[Delta]t_,opts:OptionsPattern[]]:=Block[{},
+Piecewise[{
+{dipoleList,OptionValue[DifferentiationOrder]==0},
+{1/(2\[Delta]t) (Most[Most[dipoleList]]-Rest[Rest[dipoleList]]),OptionValue[DifferentiationOrder]==1},
+{1/\[Delta]t^2 (Most[Most[dipoleList]]-2Most[Rest[dipoleList]]+Rest[Rest[dipoleList]]),OptionValue[DifferentiationOrder]==2}},
+Message[differentiateDipoleList::diffOrd,OptionValue[DifferentiationOrder]];Abort[]
+]
+]
+
+End[];
 Polarization::usage="Polarization is an option for getSpectrum which specifies a polarization vector along which to polarize the dipole list. The default, Polarization\[Rule]False, specifies an unpolarized spectrum.";
 ComplexPart::usage="ComplexPart is an option for getSpectrum which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
 \[Omega]Power::usage="\[Omega]Power is an option for getSpectrum which specifies a power of frequency which should multiply the spectrum.";
