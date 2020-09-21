@@ -2329,8 +2329,25 @@ Fourier transform on array only on the specified levels \
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
-  True,ExpressionUUID->"6e8ca0bc-b9e8-4549-b34a-108db01b5227"]
-}, Open  ]],
+  True,ExpressionUUID->"6e8ca0bc-b9e8-4549-b34a-108db01b5227"],
+
+Cell[TextData[{
+ "In its usage within getSpectralAmplitude, this function is used in the \
+format VectorFourier[array,{1}], to take the temporal Fourier transform of a \
+vector-valued time series, i.e., to take an ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"N", "\[Times]", "d"}], TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "491edba7-8188-4efa-8641-9ddfef139725"],
+ " array and transform it over the first level, of length ",
+ Cell[BoxData[
+  FormBox["N", TraditionalForm]],
+  FormatType->"TraditionalForm",ExpressionUUID->
+  "92589665-36d0-4e08-bfc9-6732f3ff39d4"],
+ "."
+}], "Text",ExpressionUUID->"7c497a2f-6bb4-4ebf-8dc5-8145a9496bae"]
+}, Closed]],
 
 Cell[CellGroupData[{
 
