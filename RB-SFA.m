@@ -33,7 +33,7 @@ BeginPackage["RBSFA`"];
 $RBSFAversion::usage="$RBSFAversion prints the current version of the RB-SFA package in use and its timestamp.";
 $RBSFAtimestamp::usage="$RBSFAtimestamp prints the timestamp of the current version of the RB-SFA package.";
 Begin["`Private`"];
-$RBSFAversion:="RB-SFA v2.2.1, "<>$RBSFAtimestamp;
+$RBSFAversion:="RB-SFA v2.2.2, "<>$RBSFAtimestamp;
 End[];
 
 
@@ -47,7 +47,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 17 Aug 2020 16:46:52";
+$RBSFAtimestamp="Mon 21 Sep 2020 18:05:26";
 End[];
 
 
@@ -373,6 +373,7 @@ differentiateDipoleList::usage="differentiateDipoleList[dipoleList,\[Delta]t,Dif
 Begin["`Private`"];
 
 Options[differentiateDipoleList]=Join[{DifferentiationOrder->0},standardOptions];
+
 differentiateDipoleList::diffOrd="Invalid differentiation order `1`.";
 
 differentiateDipoleList[dipoleList_,\[Delta]t_,opts:OptionsPattern[]]:=Block[{},
@@ -390,113 +391,62 @@ End[];
 (* ::Input::Initialization:: *)
 getSpectralAmplitude::usage="getSpectralAmplitude[DipoleList] returns the spectral amplitude of DipoleList.";
 
-Polarization::usage="Polarization is an option for getSpectrum which specifies a polarization vector along which to polarize the dipole list. The default, Polarization\[Rule]False, specifies an unpolarized spectrum.";
-ComplexPart::usage="ComplexPart is an option for getSpectrum which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
-\[Omega]Power::usage="\[Omega]Power is an option for getSpectrum which specifies a power of frequency which should multiply the spectrum.";
-DifferentiationOrder::usage="DifferentiationOrder is an option for getSpectrum which specifies the order to which the dipole list should be differentiated before the spectrum is taken.";
+Polarization::usage="Polarization is an option for getSpectrum and getSpectralAmplitude which specifies a polarization vector along which to polarize the dipole list. The default, Polarization\[Rule]False, specifies an unpolarized spectrum.";
+ComplexPart::usage="ComplexPart is an option for getSpectrum and getSpectralAmplitude which specifies a function (like Re, Im, or by default #&) which should be applied to the dipole list before the spectrum is taken.";
+\[Omega]Power::usage="\[Omega]Power is an option for getSpectrum and getSpectralAmplitude which specifies a power of frequency which should multiply the spectrum.";
+DifferentiationOrder::usage="DifferentiationOrder is an option for getSpectrum and getSpectralAmplitude which specifies the order to which the dipole list should be differentiated before the spectrum is taken.";
+
+Protect[Polarization,ComplexPart,\[Omega]Power,DifferentiationOrder];
 
 Begin["`Private`"];
 
-Options[getSpectralAmplitude]=Join[{Polarization->False,ComplexPart->(#&),\[Omega]Power->0,DifferentiationOrder->0},standardOptions];
+Options[getSpectralAmplitude]=Join[{Polarization->False,ComplexPart->Re,\[Omega]Power->0,DifferentiationOrder->0},standardOptions];
+
+getSpectralAmplitude::\[Omega]Pow="Invalid \[Omega] power `1`.";
 
 getSpectralAmplitude[dipoleList_,OptionsPattern[]]:=Block[
-{polarizationVector,list,depth,dimensions,
+{polarizationVector,preprocessedList,depth,dimensions,
 num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega],\[Delta]t=(2\[Pi]/\[Omega])/npp
 },
 polarizationVector=OptionValue[Polarization]/Norm[OptionValue[Polarization]];
 
-list=OptionValue[ComplexPart][
+preprocessedList=OptionValue[ComplexPart][
 differentiateDipoleList[dipoleList,\[Delta]t,DifferentiationOrder->OptionValue[DifferentiationOrder]]
 ];
 
-If[NumberQ[OptionValue[\[Omega]Power]],Null;,Message[getSpectrum::\[Omega]Pow,OptionValue[\[Omega]Power]];Abort[]  ];
+If[NumberQ[OptionValue[\[Omega]Power]],Null;,Message[getSpectralAmplitude::\[Omega]Pow,OptionValue[\[Omega]Power]];Abort[]  ];
 If[OptionValue[\[Omega]Power]!=0,\[Omega]=GetCarrierFrequency[OptionValue[CarrierFrequency]],\[Omega]=1];
-(*If \[Omega]Power\[Equal]0 the value of \[Omega] doesn't matter and there's no sense in printing error messages*)
+(*If \[Omega]Power\[Equal]0 the value of \[Omega] doesn't matter and there's no sense in risking printing error messages that would result from a missing CarrierFrequency option.*)
 
+Times[
+Sqrt[num] Table[(\[Omega]/num k)^OptionValue[\[Omega]Power],{k,1,Round[Length[preprocessedList]/2]}],
 Map[
 If[
 OptionValue[Polarization]===False,
 #&,(*unpolarized spectrum*)
 Dot[#,polarizationVector]&
 ],
-VectorFourier[list,{1}]
+VectorFourier[preprocessedList,{1}]
+][[1;;Round[Length[preprocessedList]/2]]]
 ]
 
-(*num Table[
-(\[Omega]/num k)^(2OptionValue[\[Omega]Power]),{k,1,Round[Length[differentiatedList]/2]}
-]\[Times]*)(*If[
-OptionValue[Polarization]===False,(*unpolarized spectrum*)
-(*funky depth thing so this can take lists of numbers and lists of vectors, of arbitrary length. Makes for easier benchmarking.*)
-depth=Length[Dimensions[dipoleList]];
-dimensions=If[Length[#]>1,#\[LeftDoubleBracket]2\[RightDoubleBracket],1(*#\[LeftDoubleBracket]1\[RightDoubleBracket]*)]&[Dimensions[dipoleList]];
-Sum[Abs[
-Fourier[
-If[depth>1,Re[differentiatedList\[LeftDoubleBracket]All,i\[RightDoubleBracket]],Re[differentiatedList\[LeftDoubleBracket]All\[RightDoubleBracket]]]
-,FourierParameters\[Rule]{-1, 1}
-]\[LeftDoubleBracket]1;;Round[Length[differentiatedList]/2]\[RightDoubleBracket]
-]^2,{i,1,dimensions}]
-,(*polarized spectrum*)
-Abs[
-Transpose[Table[
-Fourier[
-Re[differentiatedList\[LeftDoubleBracket]All,i\[RightDoubleBracket]]
-,FourierParameters\[Rule]{-1, 1}
-]
-,{i,1,2}]]\[LeftDoubleBracket]1;;Round[Length[differentiatedList]/2]\[RightDoubleBracket].polarizationVector
-]^2
-]*)
 ]
 
 End[];
-Protect[Polarization,ComplexPart,\[Omega]Power,DifferentiationOrder];
+
+
+(* ::Input::Initialization:: *)
+getSpectrum::usage="getSpectrum[DipoleList] returns the power spectrum of DipoleList.";
+
 
 Begin["`Private`"];
-Options[getSpectrum]={Polarization->False,ComplexPart->(#&),\[Omega]Power->0,DifferentiationOrder->0}~Join~standardOptions;
+Options[getSpectrum]=Options[getSpectralAmplitude];
 
-getSpectrum::diffOrd="Invalid differentiation order `1`.";
-getSpectrum::\[Omega]Pow="Invalid \[Omega] power `1`.";
-
-getSpectrum[dipoleList_,OptionsPattern[]]:=Block[
-{polarizationVector,differentiatedList,depth,dimensions,
-num=OptionValue[TotalCycles],npp=OptionValue[PointsPerCycle],\[Omega],\[Delta]t=(2\[Pi]/\[Omega])/npp
-},
-polarizationVector=OptionValue[Polarization]/Norm[OptionValue[Polarization]];
-
-differentiatedList=OptionValue[ComplexPart][Piecewise[{
-{dipoleList,OptionValue[DifferentiationOrder]==0},
-{1/(2\[Delta]t) (Most[Most[dipoleList]]-Rest[Rest[dipoleList]]),OptionValue[DifferentiationOrder]==1},
-{1/\[Delta]t^2 (Most[Most[dipoleList]]-2Most[Rest[dipoleList]]+Rest[Rest[dipoleList]]),OptionValue[DifferentiationOrder]==2}},
-Message[getSpectrum::diffOrd,OptionValue[DifferentiationOrder]];Abort[]
-]];
-
-If[NumberQ[OptionValue[\[Omega]Power]],Null;,Message[getSpectrum::\[Omega]Pow,OptionValue[\[Omega]Power]];Abort[]  ];
-If[OptionValue[\[Omega]Power]!=0,\[Omega]=GetCarrierFrequency[OptionValue[CarrierFrequency]],\[Omega]=1];
-(*If \[Omega]Power\[Equal]0 the value of \[Omega] doesn't matter and there's no sense in printing error messages*)
-
-num Table[
-(\[Omega]/num k)^(2OptionValue[\[Omega]Power]),{k,1,Round[Length[differentiatedList]/2]}
-]*If[
-OptionValue[Polarization]===False,(*unpolarized spectrum*)
-(*funky depth thing so this can take lists of numbers and lists of vectors, of arbitrary length. Makes for easier benchmarking.*)
-depth=Length[Dimensions[dipoleList]];
-dimensions=If[Length[#]>1,#[[2]],1(*#\[LeftDoubleBracket]1\[RightDoubleBracket]*)]&[Dimensions[dipoleList]];
-Sum[Abs[
-Fourier[
-If[depth>1,Re[differentiatedList[[All,i]]],Re[differentiatedList[[All]]]]
-,FourierParameters->{-1, 1}
-][[1;;Round[Length[differentiatedList]/2]]]
-]^2,{i,1,dimensions}]
-,(*polarized spectrum*)
-Abs[
-Transpose[Table[
-Fourier[
-Re[differentiatedList[[All,i]]]
-,FourierParameters->{-1, 1}
+getSpectrum[dipoleList_,opts:OptionsPattern[]]:=Map[
+Norm[#]^2&,
+getSpectralAmplitude[dipoleList,opts]
 ]
-,{i,1,2}]][[1;;Round[Length[differentiatedList]/2]]].polarizationVector
-]^2
-]
-]
+
 End[];
 
 
