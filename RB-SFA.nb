@@ -2433,7 +2433,284 @@ n=0,1,2.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]",
  InitializationCell->
   True,ExpressionUUID->"aa2173cb-9b44-4712-8c00-5f7a303cd8dc"]
 }, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["getSpectralAmplitude", \
+"Subsection",ExpressionUUID->"a4afb916-1191-4270-ac2a-1b70ee3bca91"],
+
+Cell[BoxData["Quit"], \
+"Input",ExpressionUUID->"381a8fea-7422-4bf3-8c74-f0d80b492f33"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"getSpectralAmplitude", "::", "usage"}], "=", 
+    "\"\<getSpectralAmplitude[DipoleList] returns the spectral amplitude of \
+DipoleList.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Polarization", "::", "usage"}], "=", 
+   "\"\<Polarization is an option for getSpectrum which specifies a \
+polarization vector along which to polarize the dipole list. The default, \
+Polarization\[Rule]False, specifies an unpolarized spectrum.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ComplexPart", "::", "usage"}], "=", 
+   "\"\<ComplexPart is an option for getSpectrum which specifies a function \
+(like Re, Im, or by default #&) which should be applied to the dipole list \
+before the spectrum is taken.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Omega]Power", "::", "usage"}], "=", 
+   "\"\<\[Omega]Power is an option for getSpectrum which specifies a power of \
+frequency which should multiply the spectrum.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"DifferentiationOrder", "::", "usage"}], "=", 
+    "\"\<DifferentiationOrder is an option for getSpectrum which specifies \
+the order to which the dipole list should be differentiated before the \
+spectrum is taken.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "getSpectralAmplitude", "]"}], "=", 
+    RowBox[{"Join", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Polarization", "\[Rule]", "False"}], ",", 
+        RowBox[{"ComplexPart", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"#", "&"}], ")"}]}], ",", 
+        RowBox[{"\[Omega]Power", "\[Rule]", "0"}], ",", 
+        RowBox[{"DifferentiationOrder", "\[Rule]", "0"}]}], "}"}], ",", 
+      "standardOptions"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"getSpectralAmplitude", "[", 
+    RowBox[{"dipoleList_", ",", 
+     RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
+   RowBox[{"Block", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "polarizationVector", ",", "list", ",", "depth", ",", "dimensions", ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"num", "=", 
+        RowBox[{"OptionValue", "[", "TotalCycles", "]"}]}], ",", 
+       RowBox[{"npp", "=", 
+        RowBox[{"OptionValue", "[", "PointsPerCycle", "]"}]}], ",", 
+       "\[Omega]", ",", 
+       RowBox[{"\[Delta]t", "=", 
+        FractionBox[
+         RowBox[{"2", 
+          RowBox[{"\[Pi]", "/", "\[Omega]"}]}], "npp"]}]}], 
+      "\[IndentingNewLine]", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"polarizationVector", "=", 
+       FractionBox[
+        RowBox[{"OptionValue", "[", "Polarization", "]"}], 
+        RowBox[{"Norm", "[", 
+         RowBox[{"OptionValue", "[", "Polarization", "]"}], "]"}]]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"list", "=", 
+       RowBox[{
+        RowBox[{"OptionValue", "[", "ComplexPart", "]"}], "[", 
+        "\[IndentingNewLine]", 
+        RowBox[{"differentiateDipoleList", "[", 
+         RowBox[{"dipoleList", ",", "\[Delta]t", ",", 
+          RowBox[{"DifferentiationOrder", "\[Rule]", 
+           RowBox[{"OptionValue", "[", "DifferentiationOrder", "]"}]}]}], 
+         "]"}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"NumberQ", "[", 
+         RowBox[{"OptionValue", "[", "\[Omega]Power", "]"}], "]"}], ",", 
+        RowBox[{"Null", ";"}], ",", 
+        RowBox[{
+         RowBox[{"Message", "[", 
+          RowBox[{
+           RowBox[{"getSpectrum", "::", "\[Omega]Pow"}], ",", 
+           RowBox[{"OptionValue", "[", "\[Omega]Power", "]"}]}], "]"}], ";", 
+         RowBox[{"Abort", "[", "]"}]}]}], "  ", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"OptionValue", "[", "\[Omega]Power", "]"}], "\[NotEqual]", 
+         "0"}], ",", 
+        RowBox[{"\[Omega]", "=", 
+         RowBox[{"GetCarrierFrequency", "[", 
+          RowBox[{"OptionValue", "[", "CarrierFrequency", "]"}], "]"}]}], ",", 
+        RowBox[{"\[Omega]", "=", "1"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"If", " ", "\[Omega]Power"}], "\[Equal]", 
+        RowBox[{
+        "0", " ", "the", " ", "value", " ", "of", " ", "\[Omega]", " ", 
+         RowBox[{"doesn", "'"}], "t", " ", "matter", " ", "and", " ", 
+         RowBox[{"there", "'"}], "s", " ", "no", " ", "sense", " ", "in", " ",
+          "printing", " ", "error", " ", "messages"}]}], "*)"}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Map", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"OptionValue", "[", "Polarization", "]"}], "===", 
+           "False"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"#", "&"}], ",", 
+          RowBox[{"(*", 
+           RowBox[{"unpolarized", " ", "spectrum"}], "*)"}], 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Dot", "[", 
+            RowBox[{"#", ",", "polarizationVector"}], "]"}], "&"}]}], 
+         "\[IndentingNewLine]", "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"VectorFourier", "[", 
+         RowBox[{"list", ",", 
+          RowBox[{"{", "1", "}"}]}], "]"}]}], "\[IndentingNewLine]", 
+       "]"}]}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"num", " ", 
+      RowBox[{"Table", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        SuperscriptBox[
+         RowBox[{"(", 
+          RowBox[{
+           FractionBox["\[Omega]", "num"], " ", "k"}], ")"}], 
+         RowBox[{"2", 
+          RowBox[{"OptionValue", "[", "\[Omega]Power", "]"}]}]], ",", 
+        RowBox[{"{", 
+         RowBox[{"k", ",", "1", ",", 
+          RowBox[{"Round", "[", 
+           FractionBox[
+            RowBox[{"Length", "[", "differentiatedList", "]"}], "2"], "]"}]}],
+          "}"}]}], "\[IndentingNewLine]", "]"}], "\[Times]"}], "*)"}], 
+    RowBox[{"(*", 
+     RowBox[{"If", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"OptionValue", "[", "Polarization", "]"}], "===", "False"}], 
+       ",", 
+       RowBox[{"(*", 
+        RowBox[{"unpolarized", " ", "spectrum"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+         RowBox[{
+         "funky", " ", "depth", " ", "thing", " ", "so", " ", "this", " ", 
+          "can", " ", "take", " ", "lists", " ", "of", " ", "numbers", " ", 
+          "and", " ", "lists", " ", "of", " ", "vectors"}], ",", " ", 
+         RowBox[{"of", " ", "arbitrary", " ", 
+          RowBox[{"length", ".", " ", "Makes"}], " ", "for", " ", "easier", 
+          " ", 
+          RowBox[{"benchmarking", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"depth", "=", 
+         RowBox[{"Length", "[", 
+          RowBox[{"Dimensions", "[", "dipoleList", "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"dimensions", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", "#", "]"}], ">", "1"}], ",", 
+             RowBox[{
+             "#", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], ",",
+              "1"}], 
+            RowBox[{"(*", 
+             RowBox[{
+             "#", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+             "*)"}], "]"}], "&"}], "[", 
+          RowBox[{"Dimensions", "[", "dipoleList", "]"}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"Abs", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"Fourier", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{"If", "[", 
+                RowBox[{
+                 RowBox[{"depth", ">", "1"}], ",", 
+                 RowBox[{"Re", "[", 
+                  RowBox[{"differentiatedList", "\[LeftDoubleBracket]", 
+                   RowBox[{"All", ",", "i"}], "\[RightDoubleBracket]"}], 
+                  "]"}], ",", 
+                 RowBox[{"Re", "[", 
+                  RowBox[{
+                  "differentiatedList", "\[LeftDoubleBracket]", "All", 
+                   "\[RightDoubleBracket]"}], "]"}]}], "]"}], 
+               "\[IndentingNewLine]", ",", 
+               RowBox[{"FourierParameters", "\[Rule]", 
+                RowBox[{"{", 
+                 RowBox[{
+                  RowBox[{"-", "1"}], ",", " ", "1"}], "}"}]}]}], 
+              "\[IndentingNewLine]", "]"}], "\[LeftDoubleBracket]", 
+             RowBox[{"1", ";;", 
+              RowBox[{"Round", "[", 
+               FractionBox[
+                RowBox[{"Length", "[", "differentiatedList", "]"}], "2"], 
+               "]"}]}], "\[RightDoubleBracket]"}], "\[IndentingNewLine]", 
+            "]"}], "2"], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "dimensions"}], "}"}]}], "]"}]}], 
+       "\[IndentingNewLine]", ",", 
+       RowBox[{"(*", 
+        RowBox[{"polarized", " ", "spectrum"}], "*)"}], "\[IndentingNewLine]", 
+       SuperscriptBox[
+        RowBox[{"Abs", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Transpose", "[", 
+            RowBox[{"Table", "[", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Fourier", "[", "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"Re", "[", 
+                 RowBox[{"differentiatedList", "\[LeftDoubleBracket]", 
+                  RowBox[{"All", ",", "i"}], "\[RightDoubleBracket]"}], "]"}],
+                 "\[IndentingNewLine]", ",", 
+                RowBox[{"FourierParameters", "\[Rule]", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"-", "1"}], ",", " ", "1"}], "}"}]}]}], 
+               "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", ",", 
+              RowBox[{"{", 
+               RowBox[{"i", ",", "1", ",", "2"}], "}"}]}], "]"}], "]"}], 
+           "\[LeftDoubleBracket]", 
+           RowBox[{"1", ";;", 
+            RowBox[{"Round", "[", 
+             RowBox[{
+              RowBox[{"Length", "[", "differentiatedList", "]"}], "/", "2"}], 
+             "]"}]}], "\[RightDoubleBracket]"}], ".", "polarizationVector"}], 
+         "\[IndentingNewLine]", "]"}], "2"]}], "\[IndentingNewLine]", "]"}], 
+     "*)"}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"End", "[", "]"}], ";"}]}], "Input",
+ InitializationCell->
+  True,ExpressionUUID->"f3145e2d-d069-4c38-b5d2-829512d98a02"]
 }, Open  ]],
+
+Cell[CellGroupData[{
+
 Cell["getSpectrum", \
 "Subsection",ExpressionUUID->"8b24d0dc-f123-4c71-ae02-3b3cad42c392"],
 
