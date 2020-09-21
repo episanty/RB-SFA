@@ -404,13 +404,13 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 17 Aug 2020 16:46:52\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 21 Sep 2020 15:15:19\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True,
  CellTags->
-  "version-timestamp",ExpressionUUID->"82d9e21b-d80a-44ff-9601-9795e324bf79"]
+  "version-timestamp",ExpressionUUID->"0a1f4ebf-1e9f-470c-8ed7-b18161ee3e65"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1868,8 +1868,6 @@ Cell[BoxData[{
  InitializationCell->
   True,ExpressionUUID->"2ba142d6-ac2f-4076-b3cc-9d2e54c48e35"],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[
  RowBox[{"\[IndentingNewLine]", 
   RowBox[{
@@ -1896,13 +1894,10 @@ GetCarrierFrequency[\[Omega]] works for any input.\>\""}], ";"}],
          "$DefaultCarrierFrequency"}], "]"}], ";", 
        "$DefaultCarrierFrequency"}], ",", "\[IndentingNewLine]", 
       "optionvalue"}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
-   RowBox[{"End", "[", "]"}], "\[IndentingNewLine]"}]}]], "Input",
+   RowBox[{
+    RowBox[{"End", "[", "]"}], ";"}]}]}]], "Input",
  InitializationCell->
   True,ExpressionUUID->"ec4bd02f-f3d9-42e7-9ff9-c06e50730d97"],
-
-Cell[BoxData["\<\"RBSFA`Private`\"\>"], \
-"Output",ExpressionUUID->"d1b84622-ddfe-4a98-9597-946ae50460d7"]
-}, Open  ]],
 
 Cell[TextData[{
  "PointsPerCycle dictates how many sampling points are used per laser cycle \
@@ -2782,34 +2777,33 @@ output, except by a global factor of ",
 Cell[BoxData[{
  RowBox[{
   RowBox[{
-   RowBox[{"getSpectrum", "::", "usage"}], "=", 
-   "\"\<getSpectrum[DipoleList] returns the power spectrum of \
+   RowBox[{
+    RowBox[{"getSpectrum", "::", "usage"}], "=", 
+    "\"\<getSpectrum[DipoleList] returns the power spectrum of \
 DipoleList.\>\""}], ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"Polarization", "::", "usage"}], "=", 
-   "\"\<Polarization is an option for getSpectrum which specifies a \
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Polarization", "::", "usage"}], "=", 
+     "\"\<Polarization is an option for getSpectrum which specifies a \
 polarization vector along which to polarize the dipole list. The default, \
-Polarization\[Rule]False, specifies an unpolarized spectrum.\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ComplexPart", "::", "usage"}], "=", 
-   "\"\<ComplexPart is an option for getSpectrum which specifies a function \
+Polarization\[Rule]False, specifies an unpolarized spectrum.\>\""}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"ComplexPart", "::", "usage"}], "=", 
+     "\"\<ComplexPart is an option for getSpectrum which specifies a function \
 (like Re, Im, or by default #&) which should be applied to the dipole list \
-before the spectrum is taken.\>\""}], ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"\[Omega]Power", "::", "usage"}], "=", 
-   "\"\<\[Omega]Power is an option for getSpectrum which specifies a power of \
-frequency which should multiply the spectrum.\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"DifferentiationOrder", "::", "usage"}], "=", 
-   "\"\<DifferentiationOrder is an option for getSpectrum which specifies the \
-order to which the dipole list should be differentiated before the spectrum \
-is taken.\>\""}], ";"}], "\[IndentingNewLine]", 
+before the spectrum is taken.\>\""}], ";", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"\[Omega]Power", "::", "usage"}], "=", 
+     "\"\<\[Omega]Power is an option for getSpectrum which specifies a power \
+of frequency which should multiply the spectrum.\>\""}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"DifferentiationOrder", "::", "usage"}], "=", 
+     "\"\<DifferentiationOrder is an option for getSpectrum which specifies \
+the order to which the dipole list should be differentiated before the \
+spectrum is taken.\>\""}], ";"}], "*)"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"Protect", "[", 
@@ -2824,16 +2818,17 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
   RowBox[{
    RowBox[{
     RowBox[{"Options", "[", "getSpectrum", "]"}], "=", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{
-       RowBox[{"Polarization", "\[Rule]", "False"}], ",", 
-       RowBox[{"ComplexPart", "\[Rule]", 
-        RowBox[{"(", 
-         RowBox[{"#", "&"}], ")"}]}], ",", 
-       RowBox[{"\[Omega]Power", "\[Rule]", "0"}], ",", 
-       RowBox[{"DifferentiationOrder", "\[Rule]", "0"}]}], "}"}], "~", "Join",
-      "~", "standardOptions"}]}], ";"}], 
+    RowBox[{"Join", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Polarization", "\[Rule]", "False"}], ",", 
+        RowBox[{"ComplexPart", "\[Rule]", 
+         RowBox[{"(", 
+          RowBox[{"#", "&"}], ")"}]}], ",", 
+        RowBox[{"\[Omega]Power", "\[Rule]", "0"}], ",", 
+        RowBox[{"DifferentiationOrder", "\[Rule]", "0"}]}], "}"}], ",", 
+      "standardOptions"}], "]"}]}], ";"}], 
   "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -3078,7 +3073,7 @@ is taken.\>\""}], ";"}], "\[IndentingNewLine]",
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
   True,ExpressionUUID->"786461f0-6aaa-4f63-a758-930d93cd6ed4"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
