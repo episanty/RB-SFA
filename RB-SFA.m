@@ -47,7 +47,7 @@ End[];
 
 (* ::Input::Initialization:: *)
 Begin["`Private`"];
-$RBSFAtimestamp="Mon 21 Sep 2020 18:05:26";
+$RBSFAtimestamp="Tue 6 Oct 2020 18:43:54";
 End[];
 
 
@@ -243,7 +243,7 @@ End[];
 
 
 (* ::Input::Initialization:: *)
-flatTopEnvelope::usage="flatTopEnvelope[\[Omega],num,nRamp] returns a Function object representing a flat-top envelope at carrier frequency \[Omega] lasting a total of num cycles and with linear ramps nRamp cycles long.";
+flatTopEnvelope::usage="flatTopEnvelope[\[Omega],n,nRamp] returns a Function object representing a flat-top envelope at carrier frequency \[Omega], which lasts for a total of n cycles and is zero afterwards, with a sine-squared ramp on either end lasting for nRamp cycles.";
 Begin["`Private`"];
 flatTopEnvelope[\[Omega]_,num_,nRamp_]:=Function[t,Piecewise[{{0,t<0},{Sin[(\[Omega] t)/(4nRamp)]^2,0<=t<(2 \[Pi])/\[Omega] nRamp},{1,(2 \[Pi])/\[Omega] nRamp<=t<(2 \[Pi])/\[Omega] (num-nRamp)},{Sin[(\[Omega] ((2 \[Pi])/\[Omega] num-t))/(4nRamp)]^2,(2 \[Pi])/\[Omega] (num-nRamp)<=t<(2 \[Pi])/\[Omega] num},{0,(2 \[Pi])/\[Omega] num<=t}}]]
 End[];

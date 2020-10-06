@@ -404,13 +404,13 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Mon 21 Sep 2020 18:05:26\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 6 Oct 2020 18:43:54\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True,
  CellTags->
-  "version-timestamp",ExpressionUUID->"c84fb08a-9548-44ca-93bc-bc3e14ce0924"]
+  "version-timestamp",ExpressionUUID->"0e10292f-cb6e-4618-8017-dbd08ac57aea"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1695,10 +1695,10 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"flatTopEnvelope", "::", "usage"}], "=", 
-   "\"\<flatTopEnvelope[\[Omega],num,nRamp] returns a Function object \
-representing a flat-top envelope at carrier frequency \[Omega] lasting a \
-total of num cycles and with linear ramps nRamp cycles long.\>\""}], 
-  ";"}], "\[IndentingNewLine]", 
+   "\"\<flatTopEnvelope[\[Omega],n,nRamp] returns a Function object \
+representing a flat-top envelope at carrier frequency \[Omega], which lasts \
+for a total of n cycles and is zero afterwards, with a sine-squared ramp on \
+either end lasting for nRamp cycles.\>\""}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
@@ -1771,7 +1771,7 @@ total of num cycles and with linear ramps nRamp cycles long.\>\""}],
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
   True,ExpressionUUID->"f253dc81-804b-4926-986d-da1c9cbefa99"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -2337,13 +2337,11 @@ format VectorFourier[array,{1}], to take the temporal Fourier transform of a \
 vector-valued time series, i.e., to take an ",
  Cell[BoxData[
   FormBox[
-   RowBox[{"N", "\[Times]", "d"}], TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+   RowBox[{"N", "\[Times]", "d"}], TraditionalForm]],ExpressionUUID->
   "491edba7-8188-4efa-8641-9ddfef139725"],
  " array and transform it over the first level, of length ",
  Cell[BoxData[
-  FormBox["N", TraditionalForm]],
-  FormatType->"TraditionalForm",ExpressionUUID->
+  FormBox["N", TraditionalForm]],ExpressionUUID->
   "92589665-36d0-4e08-bfc9-6732f3ff39d4"],
  "."
 }], "Text",ExpressionUUID->"7c497a2f-6bb4-4ebf-8dc5-8145a9496bae"]
