@@ -404,13 +404,13 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}], ";"}], "\n", 
  RowBox[{
-  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 6 Oct 2020 18:43:54\>\""}], 
+  RowBox[{"$RBSFAtimestamp", "=", "\"\<Tue 6 Oct 2020 18:45:38\>\""}], 
   ";"}], "\n", 
  RowBox[{
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->True,
  CellTags->
-  "version-timestamp",ExpressionUUID->"0e10292f-cb6e-4618-8017-dbd08ac57aea"]
+  "version-timestamp",ExpressionUUID->"8c6455d9-0834-43b4-ae1e-08cfa4ca157a"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1771,7 +1771,7 @@ either end lasting for nRamp cycles.\>\""}], ";"}], "\[IndentingNewLine]",
   RowBox[{"End", "[", "]"}], ";"}]}], "Input",
  InitializationCell->
   True,ExpressionUUID->"f253dc81-804b-4926-986d-da1c9cbefa99"]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
