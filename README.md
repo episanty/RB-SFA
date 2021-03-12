@@ -21,9 +21,9 @@ This code is dual-licensed under the GPL and CC-BY-SA licenses; you are free to 
 
 In addition to that legal obligation, if you use this code in calculations for an academic publication, you have an academic obligation to cite it correctly. For that purpose, please cite the PhD thesis above, or use a direct citation to the code such as
 
->    E. Pisanty. RB-SFA: High Harmonic Generation in the Strong Field Approximation via Mathematica. https://github.com/episanty/RB-SFA (2016).
+>    E. Pisanty. RB-SFA: High Harmonic Generation in the Strong Field Approximation via Mathematica. GitHub, https://github.com/episanty/RB-SFA, [doi:10.5281/zenodo.592519](https://doi.org/10.5281/zenodo.592519) (2020).
 
-If you wish to include a DOI in your citation, please use one of the [numbered-version releases](https://github.com/episanty/RB-SFA/releases).
+If you wish to use a DOI for a specific version, please use the listing on the right-hand sidebar of [the Zenodo archival page](https://doi.org/10.5281/zenodo.592519).
 
 This software consists of the Mathematica notebook `RB-SFA.nb`, which contains the code and its documentation, a corresponding auto-generated package file `RB-SFA.m`, which provides the package functions to other notebooks, a `Usage and Examples.nb` notebook which explains how to install and use the code, and documents the calculations used in the original publication, and a (draft) `Quantum Orbits Usage.nb` notebook documenting the use of the quantum-orbit functionality. PDF printouts of all notebooks are also provided. 
 
